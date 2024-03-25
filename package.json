@@ -1,10 +1,13 @@
 {
-  "name": "project-skeleton",
+  "name": "project-killington",
   "version": "0.1.0",
   "private": true,
   "contributors": [
-    "Team Member 1 <member1@middlebury.edu>",
-    "Team Member 2 <member2@middlebury.edu>"
+    "Alex Halaby <ahalaby@middlebury.edu>",
+    "Eric Tran <etran@middlebury.edu>",
+    "Max  Bluhm <mbluhm@middlebury.edu>",
+    "Jacob Bradley <jbradley@middlebury.edu",
+    "Frank Bautista <fbautista@middlebury.edu"
   ],
   "scripts": {
     "dev": "next dev",
