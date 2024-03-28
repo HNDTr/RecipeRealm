@@ -1,3 +1,11 @@
+![workflow status](https://github.com/csci312-s24/project-killington/actions/workflows/node.js.yml/badge.svg)
+
+Purpose:
+A platform designed to offer a streamlined experience for accessing and crafting recipes, both personal and from others, with automated measurement adjustments and scalable recipe solutions to eliminate guesswork.
+
+Deployed application:
+https://killington.csci312.dev/
+
 # Project Skeleton
 
 TODO: Implement CI badges, provide a link to the deployed version of your application, and provide a brief description of the application functionality.
