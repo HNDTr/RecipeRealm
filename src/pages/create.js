@@ -25,7 +25,7 @@ export default function Creator({ pushCurrentRecipe }) {
         }
     };
 
-    return(     
+    return(
         <RecipeCreator
             completeFunction={(recipe) => completeFunction(recipe)}
         />
