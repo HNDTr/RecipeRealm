@@ -21,6 +21,7 @@ import PropTypes from "prop-types";
 import recipeShape from "./recipeShape";
 import styles from "../styles/Editor.module.css";
 import IngredientBar from "./ingredientBar";
+import RecipeSearch from "./Searching";
 // import styles from "../styles/Editor.module.css";
 
 
@@ -112,8 +113,9 @@ export default function RecipeCreator({ currentRecipe, completeFunction }) {
             type="checkbox"
             checked={isPublic}
             onChange={(event) => setPublic(event.target.checked)} 
-          />
+          /> 
         </label>
+        <RecipeSearch/> 
         {/* Button to add a new ingredient field */}
         <button type="button" disabled={title === ""} onClick={handleSaveClick}>Save</button>
         <button type="button" onClick={handleCancelClick}>Cancel</button>
