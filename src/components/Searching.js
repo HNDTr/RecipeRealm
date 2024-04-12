@@ -1,3 +1,10 @@
+import {useState} from 'react';
+import recipeShape from './recipeShape';
+import FilterDropdown from "@/components/FilterDropdown";
+import allergiesOptions from '../../data/allergies.json'
+import dietaryRestrictionsOptions from '../../data/dietaryRestrictions.json'
+import timeOptions from '../../data/time.json';
+import difficultyOptions from '../../data/difficulty.json';
 /*
     Own Notes:
         - We want the results of what shows up on the page to change based on the searchText
@@ -11,7 +18,7 @@
         - All of this will rendered in globalRecipeBook.js
 */
 
-export default function RecipeSearch(recipes){
+export default function RecipeSearch(){
     const [searchText, setSearchText] = useState('');
     const [foodAllergiesSelected, setFoodAllergiesSelected] = useState([]);
     const [dietaryRestrictionsSelected, setdietaryRestrictionsSelected] = useState([]);
