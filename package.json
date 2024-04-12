@@ -18,10 +18,13 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "knex": "^3.1.0",
     "next": "13.5.6",
+    "pg": "^8.11.5",
     "prop-types": "^15.8.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "sqlite3": "^5.1.7"
   },
   "lint-staged": {
     "*.js": "eslint --cache --fix",
