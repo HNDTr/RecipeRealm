@@ -1,18 +1,8 @@
 import PropTypes from 'prop-types';
-import {useState} from 'react';
-/*
-    FilterDropDown.js
+import { useState } from 'react';
+import styles from "../styles/filterBoxes.module.css";
 
-    The layout for a Filter Dropdown.
-
-    Props: 
-        title - The title of the filter.
-        options - An array of options to appear when the filter is clicked.
-        onSelect - A callback function called when an option is selected.
-*/
-
-
-export default function FilterDropdown({ title, options, onSelect }){
+export default function FilterDropdown({ title, options, onSelect }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
@@ -29,7 +19,7 @@ export default function FilterDropdown({ title, options, onSelect }){
   };
 
   return (
-    <div className="filter-dropdown">
+    <div className={styles.filterBoxes}>
       <div className="filter-title" onClick={toggleDropdown}>
         {title}
         <span className={`arrow ${isOpen ? 'up' : 'down'}`}>&#9660;</span>
@@ -51,11 +41,10 @@ export default function FilterDropdown({ title, options, onSelect }){
       )}
     </div>
   );
-};
+}
 
 FilterDropdown.propTypes = {
   title: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
   onSelect: PropTypes.func.isRequired,
 };
-

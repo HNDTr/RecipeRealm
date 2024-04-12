@@ -21,7 +21,6 @@ export default function RecipeSearch(recipes){
 
     return(
         <div>
-            <input type = "text" placeholder='Search' value = {searchText} onChange={() => setSearchText}/>
             <FilterDropdown title = "Food Allergies" options={allergiesOptions} onSelect={setFoodAllergiesSelected}/>
             <FilterDropdown title="Dietary Restrictions" options={dietaryRestrictionsOptions} onSelect = {setdietaryRestrictionsSelected}/>
             <FilterDropdown title="Time" options={timeOptions} onSelect = {setTimeSelected}/>
