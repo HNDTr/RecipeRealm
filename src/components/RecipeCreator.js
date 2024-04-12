@@ -73,21 +73,6 @@ export default function RecipeCreator({ currentRecipe, completeFunction }) {
       setIngredients([...ingredients, { name: "", quantity: 0.0, unit: "" }]);
     }
 
-    // function removeIngredient(index) {
-    //   const updatedIngredients = [...ingredients];
-    //   updatedIngredients.splice(index, 1); // Remove the ingredient at the specified index
-    //   setIngredients(updatedIngredients); // Update the state with the new array
-    // }
-
-    // Function to update the ingredient details
-    // function updateIngredient(name) {
-    //   const updatedIngredients = [...ingredients];
-    //   // updatedIngredients[index][key] = value;
-    //   // updatedingredients.remove(index)
-    //   updatedIngredients = updatedIngredients.filter(element => element.name !== name )
-    //   setIngredients(updatedIngredients);
-    // }
-
     return (
       <div className={styles.editor}>
         <input 

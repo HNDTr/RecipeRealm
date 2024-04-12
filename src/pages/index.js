@@ -136,7 +136,7 @@ function Home() {
       <h1>Welcome to My Recipe App</h1>
       <Link href="/CreateRecipePage">
         {/* eslint-disable-next-line react/button-has-type */}
-        <button className="button">Create Recipe</button>
+        <button className="button">Your Recipes</button>
       </Link>
       <style jsx>{`
         .button {
