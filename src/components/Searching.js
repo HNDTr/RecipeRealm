@@ -1,5 +1,4 @@
 import {useState} from 'react';
-import recipeShape from './recipeShape';
 import FilterDropdown from "@/components/FilterDropdown";
 import allergiesOptions from '../../data/allergies.json'
 import dietaryRestrictionsOptions from '../../data/dietaryRestrictions.json'
@@ -19,12 +18,13 @@ import difficultyOptions from '../../data/difficulty.json';
 */
 
 export default function RecipeSearch(){
+    /* eslint-disable no-unused-vars */
     const [searchText, setSearchText] = useState('');
     const [foodAllergiesSelected, setFoodAllergiesSelected] = useState([]);
     const [dietaryRestrictionsSelected, setdietaryRestrictionsSelected] = useState([]);
     const [timeSelected, setTimeSelected] = useState([]);
     const [difficultySelected, setDifficultySelected] = useState([]);
-    
+    /* eslint-disable no-unused-vars */
 
     return(
         <div>
@@ -34,8 +34,4 @@ export default function RecipeSearch(){
             <FilterDropdown title="Difficulty" options={difficultyOptions} onSelect={setDifficultySelected}/>
             </div>
     )
-}
-
-RecipeSearch.propTypes = {
-    recipes: recipeShape
 }
