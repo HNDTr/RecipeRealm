@@ -16,7 +16,8 @@
     complete - function to call on completion (required)
 */
 
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import recipeShape from "./recipeShape";
 import styles from "../styles/Editor.module.css";
@@ -31,26 +32,26 @@ export default function RecipeCreator({ currentRecipe, completeFunction }) {
   const [prepSteps, setPrepSteps] = useState("");
   const [isPublic, setPublic] = useState("");
   const [ingredients, setIngredients] = useState([
-    { name: "", quantity: 0.0, unit: "" },
+    { name: "", quantity: 0.0, unit: "", indexInRecipe: 0 },
   ]); // Array state for ingredients
 
-  useEffect(() => {
-    if (currentRecipe) {
-      setTitle(currentRecipe.title || "");
-      setServings(currentRecipe.servings || "");
-      setPrepSteps(currentRecipe.prepSteps || "");
-      setPublic(currentRecipe.isPublic || "");
-      setIngredients(
-        currentRecipe.ingredients || [{ name: "", quantity: 0.0, unit: "" }],
-      );
-    } else {
-      setTitle("");
-      setServings("");
-      setPrepSteps("");
-      setPublic("");
-      setIngredients([{ name: "", quantity: 0.0, unit: "" }]);
-    }
-  }, [currentRecipe]);
+  // useEffect(() => {
+  //   if (currentRecipe) {
+  //     setTitle(currentRecipe.title || "");
+  //     setServings(currentRecipe.servings || "");
+  //     setPrepSteps(currentRecipe.prepSteps || "");
+  //     setPublic(currentRecipe.isPublic || "");
+  //     setIngredients(
+  //       currentRecipe.ingredients || [{ name: "", quantity: 0.0, unit: "", indexInRecipe: ingredients.length}],
+  //     );
+  //   } else {
+  //     setTitle("");
+  //     setServings("");
+  //     setPrepSteps("");
+  //     setPublic("");
+  //     setIngredients([{ name: "", quantity: 0.0, unit: "", indexInRecipe: 0}]);
+  //   }
+  // }, [currentRecipe, ingredients.length]); // TODO: Check if ingredients.length is necessary
 
   function handleSaveClick() {
     const currentDate = new Date().toISOString();
@@ -70,6 +71,7 @@ export default function RecipeCreator({ currentRecipe, completeFunction }) {
   }
 
   function handleCancelClick() {
+    console.log("Length before adding ingredient:", ingredients.length);
     completeFunction();
   }
 
