@@ -20,112 +20,115 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import recipeShape from "./recipeShape";
 import styles from "../styles/Editor.module.css";
-import IngredientBar from "./ingredientBar";
+// import IngredientBar from "./ingredientBar";
 import RecipeSearch from "./Searching";
+import IngredientsBar from "./ingredientsBar";
 // import styles from "../styles/Editor.module.css";
-
 
 export default function RecipeCreator({ currentRecipe, completeFunction }) {
   const [title, setTitle] = useState("");
   const [servings, setServings] = useState("");
   const [prepSteps, setPrepSteps] = useState("");
   const [isPublic, setPublic] = useState("");
-  const [ingredients, setIngredients] = useState([{ name: "", quantity: 0.0, unit: "" }]); // Array state for ingredients
+  const [ingredients, setIngredients] = useState([
+    { name: "", quantity: 0.0, unit: "" },
+  ]); // Array state for ingredients
 
   useEffect(() => {
-      if (currentRecipe) {
-        setTitle(currentRecipe.title || "");
-        setServings(currentRecipe.servings || "");
-        setPrepSteps(currentRecipe.prepSteps || "");
-        setPublic(currentRecipe.isPublic || "");
-        setIngredients(currentRecipe.ingredients || [{ name: "", quantity: 0.0, unit: "" }]);
-      } else {
-        setTitle("");
-        setServings("");
-        setPrepSteps("");
-        setPublic("");
-        setIngredients([{ name: "", quantity: 0.0, unit: "" }]);
-      }
-    }, [currentRecipe]);
-
-    function handleSaveClick() {
-      const currentDate = new Date().toISOString();
-      const newRecipe = {
-        title,
-        servings,
-        ingredients,
-        prepSteps,
-        isPublic,
-        edited: currentDate,
-      };
-    
-      if (currentRecipe) {
-        newRecipe.id = currentRecipe.id;
-      }
-      completeFunction(newRecipe);
+    if (currentRecipe) {
+      setTitle(currentRecipe.title || "");
+      setServings(currentRecipe.servings || "");
+      setPrepSteps(currentRecipe.prepSteps || "");
+      setPublic(currentRecipe.isPublic || "");
+      setIngredients(
+        currentRecipe.ingredients || [{ name: "", quantity: 0.0, unit: "" }],
+      );
+    } else {
+      setTitle("");
+      setServings("");
+      setPrepSteps("");
+      setPublic("");
+      setIngredients([{ name: "", quantity: 0.0, unit: "" }]);
     }
+  }, [currentRecipe]);
 
-    function handleCancelClick(){
-      completeFunction();
+  function handleSaveClick() {
+    const currentDate = new Date().toISOString();
+    const newRecipe = {
+      title,
+      servings,
+      ingredients,
+      prepSteps,
+      isPublic,
+      edited: currentDate,
+    };
+
+    if (currentRecipe) {
+      newRecipe.id = currentRecipe.id;
     }
+    completeFunction(newRecipe);
+  }
 
-    // Function to add a new blank ingredient field
-    function addIngredient() {
-      setIngredients([...ingredients, { name: "", quantity: 0.0, unit: "" }]);
-    }
+  function handleCancelClick() {
+    completeFunction();
+  }
 
-    return (
-      <div className={styles.editor}>
-        <input 
-          type="text"
-          placeholder="Title must be set"
-          value={title}
-          onChange={(event) => setTitle(event.target.value)} 
-        />
-        <input 
-          type="text"
-          placeholder="Servings"
-          value={servings}
-          onChange={(event) => setServings(event.target.value)} 
-        />
-        {/* Render each ingredient input field */}
-        {ingredients.map((ingredient, index) => (
+  return (
+    <div className={styles.editor}>
+      <input
+        type="text"
+        placeholder="Title must be set"
+        value={title}
+        onChange={(event) => setTitle(event.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Servings"
+        value={servings}
+        onChange={(event) => setServings(event.target.value)}
+      />
+      <IngredientsBar
+        ingredients={ingredients}
+        setIngredients={setIngredients}
+      />
+      {/* Render each ingredient input field */}
+      {/* {ingredients.map((ingredient, index) => (
           <IngredientBar
-            key={ingredient}
-            index={index}
+            key={ingredient.name}
             ingredient={ingredient}
-
             ingredients={ingredients}
             setIngredients={setIngredients}
             
           />
-        ))}
-        <button type="button" onClick={addIngredient}>Add Ingredient</button>
-        <textarea 
-          type="text" 
-          placeholder="Preparation Steps"
-          value={prepSteps}
-          onChange={(event) => setPrepSteps(event.target.value)} 
+        ))} */}
+
+      <textarea
+        type="text"
+        placeholder="Preparation Steps"
+        value={prepSteps}
+        onChange={(event) => setPrepSteps(event.target.value)}
+      />
+      <label>
+        Public:
+        <input
+          type="checkbox"
+          checked={isPublic}
+          onChange={(event) => setPublic(event.target.checked)}
         />
-        <label>
-          Public:
-          <input 
-            type="checkbox"
-            checked={isPublic}
-            onChange={(event) => setPublic(event.target.checked)} 
-          /> 
-        </label>
-        <RecipeSearch/> 
-        {/* Button to add a new ingredient field */}
-        <button type="button" disabled={title === ""} onClick={handleSaveClick}>Save</button>
-        <button type="button" onClick={handleCancelClick}>Cancel</button>
-      </div>
-    );
+      </label>
+      <RecipeSearch />
+      {/* Button to add a new ingredient field */}
+      <button type="button" disabled={title === ""} onClick={handleSaveClick}>
+        Save
+      </button>
+      <button type="button" onClick={handleCancelClick}>
+        Cancel
+      </button>
+    </div>
+  );
 }
 
 RecipeCreator.propTypes = {
-    currentRecipe: recipeShape,
-    completeFunction: PropTypes.func.isRequired,
-  };
-
-  
+  currentRecipe: recipeShape,
+  completeFunction: PropTypes.func.isRequired,
+};
