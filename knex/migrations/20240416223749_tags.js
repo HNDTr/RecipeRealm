@@ -4,12 +4,9 @@
  */
 /* eslint-disable func-names */
 exports.up = function (knex) {
-  return knex.schema.createTable("users", (table) => {
+  return knex.schema.createTable("tags", (table) => {
     table.increments("id").primary();
-    table.string("email").unique().notNullable();
-    table.string("password").notNullable();
-    table.string("username").notNullable();
-    table.timestamp("created").defaultTo(knex.fn.now());
+    table.string("name").unique().notNullable();
   });
 };
 
@@ -18,5 +15,5 @@ exports.up = function (knex) {
  * @returns { Promise<void> }
  */
 exports.down = function (knex) {
-  return knex.schema.dropTable("users");
+  return knex.schema.dropTable("tags");
 };
