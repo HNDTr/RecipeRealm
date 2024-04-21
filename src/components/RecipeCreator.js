@@ -16,15 +16,12 @@
     complete - function to call on completion (required)
 */
 
-// import { useState, useEffect } from "react";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import recipeShape from "./recipeShape";
 import styles from "../styles/Editor.module.css";
-// import IngredientBar from "./ingredientBar";
 import RecipeSearch from "./Searching";
 import IngredientsBar from "./ingredientsBar";
-// import styles from "../styles/Editor.module.css";
 
 export default function RecipeCreator({ currentRecipe, completeFunction }) {
   const [title, setTitle] = useState("");
@@ -71,7 +68,6 @@ export default function RecipeCreator({ currentRecipe, completeFunction }) {
   }
 
   function handleCancelClick() {
-    console.log("Length before adding ingredient:", ingredients.length);
     completeFunction();
   }
 
@@ -93,17 +89,6 @@ export default function RecipeCreator({ currentRecipe, completeFunction }) {
         ingredients={ingredients}
         setIngredients={setIngredients}
       />
-      {/* Render each ingredient input field */}
-      {/* {ingredients.map((ingredient, index) => (
-          <IngredientBar
-            key={ingredient.name}
-            ingredient={ingredient}
-            ingredients={ingredients}
-            setIngredients={setIngredients}
-            
-          />
-        ))} */}
-
       <textarea
         type="text"
         placeholder="Preparation Steps"

@@ -2,44 +2,40 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import ingredientShape from "./ingredientShape";
 
-/* eslint-disable no-console */ // for debugging purposes
-
 function IngredientsBar({ ingredients, setIngredients }) {
-  // TODO add deleteIngredient function
-  // const units = [
-  //   "cups",
-  //   "ml",
-  //   "tsp",
-  //   "tbsp",
-  //   "grams",
-  //   "oz (volume)",
-  //   "oz (weight)",
-  //   "lbs",
-  //   "pinch",
-  // ]; // List of common units
+  const units = [
+    // List of common units for ingredients
+    "cups",
+    "ml",
+    "tsp",
+    "tbsp",
+    "grams",
+    "oz (volume)",
+    "oz (weight)",
+    "lbs",
+    "pinch",
+  ];
 
   function deleteIngredient(indexInRecipeOfIngredient) {
-    //  console.log(indexInRecipeOfIngredient);
-    console.log("Ingredients length before deleting", ingredients.length);
-    const updatedIngredients = [...ingredients];
-    const newlyUpdatedIngredients = updatedIngredients.filter(
+    let newlyUpdatedIngredients = [...ingredients];
+    newlyUpdatedIngredients = newlyUpdatedIngredients.filter(
       (element) => element.indexInRecipe !== indexInRecipeOfIngredient,
-    );
-    console.log(
-      "Newly updated Ingredients length after deleting",
-      newlyUpdatedIngredients.length,
     );
     setIngredients(newlyUpdatedIngredients);
   }
 
   // Function to add a new blank ingredient field
   function addIngredient() {
-    console.log("Ingredients length before adding", ingredients.length);
+    const nextIndex = ingredients.reduce((maxIndex, element) => {
+      if (element.indexInRecipe > maxIndex) {
+        return element.indexInRecipe;
+      }
+      return maxIndex;
+    }, 0);
     setIngredients([
       ...ingredients,
-      { name: "", quantity: 0.0, unit: "", indexInRecipe: ingredients.length },
+      { name: "", quantity: 0.0, unit: "", indexInRecipe: nextIndex + 1 },
     ]);
-    console.log("Ingredients length after adding", ingredients.length);
   }
 
   return (
@@ -48,17 +44,16 @@ function IngredientsBar({ ingredients, setIngredients }) {
         <div key={element.indexInRecipe}>
           <input type="text" placeholder="Ingredient" />
           <input type="number" step="any" placeholder="Quantity" />
-          {/* <select>
+          <select>
             {units.map((unit) => (
-              <option key={unit + indexInRecipe} value={unit}>
+              <option key={unit} value={unit}>
                 {unit}
               </option>
             ))}
-          </select> */}
+          </select>
           <button
             type="button"
             onClick={() => deleteIngredient(element.indexInRecipe)}
-            // onClick={deleteIngredient(index)}
           >
             Delete Ingredient
           </button>
