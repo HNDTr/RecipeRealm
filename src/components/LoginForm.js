@@ -4,72 +4,60 @@ import { styled } from "@mui/material/styles";
 // import { Link } from "react-router-dom";
 
 const Container = styled("divs")(({ theme: styledTheme }) => ({
+  background: "#b2d1ff",
   marginTop: styledTheme.spacing(0),
   paddingTop: styledTheme.spacing(0),
 }));
 
 const Wrapper = styled("div")(({ theme: styledTheme }) => ({
-  padding: "10px 20px",
   display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  marginTop: styledTheme.spacing(0),
+  flex: "1",
+  alignItems: "center", // Align elements to flex-start
+  justifyContent: "flex-end",
+  marginTop: styledTheme.spacing(5),
+  flexDirection: "column",
   paddingTop: styledTheme.spacing(0),
 }));
 
-// const Container = styled.div`
-//     width: 100vw;
-//     height: 100vh;
-//     /* background: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url("https://images.unsplash.com/photo-1625237454823-da3f7461a353?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGd1bmRhbXxlbnwwfHwwfHx8MA%3D%3D") center; */
-//     background-size: cover;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-
-// `
-// const Wrapper = styled.div`
-//     width: 25%;
-//     padding: 20px;
-//     background-color: #fff;
-// `
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-const Title = styled.h1`
-  font-size: 24px;
-  font-weight: 300;
-`;
-const Input = styled.input`
-  flex: 1;
-  min-width: 40%;
-  margin: 10px 0;
-  padding: 10px;
-`;
-const Button = styled.button`
-  width: 40%;
-  border: none;
-  padding: 15px 20px;
-  background-color: teal;
-  color: white;
-  cursor: pointer;
-  margin-bottom: 10px;
-  &:disabled {
-    color: green;
-    cursor: not-allowed;
-  }
-`;
+const Form = styled("form")(() => ({
+  display: "flex",
+  flexDirection: "column",
+}));
+const Title = styled("h1")(() => ({
+  fontSize: "24px",
+  fontWeight: "300",
+}));
+const Input = styled("input")(() => ({
+  flex: "1",
+  minWidth: "50%",
+  margin: "10px 0",
+  padding: "10px",
+}));
+const Button = styled("button")(() => ({
+  width: "100%",
+  border: "none",
+  padding: "15px 20px",
+  backgroundColor: "teal",
+  color: "white",
+  cursor: "pointer",
+  marginBottom: "10px",
+  "&:disabled": {
+    // Corrected syntax
+    color: "green", // Wrap color value in quotes
+    cursor: "not-allowed", // Wrap cursor value in quotes
+  },
+}));
 
 // const Error = styled.span`
 //   color: red;
 // `
 
-const StyledLink = styled.a`
-  margin: 5px 0px;
-  font-size: 12px;
-  text-decoration: underline;
-  cursor: pointer;
-`;
+const StyledLink = styled("a")(() => ({
+  margin: "5px 0px",
+  fontSize: "12px",
+  textDecoration: "underline",
+  cursor: "pointer",
+}));
 
 function LoginForm() {
   // const [username, setUsername] = useState('')
