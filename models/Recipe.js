@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import { Model } from "objection";
 import BaseModel from "./BaseModel";
+import Ingredient from "./Ingredient";
 
 export default class Recipe extends BaseModel {
   // Table name is the only required property.
@@ -26,31 +27,38 @@ export default class Recipe extends BaseModel {
     };
   }
 
-  static relationMappings = {
-    related: {
+  static relationMappings = () => ({
+    ingredients: {
       relation: Model.ManyToManyRelation,
-      modelClass: Recipe, // eslint-disable-line no-use-before-define
+      modelClass: Ingredient,
       join: {
         from: "recipes.id",
-        through: [
-          {
-            // for the recipe_ingredient join table
-            from: "recipe_ingredient.recipe_id",
-            to: "recipe_ingredient.ingredient_id",
-          },
-          {
-            // for the recipe_tags join table
-            from: "recipe_tags.recipe_id",
-            to: "recipe_tags.tag_id",
-          },
-          {
-            // for the user_recipes join table
-            from: "user_recipes.recipe_id",
-            to: "user_recipes.user_id",
-          },
-        ],
-        to: "recipes.id",
+        through: {
+          from: "recipe_ingredient.recipe_id",
+          to: "recipe_ingredient.ingredient_id",
+        },
+        to: "ingredients.id",
       },
     },
-  };
+    tags: {
+      relation: Model.ManyToManyRelation,
+      modelClass: "Tags",
+      join: {
+        from: "recipes.id",
+        through: {
+          from: "recipe_tags.recipe_id",
+          to: "recipe_tags.tag_id",
+        },
+        to: "tags.id",
+      },
+    },
+    user: {
+      relation: Model.BelongsToOneRelation,
+      modelClass: "User",
+      join: {
+        from: "recipes.author",
+        to: "users.id",
+      },
+    },
+  });
 }

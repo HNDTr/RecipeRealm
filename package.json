@@ -10,7 +10,9 @@
     "Frank Bautista <fbautista@middlebury.edu"
   ],
   "scripts": {
-    "dev": "next dev",
+    "predev": "docker compose -f docker-compose.dev.yml up -d",
+    "postdev": "docker compose -f docker-compose.dev.yml down",
+    "dev": "node ./dev-runner.js next dev",
     "build": "next build",
     "start": "next start",
     "test": "jest",

@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "gluten free"
+  },
+  {
+    "id": 2,
+    "name": "vegetarian"
+  },
+  {
+    "id": 3,
+    "name": "vegan"
+  },
+  {
+    "id": 4,
+    "name": "dairy free"
+  },
+  {
+    "id": 5,
+    "name": "nut free"
+  },
+  {
+    "id": 6,
+    "name": "egg free"
+  },
+  {
+    "id": 7,
+    "name": "soy free"
+  },
+  {
+    "id": 8,
+    "name": "paleo"
+  },
+  {
+    "id": 9,
+    "name": "keto"
+  },
+  {
+    "id": 10,
+    "name": "whole 30"
+  }
+]

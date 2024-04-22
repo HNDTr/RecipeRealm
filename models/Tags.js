@@ -2,9 +2,9 @@
 import { Model } from "objection";
 import BaseModel from "./BaseModel";
 
-export default class Ingredient extends BaseModel {
+export default class Tags extends BaseModel {
   static get tableName() {
-    return "ingredients";
+    return "tags";
   }
 
   static get jsonSchema() {
@@ -18,30 +18,31 @@ export default class Ingredient extends BaseModel {
     };
   }
 
-  static relationMappings = {
+  static relationMappings = () => ({
     recipes: {
+      // TODO update other mappings to follow this pattern (04/21/2024)
       relation: Model.ManyToManyRelation,
-      modelClass: "Recipe", // eslint-disable-line no-use-before-define
+      modelClass: "Recipe",
       join: {
-        from: "ingredients.id",
+        from: "tags.id",
         through: {
-          from: "recipe_ingredient.ingredient_id",
-          to: "recipe_ingredient.recipe_id",
+          from: "recipe_tags.tag_id",
+          to: "recipe_tags.recipe_id",
         },
         to: "recipes.id",
       },
     },
-    tags: {
+    ingredients: {
       relation: Model.ManyToManyRelation,
-      modelClass: "Tags", // eslint-disable-line no-use-before-define
+      modelClass: "Ingredient",
       join: {
-        from: "ingredients.id",
+        from: "tags.id",
         through: {
-          from: "ingredient_tags.ingredient_id",
-          to: "ingredient_tags.tag_id",
+          from: "ingredient_tags.tag_id",
+          to: "ingredient_tags.ingredient_id",
         },
-        to: "tags.id",
+        to: "ingredients.id",
       },
     },
-  };
+  });
 }

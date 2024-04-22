@@ -10,7 +10,11 @@ exports.up = function (knex) {
     table.string("servings").notNullable(); // TODO CHANGE TO INTEGER
     table.text("prepSteps").notNullable();
     table.boolean("isPublic").notNullable();
-    table.user_id("author").unique().notNullable();
+    table
+      .integer("author")
+      .references("id")
+      .inTable("users")
+      .onDelete("CASCADE");
     table.timestamp("edited").defaultTo(knex.fn.now());
 
     // // allergens

@@ -35,3 +35,4 @@ yarn-error.log*
 
 # SQLite databases
 *.db
+postgres-data
