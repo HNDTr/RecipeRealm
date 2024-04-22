@@ -3,6 +3,9 @@
  * @returns { Promise<void> }
  */
 /* eslint-disable func-names */
+
+// Parent table for recipes
+
 exports.up = function (knex) {
   return knex.schema.createTable("users", (table) => {
     table.increments("id").primary();

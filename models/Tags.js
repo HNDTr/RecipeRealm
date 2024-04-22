@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 import { Model } from "objection";
 import BaseModel from "./BaseModel";
+import Recipe from "./Recipe"; // eslint-disable-line import/no-cycle
+import Ingredient from "./Ingredient"; // eslint-disable-line import/no-cycle
 
 export default class Tags extends BaseModel {
   static get tableName() {
@@ -20,9 +22,9 @@ export default class Tags extends BaseModel {
 
   static relationMappings = () => ({
     recipes: {
-      // TODO update other mappings to follow this pattern (04/21/2024)
+      // schema for join table between tags and recipes (many-to-many relationship)
       relation: Model.ManyToManyRelation,
-      modelClass: "Recipe",
+      modelClass: Recipe,
       join: {
         from: "tags.id",
         through: {
@@ -33,8 +35,9 @@ export default class Tags extends BaseModel {
       },
     },
     ingredients: {
+      // schema for join table between tags and ingredients (many-to-many relationship)
       relation: Model.ManyToManyRelation,
-      modelClass: "Ingredient",
+      modelClass: Ingredient,
       join: {
         from: "tags.id",
         through: {

@@ -3,6 +3,9 @@
  * @returns { Promise<void> }
  */
 /* eslint-disable func-names */
+
+// migration for join table for ingredients and tags (many-to-many relationship)
+
 exports.up = function (knex) {
   return knex.schema.createTable("ingredient_tags", (table) => {
     table

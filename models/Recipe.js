@@ -1,7 +1,9 @@
 /* eslint-disable camelcase */
 import { Model } from "objection";
 import BaseModel from "./BaseModel";
-import Ingredient from "./Ingredient";
+import Ingredient from "./Ingredient"; // eslint-disable-line import/no-cycle
+import Tags from "./Tags"; // eslint-disable-line import/no-cycle
+import User from "./User"; // eslint-disable-line import/no-cycle
 
 export default class Recipe extends BaseModel {
   // Table name is the only required property.
@@ -29,6 +31,7 @@ export default class Recipe extends BaseModel {
 
   static relationMappings = () => ({
     ingredients: {
+      // schema for join table between recipes and ingredients
       relation: Model.ManyToManyRelation,
       modelClass: Ingredient,
       join: {
@@ -36,13 +39,15 @@ export default class Recipe extends BaseModel {
         through: {
           from: "recipe_ingredient.recipe_id",
           to: "recipe_ingredient.ingredient_id",
+          extra: ["quantity", "units"],
         },
         to: "ingredients.id",
       },
     },
     tags: {
+      // schema for join table between tags and recipes
       relation: Model.ManyToManyRelation,
-      modelClass: "Tags",
+      modelClass: Tags,
       join: {
         from: "recipes.id",
         through: {
@@ -52,9 +57,23 @@ export default class Recipe extends BaseModel {
         to: "tags.id",
       },
     },
-    user: {
+    saved: {
+      // schema for join table between users and recipes
+      relation: Model.ManyToManyRelation,
+      modelClass: User,
+      join: {
+        from: "recipes.id",
+        through: {
+          from: "recipe_user.recipe_id",
+          to: "recipe_user.user_id",
+        },
+        to: "users.id",
+      },
+    },
+    author: {
+      // schema for author of recipe relationship. One to many. User Id of author is stored in the recipe table as a foreign key
       relation: Model.BelongsToOneRelation,
-      modelClass: "User",
+      modelClass: User,
       join: {
         from: "recipes.author",
         to: "users.id",

@@ -2,14 +2,13 @@
 import { Model } from "objection";
 // import { use } from "react";
 import BaseModel from "./BaseModel";
+import Recipe from "./Recipe"; // eslint-disable-line import/no-cycle
 
 export default class User extends BaseModel {
   // Table name is the only required property.
   static get tableName() {
     return "users";
   }
-
-  // Objection.js assumes primary key is `id` by default
 
   static get jsonSchema() {
     return {
@@ -25,18 +24,20 @@ export default class User extends BaseModel {
     };
   }
 
-  static relationMappings = {
+  static relationMappings = () => ({
     recipes: {
+      // schema for join table between recipes and ingredients (many-to-many relationship)
       relation: Model.HasManyRelation,
-      modelClass: "Recipe",
+      modelClass: Recipe,
       join: {
         from: "users.id",
         to: "recipes.user_id",
       },
     },
     savedRecipes: {
+      // schema for join table between tags and recipes (many-to-many relationship)
       relation: Model.ManyToManyRelation,
-      modelClass: "Recipe",
+      modelClass: Recipe,
       join: {
         from: "users.id",
         through: {
@@ -46,5 +47,5 @@ export default class User extends BaseModel {
         to: "recipes.id",
       },
     },
-  };
+  });
 }

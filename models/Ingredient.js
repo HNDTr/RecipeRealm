@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 import { Model } from "objection";
 import BaseModel from "./BaseModel";
+import Recipe from "./Recipe"; // eslint-disable-line import/no-cycle
+import Tags from "./Tags"; // eslint-disable-line import/no-cycle
 
 export default class Ingredient extends BaseModel {
   static get tableName() {
@@ -18,22 +20,25 @@ export default class Ingredient extends BaseModel {
     };
   }
 
-  static relationMappings = {
+  static relationMappings = () => ({
     recipes: {
+      // schema for join table between recipes and ingredients
       relation: Model.ManyToManyRelation,
-      modelClass: "Recipe", // eslint-disable-line no-use-before-define
+      modelClass: Recipe, // eslint-disable-line no-use-before-define
       join: {
         from: "ingredients.id",
         through: {
           from: "recipe_ingredient.ingredient_id",
           to: "recipe_ingredient.recipe_id",
+          extra: ["quantity", "units"],
         },
         to: "recipes.id",
       },
     },
     tags: {
+      // schema for join table between tags and ingredients
       relation: Model.ManyToManyRelation,
-      modelClass: "Tags", // eslint-disable-line no-use-before-define
+      modelClass: Tags,
       join: {
         from: "ingredients.id",
         through: {
@@ -43,5 +48,5 @@ export default class Ingredient extends BaseModel {
         to: "tags.id",
       },
     },
-  };
+  });
 }
