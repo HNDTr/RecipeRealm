@@ -51,7 +51,7 @@ const Left = styled("div")(({ theme: styledTheme }) => ({
 function HomePage() {
   const router = useRouter();
   const onClick = () => {
-    router.push(`/CreateRecipePage`);
+    router.push(`/create`);
   };
 
   return (

@@ -42,6 +42,10 @@ function Navbar() {
   const onLogin = () => {
     router.push(`/login`);
   };
+
+  const onRecipe = () => {
+    router.push(`/GlobalRecipe`);
+  };
   return (
     <Container>
       <Wrapper>
@@ -62,7 +66,7 @@ function Navbar() {
             Home
           </Button>
           <Button
-            to="/login"
+            onClick={onRecipe}
             style={{
               backgroundColor: "rgba(0,0,0,0)",
               color: "#18453B",
