@@ -15,7 +15,7 @@ exports.up = function (knex) {
     table
       .integer("user_id")
       .references("id")
-      .inTable("user")
+      .inTable("users")
       .onDelete("CASCADE");
     table.primary(["recipe_id", "user_id"]);
   });
