@@ -3,6 +3,9 @@
  * @returns { Promise<void> }
  */
 /* eslint-disable func-names */
+
+// This defines the migration for the recipe_ingredient join table
+
 exports.up = function (knex) {
   return knex.schema.createTable("recipe_ingredient", (table) => {
     table

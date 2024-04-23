@@ -3,6 +3,9 @@
  * @returns { Promise<void> }
  */
 /* eslint-disable func-names */
+
+// parent table for tags
+
 exports.up = function (knex) {
   return knex.schema.createTable("tags", (table) => {
     table.increments("id").primary();

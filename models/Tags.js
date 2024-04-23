@@ -2,11 +2,11 @@
 import { Model } from "objection";
 import BaseModel from "./BaseModel";
 import Recipe from "./Recipe"; // eslint-disable-line import/no-cycle
-import Tags from "./Tags"; // eslint-disable-line import/no-cycle
+import Ingredient from "./Ingredient"; // eslint-disable-line import/no-cycle
 
-export default class Ingredient extends BaseModel {
+export default class Tags extends BaseModel {
   static get tableName() {
-    return "ingredients";
+    return "tags";
   }
 
   static get jsonSchema() {
@@ -22,30 +22,29 @@ export default class Ingredient extends BaseModel {
 
   static relationMappings = () => ({
     recipes: {
-      // schema for join table between recipes and ingredients
+      // schema for join table between tags and recipes (many-to-many relationship)
       relation: Model.ManyToManyRelation,
-      modelClass: Recipe, // eslint-disable-line no-use-before-define
+      modelClass: Recipe,
       join: {
-        from: "ingredients.id",
+        from: "tags.id",
         through: {
-          from: "recipe_ingredient.ingredient_id",
-          to: "recipe_ingredient.recipe_id",
-          extra: ["quantity", "units"],
+          from: "recipe_tags.tag_id",
+          to: "recipe_tags.recipe_id",
         },
         to: "recipes.id",
       },
     },
-    tags: {
-      // schema for join table between tags and ingredients
+    ingredients: {
+      // schema for join table between tags and ingredients (many-to-many relationship)
       relation: Model.ManyToManyRelation,
-      modelClass: Tags,
+      modelClass: Ingredient,
       join: {
-        from: "ingredients.id",
+        from: "tags.id",
         through: {
-          from: "ingredient_tags.ingredient_id",
-          to: "ingredient_tags.tag_id",
+          from: "ingredient_tags.tag_id",
+          to: "ingredient_tags.ingredient_id",
         },
-        to: "tags.id",
+        to: "ingredients.id",
       },
     },
   });

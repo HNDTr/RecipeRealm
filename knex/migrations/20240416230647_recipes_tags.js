@@ -3,6 +3,9 @@
  * @returns { Promise<void> }
  */
 /* eslint-disable func-names */
+
+// join table for recipes and tags
+
 exports.up = function (knex) {
   return knex.schema.createTable("recipe_tags", (table) => {
     table
