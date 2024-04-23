@@ -7,7 +7,8 @@
     "Eric Tran <etran@middlebury.edu>",
     "Max Bluhm <mbluhm@middlebury.edu>",
     "Jacob Bradley <jacobb@middlebury.edu",
-    "Frank Bautista <fbautista@middlebury.edu"
+    "Frank Bautista <fbautista@middlebury.edu",
+    "Huy Tran <htran@middlebury.edu>"
   ],
   "scripts": {
     "dev": "next dev",
