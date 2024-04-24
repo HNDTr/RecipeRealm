@@ -10,8 +10,8 @@ exports.seed = async function (knex) {
   const contents = fs.readFileSync("./fakeData/recipeSeed.json");
   const data = JSON.parse(contents);
 
-  return knex("Recipe")
+  return knex("recipes")
     .del()
-    .then(() => knex("Recipe").insert(data));
+    .then(() => knex("recipes").insert(data));
   // .then(() => knex.batchInsert("Recipe", data, 1000));
 };

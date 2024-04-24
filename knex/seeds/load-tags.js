@@ -11,8 +11,8 @@ exports.seed = async function (knex) {
   const contents = fs.readFileSync("./fakeData/tagSeed.json");
   const data = JSON.parse(contents);
 
-  return knex("Tag")
+  return knex("tags")
     .del()
-    .then(() => knex("Tag").insert(data));
+    .then(() => knex("tags").insert(data));
   // .then(() => knex.batchInsert("Tag", data, 1000));
 };

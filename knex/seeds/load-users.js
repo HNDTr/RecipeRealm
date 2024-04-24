@@ -11,8 +11,8 @@ exports.seed = async function (knex) {
   const contents = fs.readFileSync("./fakeData/userSeed.json");
   const data = JSON.parse(contents);
 
-  return knex("User")
+  return knex("users")
     .del()
-    .then(() => knex("User").insert(data));
+    .then(() => knex("users").insert(data));
   // .then(() => knex.insert("User", data, 1000));
 };

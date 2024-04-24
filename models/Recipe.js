@@ -23,7 +23,7 @@ export default class Recipe extends BaseModel {
         prepSteps: { type: "string", default: "" },
         servings: { type: "string" },
         isPublic: { type: "boolean", default: false },
-        author: { type: "string" },
+        author: { type: "integer" },
         edited: { type: "string", format: "date-time" },
       },
     };
