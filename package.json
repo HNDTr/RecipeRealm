@@ -19,10 +19,18 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.11.4",
+    "@emotion/server": "^11.11.0",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.15.15",
+    "@mui/material-nextjs": "^5.15.11",
     "next": "13.5.6",
     "prop-types": "^15.8.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-router-dom": "^6.22.3",
+    "styled-components": "^6.1.8"
   },
   "lint-staged": {
     "*.js": "eslint --cache --fix",

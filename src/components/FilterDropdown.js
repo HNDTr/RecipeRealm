@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import { useState } from 'react';
+import PropTypes from "prop-types";
+import { useState } from "react";
 import styles from "../styles/filterBoxes.module.css";
 
 export default function FilterDropdown({ title, options, onSelect }) {
@@ -22,10 +22,10 @@ export default function FilterDropdown({ title, options, onSelect }) {
     <div className={styles.filterBoxes}>
       <div className="filter-title" onClick={toggleDropdown}>
         {title}
-        <span className={`arrow ${isOpen ? 'up' : 'down'}`}>&#9660;</span>
+        <span className={`arrow ${isOpen ? "up" : "down"}`}>&#9660;</span>
       </div>
       {isOpen && (
-        <ul className="options-list">
+        <ul className="options-list" style={{ listStyle: "none" }}>
           {options.map((option) => (
             <li key={option} onClick={() => handleOptionSelect(option)}>
               <input
