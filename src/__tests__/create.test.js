@@ -1,32 +1,39 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import CreateRecipePage from '@/pages/CreateRecipePage';
+import {render, screen} from '@testing-library/react';
+import { createRouter } from 'next-router-mock';
+import Creator from '@/pages/create';
 
 describe("Create Recipe Page", () => {
   beforeEach(() => {
-    render(<CreateRecipePage />);
-    const createRecipeButton = screen.getByTestId("createRecipeButton");
-    fireEvent.click(createRecipeButton);
+    // Mocking the Next.js router using createRouter
+    createRouter({
+      route: '/create', // Mocking the /create route
+      pathname: '/create',
+      query: {},
+      asPath: '/create',
+    });
+    render(<Creator />);
   });
 
   describe("Form Inputs", () => {
     test('Title input element is present', () => {
-      const element = screen.getByPlaceholderText("Title");
+      const element = screen.getByPlaceholderText("Title must be set");
       expect(element).toBeInTheDocument();
       expect(element).toHaveAttribute('type', 'text');
     });
 
     test('Servings input element is present', () => {
-      const element = screen.getByTestId("servingsElement");
+      const element = screen.getByPlaceholderText("Servings");
       expect(element).toBeInTheDocument();
       expect(element).toHaveAttribute('type', 'text');
       expect(element).toHaveAttribute('placeholder', 'Servings');
     });
 
     test('Preparation Steps text area is visible', () => {
-        const element = screen.getByPlaceholderText("Preparation Steps");
-        expect(element).toBeInTheDocument();
-    });
+      const element = screen.getByPlaceholderText("Preparation Steps");
+      expect(element).toBeInTheDocument();
+      expect(element.tagName).toBe('TEXTAREA');
+  });
 
 
   });
