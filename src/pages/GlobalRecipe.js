@@ -1,5 +1,5 @@
 import Searching from "../components/Searching";
-import RecipeTitles from "@/components/RecipeTitles";
+import RecipeTitles from "@/components/RecipeTitles"; // Adjust the path as needed
 
 function GlobalRecipe() {
   const handleRecipeClick = (recipe) => {
