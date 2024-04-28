@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components"; // Import styled-components if not already imported
+import styled from "styled-components";
 import recipes from "../../data/recipes.json";
 
 function RecipeTitles({ onRecipeClick }) {

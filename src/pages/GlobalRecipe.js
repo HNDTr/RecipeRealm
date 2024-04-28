@@ -1,9 +1,8 @@
 import Searching from "../components/Searching";
-import RecipeTitles from "@/components/RecipeTitles"; // Adjust the path as needed
+import RecipeTitles from "@/components/RecipeTitles";
 
 function GlobalRecipe() {
   const handleRecipeClick = (recipe) => {
-    // Implement your click handling logic here
     console.log("Recipe clicked:", recipe);
   };
 
