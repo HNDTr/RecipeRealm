@@ -42,6 +42,7 @@ router
             name: element.name,
           };
           newIngredients.push(newIngredient);
+          console.log(newIngredients);
         }
       }
 

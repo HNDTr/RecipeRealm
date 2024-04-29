@@ -31,5 +31,5 @@ export default function Creator({ pushCurrentRecipe }) {
 }
 
 Creator.propTypes = {
-  pushCurrentRecipe: PropTypes.func.isRequired,
+  pushCurrentRecipe: PropTypes.func,
 };
