@@ -1,6 +1,5 @@
 [
   {
-    "id": 1,
     "title": "cookies",
     "prepSteps": "1. Preheat oven to 350 degrees F",
     "servings": "12",
@@ -9,7 +8,6 @@
     "edited": "2021-03-01T00:00:00.000Z"
   },
   {
-    "id": 2,
     "title": "brownies",
     "prepSteps": "1. Preheat oven to 350 degrees F",
     "servings": "12",
@@ -18,7 +16,6 @@
     "edited": "2021-03-01T00:00:00.000Z"
   },
   {
-    "id": 3,
     "title": "cake",
     "prepSteps": "1. Preheat oven to 350 degrees F",
     "servings": "12",

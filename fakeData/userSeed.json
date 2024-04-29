@@ -1,13 +1,11 @@
 [
   {
-    "id": 1,
     "username": "John Doe",
     "email": "jdoe@fake.com",
     "password": "password1",
     "created": "2020-01-01T00:00:00Z"
   },
   {
-    "id": 2,
     "username": "Jane Doe",
     "email": "janedoe@fake.com",
     "password": "password2",
