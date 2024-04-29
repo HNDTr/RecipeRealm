@@ -36,3 +36,7 @@ yarn-error.log*
 # SQLite databases
 *.db
 postgres-data
+
+# Unready tests
+create.test.js
+GlobalRecipe.test.js
