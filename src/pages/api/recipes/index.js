@@ -23,8 +23,6 @@ router
       // Extracting ingredients from request body
       // eslint-disable-next-line prefer-destructuring
       const ingredients = req.body.ingredients;
-      // console.log(ingredients);
-      // console.log(ingredients.name)
 
       // Array to store newly added ingredients
       const newIngredients = [];
@@ -32,7 +30,6 @@ router
       // Checking each ingredient if it exists in the database
       // eslint-disable-next-line no-restricted-syntax
       for (const element of ingredients) {
-        // console.log(element.name);
         // eslint-disable-next-line no-await-in-loop
         const existingIngredient = await Ingredient.query().findOne({
           name: element.name,
@@ -42,7 +39,6 @@ router
             name: element.name,
           };
           newIngredients.push(newIngredient);
-          console.log(newIngredients);
         }
       }
 
