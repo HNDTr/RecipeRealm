@@ -44,7 +44,7 @@ function IngredientsBar({ ingredients, setIngredients }) {
         <div key={element.indexInRecipe}>
           <input type="text" placeholder="Ingredient" />
           <input type="number" step="any" placeholder="Quantity" />
-          <select>
+          <select data-testid="unitType">
             {units.map((unit) => (
               <option key={unit} value={unit}>
                 {unit}

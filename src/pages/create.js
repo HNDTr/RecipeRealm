@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import RecipeCreator from "../components/RecipeCreator";
 
+
 export default function Creator({ pushCurrentRecipe }) {
   const router = useRouter();
 
