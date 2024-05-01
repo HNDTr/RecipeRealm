@@ -37,5 +37,3 @@ yarn-error.log*
 *.db
 postgres-data
 
-# Unready tests
-/untracked/
