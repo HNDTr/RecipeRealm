@@ -3,7 +3,6 @@ import { render, fireEvent } from '@testing-library/react';
 import SearchBar from '../components/SearchBar';
 
 describe('SearchBar component', () => {
-    before
   test('renders properly', () => {
     const handleSearch = jest.fn();
     const { getByPlaceholderText } = render(<SearchBar onSearch={handleSearch}/>);
