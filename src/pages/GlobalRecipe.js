@@ -3,7 +3,7 @@ import RecipeTitles from "@/components/RecipeTitles";
 
 function GlobalRecipe() {
   const handleRecipeClick = (recipe) => {
-    /* eslint-disable no-console */
+    // eslint-disable-next-line no-console
     console.log("Recipe clicked:", recipe);
   };
 

@@ -19,7 +19,7 @@ import difficultyOptions from "../../data/difficulty.json";
         - All of this will rendered in globalRecipeBook.js
 */
 
-const Container = styled("divs")(({ theme: styledTheme }) => ({
+const Container = styled("div")(({ theme: styledTheme }) => ({
   marginTop: styledTheme.spacing(0),
   paddingTop: styledTheme.spacing(0),
 }));

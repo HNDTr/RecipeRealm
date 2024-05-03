@@ -99,6 +99,7 @@ export default function RecipeCreator({ currentRecipe, completeFunction }) {
         Public:
         <input
           type="checkbox"
+          data-testid="publicCheckbox"
           checked={isPublic}
           onChange={(event) => setPublic(event.target.checked)}
         />
