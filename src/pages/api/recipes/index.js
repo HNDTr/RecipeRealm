@@ -20,43 +20,45 @@ router
   })
   .post(async (req, res) => {
     try {
-      // Extracting ingredients from request body
-      // eslint-disable-next-line prefer-destructuring
-      const ingredients = req.body.ingredients;
-      // console.log(ingredients);
-      // console.log(ingredients.name)
+      const { ingredients, ...recipeData } = req.body; // Extract recipe data from request body
 
-      // Array to store newly added ingredients
       const newIngredients = [];
 
-      // Checking each ingredient if it exists in the database
       // eslint-disable-next-line no-restricted-syntax
-      for (const element of ingredients) {
-        // console.log(element.name);
+      for (const ingredient of ingredients) {
         // eslint-disable-next-line no-await-in-loop
         const existingIngredient = await Ingredient.query().findOne({
-          name: element.name,
+          name: ingredient.name,
         });
+
         if (!existingIngredient) {
-          const newIngredient = {
-            name: element.name,
-          };
-          newIngredients.push(newIngredient);
-          console.log(newIngredients);
+          newIngredients.push({ name: ingredient.name });
         }
       }
 
-      // Inserting new ingredients into the database
+      // Insert new ingredients into the database
       if (newIngredients.length > 0) {
         await Ingredient.query().insert(newIngredients);
       }
 
-      // Inserting the recipe into the database
-      const recipe = await Recipe.query().insert(req.body);
+      // Insert the recipe into the database
+      const recipe = await Recipe.query().insert(recipeData);
+
+      await Promise.all(
+        ingredients.map(async (ingredient) => {
+          const { id } = await Ingredient.query().findOne({
+            name: ingredient.name,
+          });
+          await Recipe.relatedQuery("ingredients").for(recipe.id).relate({
+            id,
+            quantity: ingredient.quantity,
+            units: ingredient.units,
+          });
+        }),
+      );
 
       res.status(200).json(recipe);
     } catch (error) {
-      // If any error occurs, return a 500 status code and the error message
       res.status(500).json({ error: error.message });
     }
   });
