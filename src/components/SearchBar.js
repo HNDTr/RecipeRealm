@@ -5,11 +5,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import Container from '@mui/material/Container';
 import PropTypes from 'prop-types';
 
-export default function SearchBar({ onSearch }) {
+export default function SearchBar({ searchKeywords }) {
   const [searchText, setSearchText] = useState('');
 
   const handleSearch = () => {
-    onSearch(searchText.trim()); // Trim whitespace and pass the search text to the parent component
+    searchKeywords(searchText.trim()); // Trim whitespace and pass the search text to the parent component
   };
 
   const handleInputChange = (event) => {
@@ -34,5 +34,5 @@ export default function SearchBar({ onSearch }) {
 }
 
 SearchBar.propTypes = {
-  onSearch: PropTypes.func.isRequired,
+  searchKeywords: PropTypes.func.isRequired,
 };

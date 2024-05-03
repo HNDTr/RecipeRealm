@@ -1,14 +1,28 @@
-import PropTypes from "prop-types";
-import { useState } from "react";
-import styles from "../styles/filterBoxes.module.css";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
+import Typography from '@mui/material/Typography';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import styles from '../styles/filterBoxes.module.css';
 
 export default function FilterDropdown({ title, options, onSelect }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
+
+  const handleMenuClose = () => {
+    // Close the dropdown only if anchorEl is not null
+    if (anchorEl) {
+      setAnchorEl(null);
+    }
+  };
+
 
   const handleOptionSelect = (option) => {
     const updatedOptions = selectedOptions.includes(option)
@@ -18,27 +32,21 @@ export default function FilterDropdown({ title, options, onSelect }) {
     onSelect(updatedOptions); // Pass the updated array of selected options to the parent
   };
 
+
   return (
-    <div className={styles.filterBoxes}>
-      <div className="filter-title" onClick={toggleDropdown}>
+    <div>
+      <Typography variant="subtitle1" onClick={handleClick} style={{ cursor: 'pointer' }}>
         {title}
-        <span className={`arrow ${isOpen ? "up" : "down"}`}>&#9660;</span>
-      </div>
-      {isOpen && (
-        <ul className="options-list" style={{ listStyle: "none" }}>
-          {options.map((option) => (
-            <li key={option} onClick={() => handleOptionSelect(option)}>
-              <input
-                type="checkbox"
-                value={option}
-                checked={selectedOptions.includes(option)}
-                readOnly
-              />
-              {option}
-            </li>
-          ))}
-        </ul>
-      )}
+        {anchorEl ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+      </Typography>
+      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+        {options.map((option) => (
+          <MenuItem key={option} onClick={() => handleOptionSelect(option)}>
+            <Checkbox checked={selectedOptions.includes(option)} />
+            {option}
+          </MenuItem>
+        ))}
+      </Menu>
     </div>
   );
 }
