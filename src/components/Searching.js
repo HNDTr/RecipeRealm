@@ -53,7 +53,7 @@ export default function RecipeSearch() {
   /* eslint-disable no-unused-vars */
   const [searchText, setSearchText] = useState("");
   const [foodAllergiesSelected, setFoodAllergiesSelected] = useState([]);
-  const [dietaryRestrictionsSelected, setdietaryRestrictionsSelected] =
+  const [dietaryRestrictionsSelected, setDietaryRestrictionsSelected] =
     useState([]);
   const [timeSelected, setTimeSelected] = useState([]);
   const [difficultySelected, setDifficultySelected] = useState([]);
@@ -71,7 +71,7 @@ export default function RecipeSearch() {
           <FilterDropdown
             title="Dietary Restrictions"
             options={dietaryRestrictionsOptions}
-            onSelect={setdietaryRestrictionsSelected}
+            onSelect={setDietaryRestrictionsSelected}
           />
           <FilterDropdown
             title="Time"

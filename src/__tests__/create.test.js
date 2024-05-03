@@ -1,17 +1,10 @@
 import React from 'react';
 import {render, screen} from '@testing-library/react';
-import { createRouter } from 'next-router-mock';
 import Creator from '@/pages/create';
+
 
 describe("Create Recipe Page", () => {
   beforeEach(() => {
-    // Mocking the Next.js router using createRouter
-    createRouter({
-      route: '/create', // Mocking the /create route
-      pathname: '/create',
-      query: {},
-      asPath: '/create',
-    });
     render(<Creator />);
   });
 
