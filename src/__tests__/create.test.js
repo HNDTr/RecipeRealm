@@ -16,6 +16,7 @@ mockRouter.useParser(
   ]),
 );
 
+
 describe("Create Recipe Page", () => {
   beforeEach(() => {
     mockRouter.setCurrentUrl("/create");
