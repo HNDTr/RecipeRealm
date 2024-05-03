@@ -25,7 +25,7 @@ import IngredientsBar from "./ingredientsBar";
 
 export default function RecipeCreator({ currentRecipe, completeFunction }) {
   const [title, setTitle] = useState("");
-  const [servings, setServings] = useState("");
+  const [servings, setServings] = useState(1.0);
   const [prepSteps, setPrepSteps] = useState("");
   const [isPublic, setPublic] = useState("");
   const [ingredients, setIngredients] = useState([
