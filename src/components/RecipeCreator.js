@@ -20,7 +20,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import recipeShape from "./recipeShape";
 import styles from "../styles/Editor.module.css";
-import RecipeSearch from "./Searching";
+import FilterOptions from "./FilterOptions";
 import IngredientsBar from "./ingredientsBar";
 
 export default function RecipeCreator({ currentRecipe, completeFunction }) {
@@ -31,6 +31,14 @@ export default function RecipeCreator({ currentRecipe, completeFunction }) {
   const [ingredients, setIngredients] = useState([
     { name: "", quantity: 0.0, unit: "", indexInRecipe: 0 },
   ]); // Array state for ingredients
+
+  /* eslint-disable no-unused-vars */
+  const [foodAllergiesSelected, setFoodAllergiesSelected] = useState([]);
+  const [dietaryRestrictionsSelected, setDietaryRestrictionsSelected] =
+    useState([]);
+  const [timeSelected, setTimeSelected] = useState([]);
+  const [difficultySelected, setDifficultySelected] = useState([]);
+  /* eslint-disable no-unused-vars */
 
   // useEffect(() => {
   //   if (currentRecipe) {
@@ -104,7 +112,12 @@ export default function RecipeCreator({ currentRecipe, completeFunction }) {
           onChange={(event) => setPublic(event.target.checked)}
         />
       </label>
-      <RecipeSearch />
+      <FilterOptions
+        setFoodAllergiesSelected={setFoodAllergiesSelected}
+        setDietaryRestrictionsSelected={setDietaryRestrictionsSelected}
+        setTimeSelected={setTimeSelected}
+        setDifficultySelected={setDifficultySelected}
+      />
       {/* Button to add a new ingredient field */}
       <button type="button" disabled={title === ""} onClick={handleSaveClick}>
         Save

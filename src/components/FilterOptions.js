@@ -1,14 +1,13 @@
-import { useState } from "react";
+import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
 import FilterDropdown from "@/components/FilterDropdown";
 import allergiesOptions from "../../data/allergies.json";
 import dietaryRestrictionsOptions from "../../data/dietaryRestrictions.json";
 import timeOptions from "../../data/time.json";
 import difficultyOptions from "../../data/difficulty.json";
-import Button from "@mui/material/Button";
 
 /*
-*/
+ */
 
 const Container = styled("div")(({ theme: styledTheme }) => ({
   marginTop: styledTheme.spacing(0),
@@ -40,8 +39,12 @@ const Left = styled("div")(({ theme: styledTheme }) => ({
   marginTop: styledTheme.spacing(1),
 }));
 
-export default function RecipeSearch({setFoodAllergiesSelected, setDietaryRestrictionsSelected, setTimeSelected, setDifficultySelected, applyFilters}) {
-
+export default function FilterOptions({
+  setFoodAllergiesSelected,
+  setDietaryRestrictionsSelected,
+  setTimeSelected,
+  setDifficultySelected,
+}) {
   return (
     <Container>
       <Wrapper>
@@ -66,15 +69,17 @@ export default function RecipeSearch({setFoodAllergiesSelected, setDietaryRestri
             options={difficultyOptions}
             onSelect={setDifficultySelected}
           />
-            <Button variant="contained" color="primary" onClick={() => applyFilters()}>
-              Apply
-           </Button>
         </Right>
 
         <Left>Testing</Left>
-
-
       </Wrapper>
     </Container>
   );
 }
+
+FilterOptions.propTypes = {
+  setFoodAllergiesSelected: PropTypes.func.isRequired,
+  setDietaryRestrictionsSelected: PropTypes.func.isRequired,
+  setTimeSelected: PropTypes.func.isRequired,
+  setDifficultySelected: PropTypes.func.isRequired,
+};

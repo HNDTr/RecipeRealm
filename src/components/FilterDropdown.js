@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Checkbox from '@mui/material/Checkbox';
-import Typography from '@mui/material/Typography';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import styles from '../styles/filterBoxes.module.css';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Checkbox from "@mui/material/Checkbox";
+import Typography from "@mui/material/Typography";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 export default function FilterDropdown({ title, options, onSelect }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -23,7 +22,6 @@ export default function FilterDropdown({ title, options, onSelect }) {
     }
   };
 
-
   const handleOptionSelect = (option) => {
     const updatedOptions = selectedOptions.includes(option)
       ? selectedOptions.filter((item) => item !== option)
@@ -32,14 +30,21 @@ export default function FilterDropdown({ title, options, onSelect }) {
     onSelect(updatedOptions); // Pass the updated array of selected options to the parent
   };
 
-
   return (
     <div>
-      <Typography variant="subtitle1" onClick={handleClick} style={{ cursor: 'pointer' }}>
+      <Typography
+        variant="subtitle1"
+        onClick={handleClick}
+        style={{ cursor: "pointer" }}
+      >
         {title}
         {anchorEl ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
       </Typography>
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+      >
         {options.map((option) => (
           <MenuItem key={option} onClick={() => handleOptionSelect(option)}>
             <Checkbox checked={selectedOptions.includes(option)} />
