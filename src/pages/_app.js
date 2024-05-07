@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
+import { SessionProvider } from "next-auth/react";
 import PropTypes from "prop-types";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -9,38 +10,36 @@ import theme from "../material/theme";
 import NavBar from "../components/NavBar";
 import "@/styles/globals.css";
 
-export default function App(appProps) {
-  const { Component, pageProps } = appProps;
-
-  const props = {
-    ...pageProps,
-  };
-
+export default function App({ Component, pageProps }) {
   return (
-    <AppCacheProvider {...appProps}>
-      <Head>
-        <title>RecipeRealm</title>
-        <link rel="icon" href="/favicon.ico" />
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
-      <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <main
-          style={{ width: "100vw", height: "100vh", background: "#e5efff" }}
-        >
-          <Container style={{ background: "#e5efff", paddingTop: "2em" }}>
-            {/* <Typography variant="h2" align="center">RecipeRealm</Typography> */}
-            <NavBar />
-            <Component {...props} />
-          </Container>
-        </main>
-      </ThemeProvider>
-    </AppCacheProvider>
+    <SessionProvider session={pageProps.session}>
+      <AppCacheProvider {...pageProps}>
+        <Head>
+          <title>RecipeRealm</title>
+          <link rel="icon" href="/favicon.ico" />
+          <meta name="viewport" content="initial-scale=1, width=device-width" />
+        </Head>
+        <ThemeProvider theme={theme}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          <main
+            style={{ width: "100vw", height: "100vh", background: "#e5efff" }}
+          >
+            <Container style={{ background: "#e5efff", paddingTop: "2em" }}>
+              {/* <Typography variant="h2" align="center">RecipeRealm</Typography> */}
+              <NavBar />
+              <Component {...pageProps} />
+            </Container>
+          </main>
+        </ThemeProvider>
+      </AppCacheProvider>
+    </SessionProvider>
   );
 }
 
 App.propTypes = {
   Component: PropTypes.elementType.isRequired,
-  pageProps: PropTypes.shape({}),
+  pageProps: PropTypes.shape({
+    session: PropTypes.object,
+  }),
 };
