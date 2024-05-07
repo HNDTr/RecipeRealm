@@ -1,121 +1,106 @@
-/*
-  recipeCreator.js
-
-  This provides a basic editor with space for entering a recipe
-
-  The interface has two buttons. If "Cancel" is clicked, the `complete` callback
-  is called with no arguments. If the "Save" button is clicked, the `complete` callback
-  is called with a new article object with `title`, `servings`, 'ingredients', 'prepSteps', 'isPublic', and `date`. 
-
-  If the optional `recipe` prop is set, the `title`, 'servings', 'ingredients`, 'prepSteps', and 'isPublic' fields of the component
-  are pre-loaded with the values. In addition, all other properties of the object are 
-  included in the returned recipe object. 
-
-  props:
-    currentRecipe -
-    complete - function to call on completion (required)
-*/
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import recipeShape from "./recipeShape";
 import styles from "../styles/Editor.module.css";
-import RecipeSearch from "./Searching";
 import IngredientsBar from "./ingredientsBar";
 
-export default function RecipeCreator({ currentRecipe, completeFunction }) {
-  const [title, setTitle] = useState("");
-  const [servings, setServings] = useState(1.0);
-  const [prepSteps, setPrepSteps] = useState("");
-  const [isPublic, setPublic] = useState("");
-  const [ingredients, setIngredients] = useState([
-    { name: "", quantity: 0.0, unit: "", indexInRecipe: 0 },
-  ]); // Array state for ingredients
+export default function RecipeCreator({ completeFunction }) {
+  const [formData, setFormData] = useState({
+    title: "",
+    servings: 0.0,
+    prepSteps: "",
+    isPublic: false,
+    author: 2,
+    ingredients: [{ name: "", quantity: 0.0, unit: "", indexInRecipe: 0 }],
+  });
 
-  // useEffect(() => {
-  //   if (currentRecipe) {
-  //     setTitle(currentRecipe.title || "");
-  //     setServings(currentRecipe.servings || "");
-  //     setPrepSteps(currentRecipe.prepSteps || "");
-  //     setPublic(currentRecipe.isPublic || "");
-  //     setIngredients(
-  //       currentRecipe.ingredients || [{ name: "", quantity: 0.0, unit: "", indexInRecipe: ingredients.length}],
-  //     );
-  //   } else {
-  //     setTitle("");
-  //     setServings("");
-  //     setPrepSteps("");
-  //     setPublic("");
-  //     setIngredients([{ name: "", quantity: 0.0, unit: "", indexInRecipe: 0}]);
-  //   }
-  // }, [currentRecipe, ingredients.length]); // TODO: Check if ingredients.length is necessary
+  const { title, servings, prepSteps, author, isPublic, ingredients } =
+    formData;
 
-  function handleSaveClick() {
+  const onChange = (e) => {
+    console.log("Before state update:", formData); // Add this line
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+    console.log("After state update:", formData); // Add this line
+  };
+
+  const onIngredientChange = (index, e) => {
+    const updatedIngredients = [...ingredients];
+    updatedIngredients[index][e.target.name] = e.target.value;
+    setFormData((prevState) => ({
+      ...prevState,
+      ingredients: updatedIngredients,
+    }));
+  };
+
+  useEffect(() => {
+    console.log("After render:", formData);
+  }, [formData]);
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
     const currentDate = new Date().toISOString();
     const newRecipe = {
       title,
       servings,
-      ingredients,
       prepSteps,
       isPublic,
+      author,
+      ingredients,
       edited: currentDate,
     };
-
-    if (currentRecipe) {
-      newRecipe.id = currentRecipe.id;
-    }
-    completeFunction(newRecipe);
-  }
-
-  function handleCancelClick() {
-    completeFunction();
-  }
+    await completeFunction(newRecipe);
+  };
 
   return (
-    <div className={styles.editor}>
-      <input
-        type="text"
-        placeholder="Title must be set"
-        value={title}
-        onChange={(event) => setTitle(event.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Servings"
-        value={servings}
-        onChange={(event) => setServings(event.target.value)}
-      />
-      <IngredientsBar
-        ingredients={ingredients}
-        setIngredients={setIngredients}
-      />
-      <textarea
-        type="text"
-        placeholder="Preparation Steps"
-        value={prepSteps}
-        onChange={(event) => setPrepSteps(event.target.value)}
-      />
-      <label>
-        Public:
+    <form onSubmit={onSubmit}>
+      <div className={styles.editor}>
         <input
-          type="checkbox"
-          checked={isPublic}
-          onChange={(event) => setPublic(event.target.checked)}
+          type="text"
+          placeholder="Title must be set"
+          name="title"
+          value={title}
+          onChange={onChange}
         />
-      </label>
-      <RecipeSearch />
-      {/* Button to add a new ingredient field */}
-      <button type="button" disabled={title === ""} onClick={handleSaveClick}>
-        Save
-      </button>
-      <button type="button" onClick={handleCancelClick}>
-        Cancel
-      </button>
-    </div>
+        <input
+          type="text"
+          placeholder="Servings"
+          name="servings"
+          value={servings}
+          onChange={onChange}
+        />
+        <IngredientsBar
+          ingredients={ingredients}
+          onIngredientChange={onIngredientChange}
+        />
+        <textarea
+          type="text"
+          placeholder="Preparation Steps"
+          name="prepSteps"
+          value={prepSteps}
+          onChange={onChange}
+        />
+        <label>
+          Public:
+          <input
+            type="checkbox"
+            checked={isPublic}
+            name="isPublic"
+            onChange={() =>
+              setFormData((prevState) => ({
+                ...prevState,
+                isPublic: !isPublic,
+              }))
+            }
+          />
+        </label>
+        <button type="submit">Save</button>
+      </div>
+    </form>
   );
 }
 
 RecipeCreator.propTypes = {
-  currentRecipe: recipeShape,
   completeFunction: PropTypes.func.isRequired,
 };
