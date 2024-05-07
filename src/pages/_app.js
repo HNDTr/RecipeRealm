@@ -7,6 +7,7 @@ import Head from "next/head";
 import { Container } from "@mui/material";
 import theme from "../material/theme";
 import NavBar from "../components/NavBar";
+
 import "@/styles/globals.css";
 
 export default function App(appProps) {

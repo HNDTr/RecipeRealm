@@ -1,29 +1,16 @@
-.filter-dropdown {
-    position: relative;
-  }
-  
-  .filter-title {
-    cursor: pointer;
-  }
-  
-  .arrow {
-    position: absolute;
-    right: 0;
-  }
-  
-  .options-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex; /* Display options horizontally */
-    flex-wrap: wrap; /* Allow options to wrap to next line if necessary */
-  }
-  
-  .options-list li {
-    margin-right: 20px; /* Adjust spacing between options */
-    cursor: pointer;
-  }
-  
-  .options-list input[type="checkbox"] {
-    margin-right: 5px; /* Adjust spacing between checkbox and text */
-  }
+.options-list {
+  list-style: none;
+  padding: 0;
+}
+
+.options-list li {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+
+.options-list li:hover {
+  background-color: #f0f0f0;
+}
