@@ -26,8 +26,13 @@ export default function RecipeCreator({ completeFunction }) {
   };
 
   const onIngredientChange = (index, e) => {
+    console.log("Ingredient Change:", e.target.value); // Add this line
     const updatedIngredients = [...ingredients];
-    updatedIngredients[index][e.target.name] = e.target.value;
+    updatedIngredients[index] = {
+      ...updatedIngredients[index],
+      [e.target.name]: e.target.value,
+    };
+    console.log("Updated Ingredients:", updatedIngredients); // Add this line
     setFormData((prevState) => ({
       ...prevState,
       ingredients: updatedIngredients,

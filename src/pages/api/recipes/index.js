@@ -52,7 +52,7 @@ router
           await Recipe.relatedQuery("ingredients").for(recipe.id).relate({
             id,
             quantity: ingredient.quantity,
-            units: ingredient.units,
+            units: ingredient.unit,
           });
         }),
       );
