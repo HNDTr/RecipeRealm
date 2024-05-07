@@ -16,6 +16,7 @@
     complete - function to call on completion (required)
 */
 
+import { useRouter } from "next/router";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import recipeShape from "./recipeShape";
@@ -23,32 +24,15 @@ import styles from "../styles/Editor.module.css";
 import RecipeSearch from "./Searching";
 import IngredientsBar from "./ingredientsBar";
 
-export default function RecipeCreator({ currentRecipe, completeFunction }) {
+export default function RecipeCreator({ currentRecipe }) {
   const [title, setTitle] = useState("");
   const [servings, setServings] = useState(1.0);
   const [prepSteps, setPrepSteps] = useState("");
   const [isPublic, setPublic] = useState("");
   const [ingredients, setIngredients] = useState([
-    { name: "", quantity: 0.0, unit: "", indexInRecipe: 0 },
+    { name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 },
   ]); // Array state for ingredients
-
-  // useEffect(() => {
-  //   if (currentRecipe) {
-  //     setTitle(currentRecipe.title || "");
-  //     setServings(currentRecipe.servings || "");
-  //     setPrepSteps(currentRecipe.prepSteps || "");
-  //     setPublic(currentRecipe.isPublic || "");
-  //     setIngredients(
-  //       currentRecipe.ingredients || [{ name: "", quantity: 0.0, unit: "", indexInRecipe: ingredients.length}],
-  //     );
-  //   } else {
-  //     setTitle("");
-  //     setServings("");
-  //     setPrepSteps("");
-  //     setPublic("");
-  //     setIngredients([{ name: "", quantity: 0.0, unit: "", indexInRecipe: 0}]);
-  //   }
-  // }, [currentRecipe, ingredients.length]); // TODO: Check if ingredients.length is necessary
+  const router = useRouter();
 
   function handleSaveClick() {
     const currentDate = new Date().toISOString();
@@ -59,16 +43,36 @@ export default function RecipeCreator({ currentRecipe, completeFunction }) {
       prepSteps,
       isPublic,
       edited: currentDate,
+      author: 1,
     };
 
     if (currentRecipe) {
       newRecipe.id = currentRecipe.id;
     }
-    completeFunction(newRecipe);
-  }
+    async function postRecipe() {
+      const response = await fetch("/api/recipes", {
+        method: "POST",
+        body: JSON.stringify(newRecipe),
+        headers: new Headers({
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        }),
+      });
 
+      if (response.ok) {
+        console.log("Recipe posted successfully");
+        const returnRecipe = await response.json();
+        console.log(returnRecipe);
+        router.push(`/recipes/${returnRecipe.id}`);
+      } else {
+        console.log(newRecipe);
+        console.error("Failed to post recipe");
+      }
+    }
+    postRecipe();
+  }
   function handleCancelClick() {
-    completeFunction();
+    router.back();
   }
 
   return (
@@ -116,6 +120,45 @@ export default function RecipeCreator({ currentRecipe, completeFunction }) {
 }
 
 RecipeCreator.propTypes = {
-  currentRecipe: recipeShape,
-  completeFunction: PropTypes.func.isRequired,
+  currentRecipe: PropTypes.objectOf(recipeShape),
+  // completeFunction: PropTypes.func.isRequired,
 };
+
+// useEffect(() => {
+//   if (currentRecipe) {
+//     setTitle(currentRecipe.title || "");
+//     setServings(currentRecipe.servings || "");
+//     setPrepSteps(currentRecipe.prepSteps || "");
+//     setPublic(currentRecipe.isPublic || "");
+//     setIngredients(
+//       currentRecipe.ingredients || [{ name: "", quantity: 0.0, unit: "", indexInRecipe: ingredients.length}],
+//     );
+//   } else {
+//     setTitle("");
+//     setServings("");
+//     setPrepSteps("");
+//     setPublic("");
+//     setIngredients([{ name: "", quantity: 0.0, unit: "", indexInRecipe: 0}]);
+//   }
+// }, [currentRecipe, ingredients.length]); // TODO: Check if ingredients.length is necessary
+
+// function handleSaveClick() {
+//   const currentDate = new Date().toISOString();
+//   const newRecipe = {
+//     title,
+//     servings,
+//     ingredients,
+//     prepSteps,
+//     isPublic,
+//     edited: currentDate,
+//   };
+
+//   if (currentRecipe) {
+//     newRecipe.id = currentRecipe.id;
+//   }
+//   completeFunction(newRecipe);
+// }
+
+// function handleCancelClick() {
+//   completeFunction();
+// }

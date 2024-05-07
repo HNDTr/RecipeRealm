@@ -24,6 +24,36 @@ function IngredientsBar({ ingredients, setIngredients }) {
     setIngredients(newlyUpdatedIngredients);
   }
 
+  function updateIngredientName(newName, indexInRecipeOfIngredient) {
+    const newlyUpdatedIngredients = ingredients.map((element) => {
+      if (element.indexInRecipe === indexInRecipeOfIngredient) {
+        return { ...element, name: newName };
+      }
+      return element;
+    });
+    setIngredients(newlyUpdatedIngredients);
+  }
+
+  function updateIngredientQuantity(newQuantity, indexInRecipeOfIngredient) {
+    const newlyUpdatedIngredients = ingredients.map((element) => {
+      if (element.indexInRecipe === indexInRecipeOfIngredient) {
+        return { ...element, quantity: newQuantity };
+      }
+      return element;
+    });
+    setIngredients(newlyUpdatedIngredients);
+  }
+
+  function updateIngredientUnit(newUnit, indexInRecipeOfIngredient) {
+    const newlyUpdatedIngredients = ingredients.map((element) => {
+      if (element.indexInRecipe === indexInRecipeOfIngredient) {
+        return { ...element, unit: newUnit };
+      }
+      return element;
+    });
+    setIngredients(newlyUpdatedIngredients);
+  }
+
   // Function to add a new blank ingredient field
   function addIngredient() {
     const nextIndex = ingredients.reduce((maxIndex, element) => {
@@ -34,7 +64,7 @@ function IngredientsBar({ ingredients, setIngredients }) {
     }, 0);
     setIngredients([
       ...ingredients,
-      { name: "", quantity: 0.0, unit: "", indexInRecipe: nextIndex + 1 },
+      { name: "", quantity: 0.0, unit: "cups", indexInRecipe: nextIndex + 1 },
     ]);
   }
 
@@ -42,9 +72,29 @@ function IngredientsBar({ ingredients, setIngredients }) {
     <div>
       {ingredients.map((element) => (
         <div key={element.indexInRecipe}>
-          <input type="text" placeholder="Ingredient" />
-          <input type="number" step="any" placeholder="Quantity" />
-          <select>
+          <input
+            type="text"
+            placeholder="Ingredient"
+            onChange={(event) =>
+              updateIngredientName(event.target.value, element.indexInRecipe)
+            }
+          />
+          <input
+            type="number"
+            step="any"
+            placeholder="Quantity"
+            onChange={(event) =>
+              updateIngredientQuantity(
+                event.target.value,
+                element.indexInRecipe,
+              )
+            }
+          />
+          <select
+            onChange={(event) =>
+              updateIngredientUnit(event.target.value, element.indexInRecipe)
+            }
+          >
             {units.map((unit) => (
               <option key={unit} value={unit}>
                 {unit}
@@ -72,3 +122,5 @@ IngredientsBar.propTypes = {
   ingredients: PropTypes.arrayOf(ingredientShape).isRequired,
   setIngredients: PropTypes.func.isRequired,
 };
+
+// <input type="text" placeholder="Ingredient"/>
