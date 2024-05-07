@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import styles from "../styles/Editor.module.css";
 import IngredientsBar from "./ingredientsBar";
@@ -17,12 +17,12 @@ export default function RecipeCreator({ completeFunction }) {
     formData;
 
   const onChange = (e) => {
-    console.log("Before state update:", formData); // Add this line
+    // console.log("Before state update:", formData); // Add this line
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
-    console.log("After state update:", formData); // Add this line
+    // console.log("After state update:", formData); // Add this line
   };
 
   const onIngredientChange = (index, e) => {
@@ -33,10 +33,6 @@ export default function RecipeCreator({ completeFunction }) {
       ingredients: updatedIngredients,
     }));
   };
-
-  useEffect(() => {
-    console.log("After render:", formData);
-  }, [formData]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -51,6 +47,15 @@ export default function RecipeCreator({ completeFunction }) {
       edited: currentDate,
     };
     await completeFunction(newRecipe);
+    // Reset the form data after submission
+    setFormData({
+      title: "",
+      servings: 0.0,
+      prepSteps: "",
+      isPublic: false,
+      author: 2,
+      ingredients: [{ name: "", quantity: 0.0, unit: "", indexInRecipe: 0 }],
+    });
   };
 
   return (

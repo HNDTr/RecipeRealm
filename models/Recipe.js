@@ -20,8 +20,8 @@ export default class Recipe extends BaseModel {
       properties: {
         id: { type: "integer" },
         title: { type: "string" },
-        prepSteps: { type: "text", default: "" },
-        servings: { type: "float" },
+        prepSteps: { type: "string", default: "" },
+        servings: { type: "string" },
         isPublic: { type: "boolean", default: false },
         author: { type: "integer" },
         edited: { type: "string", format: "date-time" },
