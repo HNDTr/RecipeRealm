@@ -1,14 +1,30 @@
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signIn, signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function LoginWidget() {
-  const { data: session } = useSession()
+  const router = useRouter();
+  const { data: session } = useSession();
 
-  if (session) {
-    return (<div>
-      <p>Signed in as {session.user.email} <button type="button" onClick={signOut}>Sign out</button></p>
-    </div>);
-  }
-  return (<div>
-    <button type="button" onClick={() => signIn("google")}>Sign in</button>
-  </div>);
+  const handleSignInAndRedirect = async () => {
+    await signIn("google", { callbackUrl: "/GlobalRecipe" });
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push("/"); // Redirect to home page after sign-out
+  };
+
+  return (
+    <div>
+      {session ? (
+        <div>
+          <p>Signed in as {session.user.email} <button type="button" onClick={handleSignOut}>Sign out</button></p>
+        </div>
+      ) : (
+        <div>
+          <button type="button" onClick={handleSignInAndRedirect}>Sign in with Google</button>
+        </div>
+      )}
+    </div>
+  );
 }
