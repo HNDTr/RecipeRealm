@@ -13,8 +13,11 @@ export default function RecipeCreator({ completeFunction }) {
     ingredients: [{ name: "", quantity: 0.0, unit: "", indexInRecipe: 0 }],
   });
 
-  const { title, servings, prepSteps, author, isPublic, ingredients } =
-    formData;
+  const [ingredients, setIngredients] = useState([
+    { name: "", quantity: 0.0, unit: "", indexInRecipe: 0 },
+  ]);
+
+  const { title, servings, prepSteps, author, isPublic } = formData;
 
   const onChange = (e) => {
     // console.log("Before state update:", formData); // Add this line
@@ -25,19 +28,14 @@ export default function RecipeCreator({ completeFunction }) {
     // console.log("After state update:", formData); // Add this line
   };
 
-  const onIngredientChange = (index, e) => {
-    console.log("Ingredient Change:", e.target.value); // Add this line
-    const updatedIngredients = [...ingredients];
-    updatedIngredients[index] = {
-      ...updatedIngredients[index],
-      [e.target.name]: e.target.value,
-    };
-    console.log("Updated Ingredients:", updatedIngredients); // Add this line
-    setFormData((prevState) => ({
-      ...prevState,
-      ingredients: updatedIngredients,
-    }));
-  };
+  // const onIngredientChange = (index, e) => {
+  //   const updatedIngredients = [...ingredients];
+  //   updatedIngredients[index][e.target.name] = e.target.value;
+  //   setFormData((prevState) => ({
+  //     ...prevState,
+  //     ingredients: updatedIngredients,
+  //   }));
+  // };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -82,7 +80,7 @@ export default function RecipeCreator({ completeFunction }) {
         />
         <IngredientsBar
           ingredients={ingredients}
-          onIngredientChange={onIngredientChange}
+          setIngredients={setIngredients}
         />
         <textarea
           type="text"
