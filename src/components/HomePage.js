@@ -61,7 +61,7 @@ function HomePage() {
           <Intro>
             Discover a World of{" "}
             <span style={{ color: "#eeab12" }}>Delicious</span> and{" "}
-            <span style={{ color: "#eeab12" }}>Nutritious </span>Recipe
+            <span style={{ color: "#eeab12" }}>Nutritious </span>Recipes
           </Intro>
           <Para>
             Welcome to RecipeRealm, your one-stop destination for wholesome and

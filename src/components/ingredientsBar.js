@@ -1,6 +1,21 @@
 import React from "react";
 import { PropTypes } from "prop-types";
+import InputLabel from "@mui/material/InputLabel";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Select from "@mui/material/Select";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { styled } from "@mui/system";
 import ingredientShape from "./ingredientShape";
+
+const FormGrid = styled(Grid)(() => ({
+  display: "flex",
+  flexDirection: "row",
+}));
+
+// import grid, textfield, select,
 
 function IngredientsBar({ ingredients, setIngredients }) {
   const units = [
@@ -32,6 +47,7 @@ function IngredientsBar({ ingredients, setIngredients }) {
       }
       return maxIndex;
     }, 0);
+
     setIngredients([
       ...ingredients,
       { name: "", quantity: 0.0, unit: "", indexInRecipe: nextIndex + 1 },
@@ -39,33 +55,59 @@ function IngredientsBar({ ingredients, setIngredients }) {
   }
 
   return (
-    <div>
+    <FormGrid container spacing={2} justifyContent="left">
       {ingredients.map((element) => (
-        <div key={element.indexInRecipe}>
-          <input type="text" placeholder="Ingredient" />
-          <input type="number" step="any" placeholder="Quantity" />
-          <select>
-            {units.map((unit) => (
-              <option key={unit} value={unit}>
-                {unit}
-              </option>
-            ))}
-          </select>
-          <button
-            type="button"
-            onClick={() => deleteIngredient(element.indexInRecipe)}
-          >
-            Delete Ingredient
-          </button>
-        </div>
+        <Grid container item xs={12} spacing={2} key={element.indexInRecipe}>
+          <Grid item xs={4}>
+            <FormControl fullWidth>
+              <OutlinedInput type="text" placeholder="Ingredient" />
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={2}>
+            <FormControl fullWidth>
+              <OutlinedInput type="number" step="any" placeholder="Quantity" />
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={4}>
+            <FormControl fullWidth>
+              <InputLabel id={`unit_select_${element.indexInRecipe}`}>
+                Unit
+              </InputLabel>
+              <Select data-testid="unitType" native="true" placeholder="">
+                {units.map((unit) => (
+                  <option key={unit} value={unit}>
+                    {unit}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={1}>
+            <Button
+              type="button"
+              variant="outlined"
+              onClick={() => deleteIngredient(element.indexInRecipe)}
+            >
+              Delete Ingredient
+            </Button>
+          </Grid>
+        </Grid>
       ))}
-      <button type="button" onClick={addIngredient}>
-        Add Ingredient
-      </button>
-    </div>
+      <Grid item xs={12}>
+        <Button
+          variant="outlined"
+          // eslint-disable-next-line react/jsx-no-bind
+          onClick={addIngredient}
+        >
+          Add Ingredient
+        </Button>
+      </Grid>
+    </FormGrid>
   );
 }
-
 export default IngredientsBar;
 
 IngredientsBar.propTypes = {

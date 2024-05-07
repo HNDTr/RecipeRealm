@@ -18,6 +18,7 @@
 
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { Grid, TextField, InputLabel } from "@mui/material";
 import recipeShape from "./recipeShape";
 import styles from "../styles/Editor.module.css";
 import RecipeSearch from "./Searching";
@@ -72,46 +73,60 @@ export default function RecipeCreator({ currentRecipe, completeFunction }) {
   }
 
   return (
-    <div className={styles.editor}>
-      <input
-        type="text"
-        placeholder="Title must be set"
-        value={title}
-        onChange={(event) => setTitle(event.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Servings"
-        value={servings}
-        onChange={(event) => setServings(event.target.value)}
-      />
-      <IngredientsBar
-        ingredients={ingredients}
-        setIngredients={setIngredients}
-      />
-      <textarea
-        type="text"
-        placeholder="Preparation Steps"
-        value={prepSteps}
-        onChange={(event) => setPrepSteps(event.target.value)}
-      />
-      <label>
-        Public:
-        <input
-          type="checkbox"
-          checked={isPublic}
-          onChange={(event) => setPublic(event.target.checked)}
+    <Grid container spacing={2} className={styles.editor}>
+      <Grid item>
+        <TextField
+          type="text"
+          placeholder="Recipe Title"
+          value={title}
+          onChange={(event) => setTitle(event.target.value)}
         />
-      </label>
+      </Grid>
+      <Grid item>
+        <TextField
+          type="text"
+          placeholder="Servings"
+          value={servings}
+          onChange={(event) => setServings(event.target.value)}
+        />
+      </Grid>
+      <Grid item>
+        <IngredientsBar
+          ingredients={ingredients}
+          setIngredients={setIngredients}
+        />
+      </Grid>
+      <Grid item>
+        <TextField
+          type="text"
+          placeholder="Preparation Steps"
+          value={prepSteps}
+          onChange={(event) => setPrepSteps(event.target.value)}
+        />
+      </Grid>
+      <Grid item>
+        <InputLabel>
+          Public:
+          <input
+            type="checkbox"
+            checked={isPublic}
+            onChange={(event) => setPublic(event.target.checked)}
+          />
+        </InputLabel>
+      </Grid>
       <RecipeSearch />
       {/* Button to add a new ingredient field */}
-      <button type="button" disabled={title === ""} onClick={handleSaveClick}>
-        Save
-      </button>
-      <button type="button" onClick={handleCancelClick}>
-        Cancel
-      </button>
-    </div>
+      <Grid item>
+        <button type="button" disabled={title === ""} onClick={handleSaveClick}>
+          Save
+        </button>
+      </Grid>
+      <Grid item>
+        <button type="button" onClick={handleCancelClick}>
+          Cancel
+        </button>
+      </Grid>
+    </Grid>
   );
 }
 
