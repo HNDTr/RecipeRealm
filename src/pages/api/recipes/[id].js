@@ -9,20 +9,21 @@ const router = createRouter();
 
 router
   .get(async (req, res) => {
-    const article = await Recipe.query()
-      .withGraphFetched("related")
+    const recipe = await Recipe.query()
+      // .withGraphFetched("related")
       .findById(req.query.id)
       .throwIfNotFound();
-    res.status(200).json(article);
+    res.status(200).json(recipe);
   })
   .put(async (req, res) => {
-    const { id, ...updatedArticle } = req.body;
+    const { id, ...updatedRecipe } = req.body;
     if (id !== parseInt(req.query.id, 10)) {
+      // console.log(id);
       res.status(400).end(`URL and object does not match`);
       return;
     }
-    const article = await Recipe.query().updateAndFetchById(id, updatedArticle);
-    res.status(200).json(article);
+    const recipe = await Recipe.query().updateAndFetchById(id, updatedRecipe);
+    res.status(200).json(recipe);
   });
 
 // Notice the `onError` middleware for aspect-oriented error handler. That middleware
