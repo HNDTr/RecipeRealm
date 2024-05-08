@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import recipeShape from "./recipeShape";
 import styles from "../styles/Editor.module.css";
 import IngredientsBar from "./ingredientsBar";
 
-export default function RecipeCreator({ completeFunction }) {
+export default function RecipeCreator({ completeFunction, currentRecipe }) {
   const [formData, setFormData] = useState({
     title: "",
     servings: 0.0,
@@ -13,29 +14,21 @@ export default function RecipeCreator({ completeFunction }) {
     ingredients: [{ name: "", quantity: 0.0, unit: "", indexInRecipe: 0 }],
   });
 
-  const [ingredients, setIngredients] = useState([
-    { name: "", quantity: 0.0, unit: "", indexInRecipe: 0 },
-  ]);
+  // Update form data with currentRecipe on component mount
+  useEffect(() => {
+    if (currentRecipe) {
+      setFormData(currentRecipe);
+    }
+  }, [currentRecipe]);
 
   const { title, servings, prepSteps, author, isPublic } = formData;
 
   const onChange = (e) => {
-    // console.log("Before state update:", formData); // Add this line
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
-    // console.log("After state update:", formData); // Add this line
   };
-
-  // const onIngredientChange = (index, e) => {
-  //   const updatedIngredients = [...ingredients];
-  //   updatedIngredients[index][e.target.name] = e.target.value;
-  //   setFormData((prevState) => ({
-  //     ...prevState,
-  //     ingredients: updatedIngredients,
-  //   }));
-  // };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -46,7 +39,7 @@ export default function RecipeCreator({ completeFunction }) {
       prepSteps,
       isPublic,
       author,
-      ingredients,
+      ingredients: formData.ingredients,
       edited: currentDate,
     };
     await completeFunction(newRecipe);
@@ -79,8 +72,10 @@ export default function RecipeCreator({ completeFunction }) {
           onChange={onChange}
         />
         <IngredientsBar
-          ingredients={ingredients}
-          setIngredients={setIngredients}
+          ingredients={formData.ingredients}
+          setIngredients={(ingredients) =>
+            setFormData((prevState) => ({ ...prevState, ingredients }))
+          }
         />
         <textarea
           type="text"
@@ -111,4 +106,5 @@ export default function RecipeCreator({ completeFunction }) {
 
 RecipeCreator.propTypes = {
   completeFunction: PropTypes.func.isRequired,
+  currentRecipe: recipeShape,
 };
