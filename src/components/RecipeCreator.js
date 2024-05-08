@@ -85,7 +85,7 @@ export default function RecipeCreator({ completeFunction }) {
         <TextField
           type="text"
           placeholder="Servings"
-          value={serYvings}
+          value={servings}
           onChange={onChange}
         />
       </Grid>
