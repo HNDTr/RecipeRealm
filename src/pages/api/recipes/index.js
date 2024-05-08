@@ -1,6 +1,7 @@
 import { createRouter } from "next-connect";
 import { onError } from "../../../lib/middleware";
 import Recipe from "../../../../models/Recipe";
+import Ingredient from "../../../../models/Ingredient";
 
 const router = createRouter();
 
@@ -18,10 +19,48 @@ router
     res.status(200).json(recipes);
   })
   .post(async (req, res) => {
-    // Implement endpoint to create a new article (deleting placeholder response code below)
+    try {
+      const { ingredients, ...recipeData } = req.body; // Extract recipe data from request body
 
-    const recipe = await Recipe.query().insertAndFetch(req.body);
-    res.status(200).json(recipe);
+      const newIngredients = [];
+
+      // eslint-disable-next-line no-restricted-syntax
+      for (const ingredient of ingredients) {
+        // eslint-disable-next-line no-await-in-loop
+        const existingIngredient = await Ingredient.query().findOne({
+          name: ingredient.name,
+        });
+
+        if (!existingIngredient) {
+          newIngredients.push({ name: ingredient.name });
+        }
+      }
+
+      // Insert new ingredients into the database
+      if (newIngredients.length > 0) {
+        await Ingredient.query().insert(newIngredients);
+      }
+
+      // Insert the recipe into the database
+      const recipe = await Recipe.query().insert(recipeData);
+
+      await Promise.all(
+        ingredients.map(async (ingredient) => {
+          const { id } = await Ingredient.query().findOne({
+            name: ingredient.name,
+          });
+          await Recipe.relatedQuery("ingredients").for(recipe.id).relate({
+            id,
+            quantity: ingredient.quantity,
+            units: ingredient.unit,
+          });
+        }),
+      );
+
+      res.status(200).json(recipe);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
   });
 
 // Notice the `onError` middleware for aspect-oriented error handler. That middleware

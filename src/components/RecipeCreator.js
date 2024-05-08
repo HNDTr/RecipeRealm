@@ -1,85 +1,85 @@
-/*
-  recipeCreator.js
-
-  This provides a basic editor with space for entering a recipe
-
-  The interface has two buttons. If "Cancel" is clicked, the `complete` callback
-  is called with no arguments. If the "Save" button is clicked, the `complete` callback
-  is called with a new article object with `title`, `servings`, 'ingredients', 'prepSteps', 'isPublic', and `date`. 
-
-  If the optional `recipe` prop is set, the `title`, 'servings', 'ingredients`, 'prepSteps', and 'isPublic' fields of the component
-  are pre-loaded with the values. In addition, all other properties of the object are 
-  included in the returned recipe object. 
-
-  props:
-    currentRecipe -
-    complete - function to call on completion (required)
-*/
-
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { Grid, TextField, InputLabel } from "@mui/material";
-import recipeShape from "./recipeShape";
 import styles from "../styles/Editor.module.css";
-import RecipeSearch from "./Searching";
+import FilterOptions from "./FilterOptions";
 import IngredientsBar from "./ingredientsBar";
 
-export default function RecipeCreator({ currentRecipe, completeFunction }) {
-  const [title, setTitle] = useState("");
-  const [servings, setServings] = useState("");
-  const [prepSteps, setPrepSteps] = useState("");
-  const [isPublic, setPublic] = useState("");
+export default function RecipeCreator({ completeFunction }) {
+  const [formData, setFormData] = useState({
+    title: "",
+    servings: 0.0,
+    prepSteps: "",
+    isPublic: false,
+    author: 2,
+    ingredients: [{ name: "", quantity: 0.0, unit: "", indexInRecipe: 0 }],
+  });
+
   const [ingredients, setIngredients] = useState([
     { name: "", quantity: 0.0, unit: "", indexInRecipe: 0 },
-  ]); // Array state for ingredients
+  ]);
 
-  // useEffect(() => {
-  //   if (currentRecipe) {
-  //     setTitle(currentRecipe.title || "");
-  //     setServings(currentRecipe.servings || "");
-  //     setPrepSteps(currentRecipe.prepSteps || "");
-  //     setPublic(currentRecipe.isPublic || "");
-  //     setIngredients(
-  //       currentRecipe.ingredients || [{ name: "", quantity: 0.0, unit: "", indexInRecipe: ingredients.length}],
-  //     );
-  //   } else {
-  //     setTitle("");
-  //     setServings("");
-  //     setPrepSteps("");
-  //     setPublic("");
-  //     setIngredients([{ name: "", quantity: 0.0, unit: "", indexInRecipe: 0}]);
-  //   }
-  // }, [currentRecipe, ingredients.length]); // TODO: Check if ingredients.length is necessary
+  /* eslint-disable no-unused-vars */
+  const [foodAllergiesSelected, setFoodAllergiesSelected] = useState([]);
+  const [dietaryRestrictionsSelected, setDietaryRestrictionsSelected] =
+    useState([]);
+  const [timeSelected, setTimeSelected] = useState([]);
+  const [difficultySelected, setDifficultySelected] = useState([]);
+  /* eslint-disable no-unused-vars */
 
-  function handleSaveClick() {
+  const { title, servings, prepSteps, author, isPublic } = formData;
+
+  const onChange = (e) => {
+    // console.log("Before state update:", formData); // Add this line
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+    // console.log("After state update:", formData); // Add this line
+  };
+
+  // const onIngredientChange = (index, e) => {
+  //   const updatedIngredients = [...ingredients];
+  //   updatedIngredients[index][e.target.name] = e.target.value;
+  //   setFormData((prevState) => ({
+  //     ...prevState,
+  //     ingredients: updatedIngredients,
+  //   }));
+  // };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
     const currentDate = new Date().toISOString();
     const newRecipe = {
       title,
       servings,
-      ingredients,
       prepSteps,
       isPublic,
+      author,
+      ingredients,
       edited: currentDate,
     };
-
-    if (currentRecipe) {
-      newRecipe.id = currentRecipe.id;
-    }
-    completeFunction(newRecipe);
-  }
-
-  function handleCancelClick() {
-    completeFunction();
-  }
+    await completeFunction(newRecipe);
+    // Reset the form data after submission
+    setFormData({
+      title: "",
+      servings: 0.0,
+      prepSteps: "",
+      isPublic: false,
+      author: 2,
+      ingredients: [{ name: "", quantity: 0.0, unit: "", indexInRecipe: 0 }],
+    });
+  };
 
   return (
+    <form onSubmit={onSubmit}>
     <Grid container spacing={2} className={styles.editor}>
       <Grid item>
         <TextField
           type="text"
           placeholder="Recipe Title"
           value={title}
-          onChange={(event) => setTitle(event.target.value)}
+          onChange={onChange}
         />
       </Grid>
       <Grid item>
@@ -87,7 +87,7 @@ export default function RecipeCreator({ currentRecipe, completeFunction }) {
           type="text"
           placeholder="Servings"
           value={servings}
-          onChange={(event) => setServings(event.target.value)}
+          onChange={onChange}
         />
       </Grid>
       <Grid item>
@@ -101,7 +101,7 @@ export default function RecipeCreator({ currentRecipe, completeFunction }) {
           type="text"
           placeholder="Preparation Steps"
           value={prepSteps}
-          onChange={(event) => setPrepSteps(event.target.value)}
+          onChange={onChange}
         />
       </Grid>
       <Grid item>
@@ -110,11 +110,23 @@ export default function RecipeCreator({ currentRecipe, completeFunction }) {
           <input
             type="checkbox"
             checked={isPublic}
-            onChange={(event) => setPublic(event.target.checked)}
+              name="isPublic"
+              data-testid="publicCheckbox"
+              onChange={() =>
+              setFormData((prevState) => ({
+                ...prevState,
+                isPublic: !isPublic,
+              }))
+            }
           />
         </InputLabel>
       </Grid>
-      <RecipeSearch />
+      <FilterOptions
+        setFoodAllergiesSelected={setFoodAllergiesSelected}
+        setDietaryRestrictionsSelected={setDietaryRestrictionsSelected}
+        setTimeSelected={setTimeSelected}
+        setDifficultySelected={setDifficultySelected}
+        />
       {/* Button to add a new ingredient field */}
       <Grid item>
         <button type="button" disabled={title === ""} onClick={handleSaveClick}>
@@ -127,10 +139,10 @@ export default function RecipeCreator({ currentRecipe, completeFunction }) {
         </button>
       </Grid>
     </Grid>
+    </form>
   );
 }
 
 RecipeCreator.propTypes = {
-  currentRecipe: recipeShape,
   completeFunction: PropTypes.func.isRequired,
 };

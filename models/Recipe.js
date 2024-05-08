@@ -16,7 +16,7 @@ export default class Recipe extends BaseModel {
   static get jsonSchema() {
     return {
       type: "object",
-      required: "title",
+      required: ["title"],
       properties: {
         id: { type: "integer" },
         title: { type: "string" },
@@ -70,7 +70,7 @@ export default class Recipe extends BaseModel {
         to: "users.id",
       },
     },
-    author: {
+    writtenBy: {
       // schema for author of recipe relationship. One to many. User Id of author is stored in the recipe table as a foreign key
       relation: Model.BelongsToOneRelation,
       modelClass: User,

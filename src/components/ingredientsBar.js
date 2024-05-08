@@ -39,6 +39,36 @@ function IngredientsBar({ ingredients, setIngredients }) {
     setIngredients(newlyUpdatedIngredients);
   }
 
+  function updateIngredientName(newName, indexInRecipeOfIngredient) {
+    const newlyUpdatedIngredients = ingredients.map((element) => {
+      if (element.indexInRecipe === indexInRecipeOfIngredient) {
+        return { ...element, name: newName };
+      }
+      return element;
+    });
+    setIngredients(newlyUpdatedIngredients);
+  }
+
+  function updateIngredientQuantity(newQuantity, indexInRecipeOfIngredient) {
+    const newlyUpdatedIngredients = ingredients.map((element) => {
+      if (element.indexInRecipe === indexInRecipeOfIngredient) {
+        return { ...element, quantity: newQuantity };
+      }
+      return element;
+    });
+    setIngredients(newlyUpdatedIngredients);
+  }
+
+  function updateIngredientUnit(newUnit, indexInRecipeOfIngredient) {
+    const newlyUpdatedIngredients = ingredients.map((element) => {
+      if (element.indexInRecipe === indexInRecipeOfIngredient) {
+        return { ...element, unit: newUnit };
+      }
+      return element;
+    });
+    setIngredients(newlyUpdatedIngredients);
+  }
+
   // Function to add a new blank ingredient field
   function addIngredient() {
     const nextIndex = ingredients.reduce((maxIndex, element) => {
@@ -50,7 +80,7 @@ function IngredientsBar({ ingredients, setIngredients }) {
 
     setIngredients([
       ...ingredients,
-      { name: "", quantity: 0.0, unit: "", indexInRecipe: nextIndex + 1 },
+      { name: "", quantity: 0.0, unit: "cups", indexInRecipe: nextIndex + 1 },
     ]);
   }
 
@@ -60,13 +90,29 @@ function IngredientsBar({ ingredients, setIngredients }) {
         <Grid container item xs={12} spacing={2} key={element.indexInRecipe}>
           <Grid item xs={4}>
             <FormControl fullWidth>
-              <OutlinedInput type="text" placeholder="Ingredient" />
+              <OutlinedInput 
+              type="text" 
+              placeholder="Ingredient" 
+              onChange={(event) =>
+                updateIngredientName(event.target.value, element.indexInRecipe)
+              }
+              />
             </FormControl>
           </Grid>
 
           <Grid item xs={2}>
             <FormControl fullWidth>
-              <OutlinedInput type="number" step="any" placeholder="Quantity" />
+              <OutlinedInput 
+              type="number" 
+              step="any" 
+              placeholder="Quantity"
+              onChange={(event) =>
+                updateIngredientQuantity(
+                  event.target.value,
+                  element.indexInRecipe,
+                )
+              }
+              />
             </FormControl>
           </Grid>
 
@@ -75,7 +121,14 @@ function IngredientsBar({ ingredients, setIngredients }) {
               <InputLabel id={`unit_select_${element.indexInRecipe}`}>
                 Unit
               </InputLabel>
-              <Select data-testid="unitType" native="true" placeholder="">
+              <Select 
+              data-testid="unitType" 
+              native="true" 
+              placeholder=""
+              onChange={(event) =>
+                updateIngredientUnit(event.target.value, element.indexInRecipe)
+              }
+              >
                 {units.map((unit) => (
                   <option key={unit} value={unit}>
                     {unit}
@@ -114,3 +167,5 @@ IngredientsBar.propTypes = {
   ingredients: PropTypes.arrayOf(ingredientShape).isRequired,
   setIngredients: PropTypes.func.isRequired,
 };
+
+// <input type="text" placeholder="Ingredient"/>
