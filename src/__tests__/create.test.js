@@ -16,7 +16,6 @@ mockRouter.useParser(
   ]),
 );
 
-
 describe("Create Recipe Page", () => {
   beforeEach(() => {
     mockRouter.setCurrentUrl("/create");
@@ -87,7 +86,8 @@ describe("Create Recipe Page", () => {
       expect(element).toBeInTheDocument();
     });
 
-    test("Cancel Button is present", () => {
+    test.skip("Cancel Button is present", () => {
+      // Cancel Button removed from the page
       const element = screen.getByText("Cancel");
       expect(element).toBeInTheDocument();
     });

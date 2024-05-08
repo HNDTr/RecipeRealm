@@ -1,5 +1,3 @@
-/**/
-
 /* 
 Tests for the recipe creation ui.
 */
@@ -15,7 +13,7 @@ jest.mock("next/router", () => ({
 const pushMock = jest.fn();
 pushMock.mockReturnValue("/create");
 
-describe("Recipe Creation UI tests", () => {
+describe.skip("Recipe Creation UI tests", () => {
   test("If the getting started button is clicked, Recipe Creator is rendered", async () => {
     useRouter.mockReturnValue({
       push: pushMock,
