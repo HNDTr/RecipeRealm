@@ -90,28 +90,31 @@ function IngredientsBar({ ingredients, setIngredients }) {
         <Grid container item xs={12} spacing={2} key={element.indexInRecipe}>
           <Grid item xs={4}>
             <FormControl fullWidth>
-              <OutlinedInput 
-              type="text" 
-              placeholder="Ingredient" 
-              onChange={(event) =>
-                updateIngredientName(event.target.value, element.indexInRecipe)
-              }
+              <OutlinedInput
+                type="text"
+                placeholder="Ingredient"
+                onChange={(event) =>
+                  updateIngredientName(
+                    event.target.value,
+                    element.indexInRecipe,
+                  )
+                }
               />
             </FormControl>
           </Grid>
 
           <Grid item xs={2}>
             <FormControl fullWidth>
-              <OutlinedInput 
-              type="number" 
-              step="any" 
-              placeholder="Quantity"
-              onChange={(event) =>
-                updateIngredientQuantity(
-                  event.target.value,
-                  element.indexInRecipe,
-                )
-              }
+              <OutlinedInput
+                type="number"
+                step="any"
+                placeholder="Quantity"
+                onChange={(event) =>
+                  updateIngredientQuantity(
+                    event.target.value,
+                    element.indexInRecipe,
+                  )
+                }
               />
             </FormControl>
           </Grid>
@@ -121,13 +124,16 @@ function IngredientsBar({ ingredients, setIngredients }) {
               <InputLabel id={`unit_select_${element.indexInRecipe}`}>
                 Unit
               </InputLabel>
-              <Select 
-              data-testid="unitType" 
-              native="true" 
-              placeholder=""
-              onChange={(event) =>
-                updateIngredientUnit(event.target.value, element.indexInRecipe)
-              }
+              <Select
+                data-testid="unitType"
+                native
+                placeholder=""
+                onChange={(event) =>
+                  updateIngredientUnit(
+                    event.target.value,
+                    element.indexInRecipe,
+                  )
+                }
               >
                 {units.map((unit) => (
                   <option key={unit} value={unit}>

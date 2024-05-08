@@ -8,7 +8,7 @@ import IngredientsBar from "./ingredientsBar";
 export default function RecipeCreator({ completeFunction }) {
   const [formData, setFormData] = useState({
     title: "",
-    servings: 0.0,
+    servings: undefined,
     prepSteps: "",
     isPublic: false,
     author: 2,
@@ -29,22 +29,11 @@ export default function RecipeCreator({ completeFunction }) {
   const { title, servings, prepSteps, author, isPublic } = formData;
 
   const onChange = (e) => {
-    // console.log("Before state update:", formData); // Add this line
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
-    // console.log("After state update:", formData); // Add this line
   };
-
-  // const onIngredientChange = (index, e) => {
-  //   const updatedIngredients = [...ingredients];
-  //   updatedIngredients[index][e.target.name] = e.target.value;
-  //   setFormData((prevState) => ({
-  //     ...prevState,
-  //     ingredients: updatedIngredients,
-  //   }));
-  // };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -72,70 +61,77 @@ export default function RecipeCreator({ completeFunction }) {
 
   return (
     <form onSubmit={onSubmit}>
-    <Grid container spacing={2} className={styles.editor}>
-      <Grid item>
-        <TextField
-          type="text"
-          placeholder="Recipe Title"
-          value={title}
-          onChange={onChange}
-        />
-      </Grid>
-      <Grid item>
-        <TextField
-          type="text"
-          placeholder="Servings"
-          value={servings}
-          onChange={onChange}
-        />
-      </Grid>
-      <Grid item>
-        <IngredientsBar
-          ingredients={ingredients}
-          setIngredients={setIngredients}
-        />
-      </Grid>
-      <Grid item>
-        <TextField
-          type="text"
-          placeholder="Preparation Steps"
-          value={prepSteps}
-          onChange={onChange}
-        />
-      </Grid>
-      <Grid item>
-        <InputLabel>
-          Public:
-          <input
-            type="checkbox"
-            checked={isPublic}
+      <Grid container spacing={2} className={styles.editor}>
+        <Grid item xs={12}>
+          <TextField
+            type="text"
+            name="title"
+            placeholder="Recipe Title"
+            value={title}
+            onChange={onChange}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            type="number"
+            step="0.1"
+            name="servings"
+            placeholder="Servings"
+            value={servings}
+            onChange={onChange}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <IngredientsBar
+            ingredients={ingredients}
+            name="ingredients"
+            setIngredients={setIngredients}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            multiline
+            rows={5}
+            type="text"
+            name="prepSteps"
+            placeholder="Preparation Steps"
+            variant="outlined"
+            value={prepSteps}
+            onChange={onChange}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <InputLabel>
+            Public:
+            <input
+              type="checkbox"
+              checked={isPublic}
               name="isPublic"
               data-testid="publicCheckbox"
               onChange={() =>
-              setFormData((prevState) => ({
-                ...prevState,
-                isPublic: !isPublic,
-              }))
-            }
+                setFormData((prevState) => ({
+                  ...prevState,
+                  isPublic: !isPublic,
+                }))
+              }
+            />
+          </InputLabel>
+        </Grid>
+        <Grid item xs={12}>
+          <FilterOptions
+            setFoodAllergiesSelected={setFoodAllergiesSelected}
+            setDietaryRestrictionsSelected={setDietaryRestrictionsSelected}
+            setTimeSelected={setTimeSelected}
+            setDifficultySelected={setDifficultySelected}
           />
-        </InputLabel>
+        </Grid>
+        <Grid item xs={12}>
+          <button type="submit">Save</button>
+        </Grid>
       </Grid>
-      <FilterOptions
-        setFoodAllergiesSelected={setFoodAllergiesSelected}
-        setDietaryRestrictionsSelected={setDietaryRestrictionsSelected}
-        setTimeSelected={setTimeSelected}
-        setDifficultySelected={setDifficultySelected}
-        />
-      {/* Button to add a new ingredient field */}
-      <Grid item>
-        <button type="submit">
-          Save
-        </button>
-      </Grid>
-      <Grid item>
-
-      </Grid>
-    </Grid>
     </form>
   );
 }

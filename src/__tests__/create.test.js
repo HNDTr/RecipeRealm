@@ -24,7 +24,7 @@ describe("Create Recipe Page", () => {
 
   describe("Form Inputs", () => {
     test("Title input element is present", () => {
-      const element = screen.getByPlaceholderText("Title must be set");
+      const element = screen.getByPlaceholderText("Recipe Title");
       expect(element).toBeInTheDocument();
       expect(element).toHaveAttribute("type", "text");
     });
@@ -32,7 +32,7 @@ describe("Create Recipe Page", () => {
     test("Servings input element is present", () => {
       const element = screen.getByPlaceholderText("Servings");
       expect(element).toBeInTheDocument();
-      expect(element).toHaveAttribute("type", "text");
+      expect(element).toHaveAttribute("type", "number");
       expect(element).toHaveAttribute("placeholder", "Servings");
     });
 
