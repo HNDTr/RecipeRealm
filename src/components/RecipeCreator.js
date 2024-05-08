@@ -12,7 +12,6 @@ export default function RecipeCreator({ completeFunction }) {
     prepSteps: "",
     isPublic: false,
     author: 2,
-    ingredients: [{ name: "", quantity: 0.0, unit: "", indexInRecipe: 0 }],
   });
 
   const [ingredients, setIngredients] = useState([
@@ -86,7 +85,7 @@ export default function RecipeCreator({ completeFunction }) {
         <TextField
           type="text"
           placeholder="Servings"
-          value={servings}
+          value={serYvings}
           onChange={onChange}
         />
       </Grid>
@@ -129,14 +128,12 @@ export default function RecipeCreator({ completeFunction }) {
         />
       {/* Button to add a new ingredient field */}
       <Grid item>
-        <button type="button" disabled={title === ""} onClick={handleSaveClick}>
+        <button type="submit">
           Save
         </button>
       </Grid>
       <Grid item>
-        <button type="button" onClick={handleCancelClick}>
-          Cancel
-        </button>
+
       </Grid>
     </Grid>
     </form>

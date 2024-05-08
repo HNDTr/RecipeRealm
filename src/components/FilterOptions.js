@@ -70,8 +70,6 @@ export default function FilterOptions({
             onSelect={setDifficultySelected}
           />
         </Right>
-
-        <Left>Testing</Left>
       </Wrapper>
     </Container>
   );
