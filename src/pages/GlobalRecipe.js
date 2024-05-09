@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import Button from "@mui/material/Button";
 import Searching from "../components/FilterOptions";
 import RecipeTitles from "@/components/RecipeTitles";
@@ -10,6 +10,22 @@ function GlobalRecipe() {
     useState([]);
   const [timeSelected, setTimeSelected] = useState([]);
   const [difficultySelected, setDifficultySelected] = useState([]);
+  const [recipes, setRecipes] = useState([{}]);
+  
+  useEffect(() => {
+    fetch(`/api/recipes`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
+      })
+      .then((response) => {
+        setRecipes(response);
+      })
+      // eslint-disable-next-line no-console
+      .catch((error) => console.log(`Error fetching all recipes ${error}`));
+  }, [recipes]);
 
   const handleRecipeClick = (recipe) => {
     // eslint-disable-next-line no-console
@@ -51,7 +67,7 @@ function GlobalRecipe() {
       >
         Apply
       </Button>
-      <RecipeTitles onRecipeClick={handleRecipeClick} />
+      <RecipeTitles onRecipeClick={handleRecipeClick} recipes={recipes}/>
     </div>
   );
 }
