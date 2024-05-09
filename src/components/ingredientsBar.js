@@ -111,7 +111,7 @@ function IngredientsBar({ ingredients, setIngredients }) {
                 placeholder="Quantity"
                 onChange={(event) =>
                   updateIngredientQuantity(
-                    event.target.value,
+                    event.target.valueAsNumber,
                     element.indexInRecipe,
                   )
                 }
