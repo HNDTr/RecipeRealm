@@ -32,13 +32,6 @@ const Right = styled("div")(({ theme: styledTheme }) => ({
   flexDirection: "column",
 }));
 
-const Left = styled("div")(({ theme: styledTheme }) => ({
-  display: "flex",
-  flex: "1", // Make the Left div take equal space
-  alignItems: "center",
-  marginTop: styledTheme.spacing(1),
-}));
-
 export default function FilterOptions({
   setFoodAllergiesSelected,
   setDietaryRestrictionsSelected,
@@ -70,8 +63,6 @@ export default function FilterOptions({
             onSelect={setDifficultySelected}
           />
         </Right>
-
-        <Left>Testing</Left>
       </Wrapper>
     </Container>
   );

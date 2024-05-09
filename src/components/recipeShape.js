@@ -6,15 +6,17 @@
 */
 
 import PropTypes from "prop-types";
+import ingredientShape from "./ingredientShape";
 
 const recipeShape = PropTypes.shape({
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   servings: PropTypes.number.isRequired,
-  ingredients: PropTypes.string.isRequired,
+  ingredients: PropTypes.arrayOf(ingredientShape).isRequired,
   prepSteps: PropTypes.string.isRequired,
   isPublic: PropTypes.bool.isRequired,
   edited: PropTypes.string.isRequired,
+  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
 });
 
 export default recipeShape;

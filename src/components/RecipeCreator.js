@@ -1,36 +1,22 @@
-/*
-  recipeCreator.js
-
-  This provides a basic editor with space for entering a recipe
-
-  The interface has two buttons. If "Cancel" is clicked, the `complete` callback
-  is called with no arguments. If the "Save" button is clicked, the `complete` callback
-  is called with a new article object with `title`, `servings`, 'ingredients', 'prepSteps', 'isPublic', and `date`. 
-
-  If the optional `recipe` prop is set, the `title`, 'servings', 'ingredients`, 'prepSteps', and 'isPublic' fields of the component
-  are pre-loaded with the values. In addition, all other properties of the object are 
-  included in the returned recipe object. 
-
-  props:
-    currentRecipe -
-    complete - function to call on completion (required)
-*/
-
 import { useState } from "react";
 import PropTypes from "prop-types";
-import recipeShape from "./recipeShape";
+import { Grid, TextField, InputLabel } from "@mui/material";
 import styles from "../styles/Editor.module.css";
 import FilterOptions from "./FilterOptions";
 import IngredientsBar from "./ingredientsBar";
 
-export default function RecipeCreator({ currentRecipe, completeFunction }) {
-  const [title, setTitle] = useState("");
-  const [servings, setServings] = useState("");
-  const [prepSteps, setPrepSteps] = useState("");
-  const [isPublic, setPublic] = useState("");
+export default function RecipeCreator({ completeFunction }) {
+  const [formData, setFormData] = useState({
+    title: "",
+    servings: undefined,
+    prepSteps: "",
+    isPublic: false,
+    author: 2,
+  });
+
   const [ingredients, setIngredients] = useState([
     { name: "", quantity: 0.0, unit: "", indexInRecipe: 0 },
-  ]); // Array state for ingredients
+  ]);
 
   /* eslint-disable no-unused-vars */
   const [foodAllergiesSelected, setFoodAllergiesSelected] = useState([]);
@@ -40,96 +26,116 @@ export default function RecipeCreator({ currentRecipe, completeFunction }) {
   const [difficultySelected, setDifficultySelected] = useState([]);
   /* eslint-disable no-unused-vars */
 
-  // useEffect(() => {
-  //   if (currentRecipe) {
-  //     setTitle(currentRecipe.title || "");
-  //     setServings(currentRecipe.servings || "");
-  //     setPrepSteps(currentRecipe.prepSteps || "");
-  //     setPublic(currentRecipe.isPublic || "");
-  //     setIngredients(
-  //       currentRecipe.ingredients || [{ name: "", quantity: 0.0, unit: "", indexInRecipe: ingredients.length}],
-  //     );
-  //   } else {
-  //     setTitle("");
-  //     setServings("");
-  //     setPrepSteps("");
-  //     setPublic("");
-  //     setIngredients([{ name: "", quantity: 0.0, unit: "", indexInRecipe: 0}]);
-  //   }
-  // }, [currentRecipe, ingredients.length]); // TODO: Check if ingredients.length is necessary
+  const { title, servings, prepSteps, author, isPublic } = formData;
 
-  function handleSaveClick() {
+  const onChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
     const currentDate = new Date().toISOString();
     const newRecipe = {
       title,
       servings,
-      ingredients,
       prepSteps,
       isPublic,
+      author,
+      ingredients,
       edited: currentDate,
     };
-
-    if (currentRecipe) {
-      newRecipe.id = currentRecipe.id;
-    }
-    completeFunction(newRecipe);
-  }
-
-  function handleCancelClick() {
-    completeFunction();
-  }
+    await completeFunction(newRecipe);
+    // Reset the form data after submission
+    setFormData({
+      title: "",
+      servings: 0.0,
+      prepSteps: "",
+      isPublic: false,
+      author: 2,
+      ingredients: [{ name: "", quantity: 0.0, unit: "", indexInRecipe: 0 }],
+    });
+  };
 
   return (
-    <div className={styles.editor}>
-      <input
-        type="text"
-        placeholder="Title must be set"
-        value={title}
-        onChange={(event) => setTitle(event.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Servings"
-        value={servings}
-        onChange={(event) => setServings(event.target.value)}
-      />
-      <IngredientsBar
-        ingredients={ingredients}
-        setIngredients={setIngredients}
-      />
-      <textarea
-        type="text"
-        placeholder="Preparation Steps"
-        value={prepSteps}
-        onChange={(event) => setPrepSteps(event.target.value)}
-      />
-      <label>
-        Public:
-        <input
-          type="checkbox"
-          data-testid="publicCheckbox"
-          checked={isPublic}
-          onChange={(event) => setPublic(event.target.checked)}
-        />
-      </label>
-      <FilterOptions
-        setFoodAllergiesSelected={setFoodAllergiesSelected}
-        setDietaryRestrictionsSelected={setDietaryRestrictionsSelected}
-        setTimeSelected={setTimeSelected}
-        setDifficultySelected={setDifficultySelected}
-      />
-      {/* Button to add a new ingredient field */}
-      <button type="button" disabled={title === ""} onClick={handleSaveClick}>
-        Save
-      </button>
-      <button type="button" onClick={handleCancelClick}>
-        Cancel
-      </button>
-    </div>
+    <form onSubmit={onSubmit}>
+      <Grid container spacing={2} className={styles.editor}>
+        <Grid item xs={12}>
+          <TextField
+            type="text"
+            name="title"
+            placeholder="Recipe Title"
+            value={title}
+            onChange={onChange}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            type="number"
+            step="0.1"
+            name="servings"
+            placeholder="Servings"
+            value={servings}
+            onChange={onChange}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <IngredientsBar
+            ingredients={ingredients}
+            name="ingredients"
+            setIngredients={setIngredients}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            multiline
+            rows={5}
+            type="text"
+            name="prepSteps"
+            placeholder="Preparation Steps"
+            variant="outlined"
+            value={prepSteps}
+            onChange={onChange}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <InputLabel>
+            Public:
+            <input
+              type="checkbox"
+              checked={isPublic}
+              name="isPublic"
+              data-testid="publicCheckbox"
+              onChange={() =>
+                setFormData((prevState) => ({
+                  ...prevState,
+                  isPublic: !isPublic,
+                }))
+              }
+            />
+          </InputLabel>
+        </Grid>
+        <Grid item xs={12}>
+          <FilterOptions
+            setFoodAllergiesSelected={setFoodAllergiesSelected}
+            setDietaryRestrictionsSelected={setDietaryRestrictionsSelected}
+            setTimeSelected={setTimeSelected}
+            setDifficultySelected={setDifficultySelected}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <button type="submit">Save</button>
+        </Grid>
+      </Grid>
+    </form>
   );
 }
 
 RecipeCreator.propTypes = {
-  currentRecipe: recipeShape,
   completeFunction: PropTypes.func.isRequired,
 };

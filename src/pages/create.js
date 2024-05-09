@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import RecipeCreator from "../components/RecipeCreator";
 
-export default function Creator({ pushCurrentRecipe }) {
+export default function Creator() {
   const router = useRouter();
 
   const completeFunction = async (recipe) => {
@@ -17,8 +17,8 @@ export default function Creator({ pushCurrentRecipe }) {
       });
 
       if (response.ok) {
-        const returnRecipe = await response.json();
-        pushCurrentRecipe(returnRecipe);
+        // eslint-disable-next-line no-console
+        console.log(recipe);
       }
     } else {
       router.back();
@@ -29,7 +29,3 @@ export default function Creator({ pushCurrentRecipe }) {
     <RecipeCreator completeFunction={(recipe) => completeFunction(recipe)} />
   );
 }
-
-Creator.propTypes = {
-  pushCurrentRecipe: PropTypes.func.isRequired,
-};
