@@ -1,6 +1,7 @@
-/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/jsx-props-no-spreading,react/prop-types */
 import { SessionProvider } from "next-auth/react";
-import PropTypes from "prop-types";
+import { useState } from "react";
+import { useRouter } from "next/router";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AppCacheProvider } from "@mui/material-nextjs/v13-pagesRouter";
@@ -10,9 +11,29 @@ import theme from "../material/theme";
 import NavBar from "../components/NavBar";
 import "@/styles/globals.css";
 
-export default function App({ Component, pageProps }) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
+  const [selectedRecipe, setSelectedRecipeState] = useState(null);
+  const router = useRouter();
+
+  const setSelectedRecipe = (recipe) => {
+    if (recipe) {
+      setSelectedRecipeState(recipe);
+      router.push(`/recipe/${recipe.id}`);
+    } else {
+      router.push("/GlobalRecipe");
+    }
+  };
+  const props = {
+    ...pageProps,
+    setSelectedRecipe,
+    selectedRecipe,
+  };
+
   return (
-    <SessionProvider session={pageProps.session}>
+    <SessionProvider session={session}>
       <AppCacheProvider {...pageProps}>
         <Head>
           <title>RecipeRealm</title>
@@ -28,7 +49,7 @@ export default function App({ Component, pageProps }) {
             <Container style={{ background: "#e5efff", paddingTop: "2em" }}>
               {/* <Typography variant="h2" align="center">RecipeRealm</Typography> */}
               <NavBar />
-              <Component {...pageProps} />
+              <Component {...props} />
             </Container>
           </main>
         </ThemeProvider>
@@ -36,10 +57,3 @@ export default function App({ Component, pageProps }) {
     </SessionProvider>
   );
 }
-
-App.propTypes = {
-  Component: PropTypes.elementType.isRequired,
-  pageProps: PropTypes.shape({
-    session: PropTypes.object,
-  }),
-};

@@ -13,7 +13,7 @@ export default class User extends BaseModel {
   static get jsonSchema() {
     return {
       type: "object",
-      required: "username",
+      required: ["username"],
       properties: {
         id: { type: "integer" },
         username: { type: "string" },
