@@ -8,14 +8,14 @@ import IngredientsBar from "./ingredientsBar";
 export default function RecipeCreator({ completeFunction }) {
   const [formData, setFormData] = useState({
     title: "",
-    servings: undefined,
+    servings: 1,
     prepSteps: "",
     isPublic: false,
     author: 2,
   });
 
   const [ingredients, setIngredients] = useState([
-    { name: "", quantity: 0.0, unit: "", indexInRecipe: 0 },
+    { name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 },
   ]);
 
   /* eslint-disable no-unused-vars */
@@ -51,11 +51,13 @@ export default function RecipeCreator({ completeFunction }) {
     // Reset the form data after submission
     setFormData({
       title: "",
-      servings: 0.0,
+      servings: 1,
       prepSteps: "",
       isPublic: false,
-      author: 2,
-      ingredients: [{ name: "", quantity: 0.0, unit: "", indexInRecipe: 0 }],
+      author: 1,
+      ingredients: [
+        { name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 },
+      ],
     });
   };
 
@@ -75,7 +77,7 @@ export default function RecipeCreator({ completeFunction }) {
         <Grid item xs={12}>
           <TextField
             type="number"
-            step="0.1"
+            step="1"
             name="servings"
             placeholder="Servings"
             value={servings}
