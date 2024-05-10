@@ -1,7 +1,7 @@
 import { PropTypes } from "prop-types";
 import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
-import Searching from "../components/FilterOptions";
+import FilterOptions from "../components/FilterOptions";
 import RecipeTitles from "@/components/RecipeTitles";
 import SearchBar from "@/components/SearchBar";
 
@@ -11,6 +11,7 @@ function GlobalRecipe({ selectedRecipe, setSelectedRecipe }) {
     useState([]);
   const [timeSelected, setTimeSelected] = useState([]);
   const [difficultySelected, setDifficultySelected] = useState([]);
+  const [originalRecipes, setOriginalRecipes] = useState([{}]);
   const [recipes, setRecipes] = useState([{}]);
 
   useEffect(() => {
@@ -23,15 +24,21 @@ function GlobalRecipe({ selectedRecipe, setSelectedRecipe }) {
       })
       .then((response) => {
         setRecipes(response);
+        setOriginalRecipes(response);
       })
       // eslint-disable-next-line no-console
       .catch((error) => console.log(`Error fetching all recipes ${error}`));
-  }, [recipes]);
+  }, []);
 
   const searchKeywords = (searchText) => {
-    // We will use this search text to filter recipes and decide what to show.
-    // eslint-disable-next-line no-console
-    console.log("Search text:", searchText);
+    if (searchText === "") {
+      setRecipes(originalRecipes);
+    } else {
+      const filteredRecipes = recipes.filter((recipe) =>
+        recipe.title.toLowerCase().includes(searchText.toLowerCase()),
+      );
+      setRecipes(filteredRecipes);
+    }
   };
 
   const applyFilters = () => {
@@ -50,7 +57,7 @@ function GlobalRecipe({ selectedRecipe, setSelectedRecipe }) {
   return (
     <div>
       <SearchBar searchKeywords={searchKeywords} />
-      <Searching
+      <FilterOptions
         setFoodAllergiesSelected={setFoodAllergiesSelected}
         setDietaryRestrictionsSelected={setDietaryRestrictionsSelected}
         setTimeSelected={setTimeSelected}
