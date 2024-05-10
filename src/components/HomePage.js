@@ -2,6 +2,7 @@ import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react"; // Import useSession hook
 import sushiImage from "../material/images/sushi-png.webp";
 
 const Container = styled("divs")(({ theme: styledTheme }) => ({
@@ -50,8 +51,13 @@ const Left = styled("div")(({ theme: styledTheme }) => ({
 
 function HomePage() {
   const router = useRouter();
+  const { data: session } = useSession(); // Retrieve the session data
   const onClick = () => {
-    router.push(`/create`);
+    if (session) {
+      router.push(`/create`); // If user is authenticated, navigate to create page
+    } else {
+      router.push(`/login`); // If user is not authenticated, navigate to login page
+    }
   };
 
   return (

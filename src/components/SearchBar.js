@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
+import React, { useState } from "react";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
-import Container from '@mui/material/Container';
-import PropTypes from 'prop-types';
+import Container from "@mui/material/Container";
+import PropTypes from "prop-types";
 
 export default function SearchBar({ searchKeywords }) {
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
 
   const handleSearch = () => {
     searchKeywords(searchText.trim()); // Trim whitespace and pass the search text to the parent component
@@ -17,18 +17,18 @@ export default function SearchBar({ searchKeywords }) {
   };
 
   return (
-    <Container maxWidth='md' sx={{ paddingTop: 5 }}>
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <TextField
-        placeholder="Search for Recipe"
-        value={searchText}
-        onChange={handleInputChange}
-        fullWidth
-      />
-      <IconButton onClick={handleSearch}>
-        <SearchIcon />
-      </IconButton>
-    </div>
+    <Container maxWidth="md" sx={{ paddingTop: 5 }}>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <TextField
+          placeholder="Search for Recipe"
+          value={searchText}
+          onChange={handleInputChange}
+          fullWidth
+        />
+        <IconButton onClick={handleSearch}>
+          <SearchIcon />
+        </IconButton>
+      </div>
     </Container>
   );
 }
