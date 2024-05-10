@@ -1,40 +1,32 @@
-import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-function RecipeTitles({ onRecipeClick, recipes}) {
-  const [selectedRecipe, setSelectedRecipe] = useState(null);
-
-  const handleClick = (recipe) => {
-    if (typeof onRecipeClick === "function") {
-      onRecipeClick(recipe);
-    }
-    setSelectedRecipe(recipe);
-  };
-
+function RecipeTitles({ recipes, setSelectedRecipe }) {
   return (
     <div>
       <RecipeListContainer>
-        {recipes
-          .map((recipe) => (
-            <RecipeContainer
-              key={recipe.id}
-              onClick={() => handleClick(recipe)}
+        {recipes.map((recipe) => (
+          <RecipeContainer key={recipe.id}>
+            <RecipeName>{recipe.title}</RecipeName>
+            <SeeMoreText
+              onClick={() => {
+                setSelectedRecipe(recipe);
+                // eslint-disable-next-line no-console
+                console.log("Selected Recipe:", recipe);
+              }}
             >
-              <RecipeName>{recipe.title}</RecipeName>
-              <SeeMoreText onClick={() => window.open(recipe.url)}>
-                See Complete Recipe
-              </SeeMoreText>
-            </RecipeContainer>
-          ))}
+              See Complete Recipe
+            </SeeMoreText>
+          </RecipeContainer>
+        ))}
       </RecipeListContainer>
     </div>
   );
 }
 
 RecipeTitles.propTypes = {
-  onRecipeClick: PropTypes.func.isRequired,
   recipes: PropTypes.arrayOf(PropTypes.object),
+  setSelectedRecipe: PropTypes.func,
 };
 
 export default RecipeTitles;
@@ -68,10 +60,4 @@ const IngredientsText = styled.span`
 const SeeMoreText = styled.span`
   cursor: pointer;
   color: blue;
-`;
-
-const RecipeDetails = styled.div`
-  margin-top: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
 `;

@@ -1,48 +1,43 @@
-import { useRouter } from 'next/router';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
+import styled from "styled-components";
+import PropTypes from "prop-types";
 
-export default function RecipePage (selectedRecipe){
-  const router = useRouter();
-  const { id } = router.query;
-  const recipe = {
-    id: 1,
-    title: 'Cookies',
-    servings: '12',
-    ingredients: ['Flour', 'Sugar', 'Butter'],
-    prepSteps: '1. Preheat oven to 350 degrees F',
-    dietaryRestrictions: ['None'],
-    time: 30,
-    difficulty: 'Easy',
-  }; // Placeholder recipe data, replace with actual data
+export default function RecipePage({ selectedRecipe }) {
+  // eslint-disable-next-line no-param-reassign
+  selectedRecipe = {
+    ...selectedRecipe,
+    dietaryRestrictions: ["Gluten Free, Vegetarian"],
+    time: 60,
+    difficulty: "Easy",
+    ingredients: ["1 cup of flour", "1 cup of sugar", "1 cup of water"],
+  };
 
   return (
     <Container>
-      {recipe && (
+      {selectedRecipe && (
         <RecipeDetailsContainer>
-          <h3>{recipe.title}</h3>
-          <p>Servings: {recipe.servings}</p>
+          <h3>{selectedRecipe.title}</h3>
+          <p>Servings: {selectedRecipe.servings}</p>
           <p>
-            Ingredients: {recipe.ingredients.join(', ') || 'No ingredients'}
+            Ingredients:{" "}
+            {selectedRecipe.ingredients.join(", ") || "No ingredients"}
           </p>
-          <p>Preparation Steps: {recipe.prepSteps}</p>
+          <p>Preparation Steps: {selectedRecipe.prepSteps}</p>
           <p>
-            Dietary Restrictions:{' '}
-            {recipe.dietaryRestrictions.join(', ') || 'None'}
+            Dietary Restrictions:{" "}
+            {selectedRecipe.dietaryRestrictions.join(", ") || "None"}
           </p>
-          <p>Time: {recipe.time} minutes</p>
-          <p>Difficulty: {recipe.difficulty}</p>
+          <p>Time: {selectedRecipe.time} minutes</p>
+          <p>Difficulty: {selectedRecipe.difficulty}</p>
         </RecipeDetailsContainer>
       )}
     </Container>
   );
-};
+}
 
 RecipePage.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   selectedRecipe: PropTypes.object,
 };
-
 
 const Container = styled.div`
   padding: 20px;

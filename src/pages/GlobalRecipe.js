@@ -1,17 +1,18 @@
-import { useState, useEffect} from "react";
+import { PropTypes } from "prop-types";
+import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Searching from "../components/FilterOptions";
 import RecipeTitles from "@/components/RecipeTitles";
 import SearchBar from "@/components/SearchBar";
 
-function GlobalRecipe() {
+function GlobalRecipe({ selectedRecipe, setSelectedRecipe }) {
   const [foodAllergiesSelected, setFoodAllergiesSelected] = useState([]);
   const [dietaryRestrictionsSelected, setDietaryRestrictionsSelected] =
     useState([]);
   const [timeSelected, setTimeSelected] = useState([]);
   const [difficultySelected, setDifficultySelected] = useState([]);
   const [recipes, setRecipes] = useState([{}]);
-  
+
   useEffect(() => {
     fetch(`/api/recipes`)
       .then((response) => {
@@ -26,11 +27,6 @@ function GlobalRecipe() {
       // eslint-disable-next-line no-console
       .catch((error) => console.log(`Error fetching all recipes ${error}`));
   }, [recipes]);
-
-  const handleRecipeClick = (recipe) => {
-    // eslint-disable-next-line no-console
-    console.log("Recipe clicked:", recipe);
-  };
 
   const searchKeywords = (searchText) => {
     // We will use this search text to filter recipes and decide what to show.
@@ -67,9 +63,19 @@ function GlobalRecipe() {
       >
         Apply
       </Button>
-      <RecipeTitles onRecipeClick={handleRecipeClick} recipes={recipes}/>
+      <RecipeTitles
+        recipes={recipes}
+        selectedRecipe={selectedRecipe}
+        setSelectedRecipe={setSelectedRecipe}
+      />
     </div>
   );
 }
+
+GlobalRecipe.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  selectedRecipe: PropTypes.object,
+  setSelectedRecipe: PropTypes.func,
+};
 
 export default GlobalRecipe;

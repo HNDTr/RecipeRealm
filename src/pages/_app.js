@@ -1,5 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import PropTypes from "prop-types";
+import { useState } from "react";
+import { useRouter } from "next/router";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AppCacheProvider } from "@mui/material-nextjs/v13-pagesRouter";
@@ -11,10 +13,22 @@ import NavBar from "../components/NavBar";
 import "@/styles/globals.css";
 
 export default function App(appProps) {
+  const [selectedRecipe, setSelectedRecipeState] = useState(null);
+  const router = useRouter();
   const { Component, pageProps } = appProps;
 
+  const setSelectedRecipe = (recipe) => {
+    if (recipe) {
+      setSelectedRecipeState(recipe);
+      router.push(`/recipe/${recipe.id}`);
+    } else {
+      router.push("/GlobalRecipe");
+    }
+  };
   const props = {
     ...pageProps,
+    setSelectedRecipe,
+    selectedRecipe,
   };
 
   return (
