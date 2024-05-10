@@ -16,4 +16,5 @@ export default function createEmotionCache() {
   }
 
   return createCache({ key: "mui-style", insertionPoint });
+  // return createCache({ key: "mui", insertionPoint });
 }
