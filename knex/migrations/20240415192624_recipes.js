@@ -10,7 +10,8 @@ exports.up = function (knex) {
   return knex.schema.createTable("recipes", (table) => {
     table.increments("id").primary();
     table.string("title").unique().notNullable();
-    table.string("servings").notNullable(); // TODO CHANGE TO INTEGER
+    // table.string("servings").notNullable(); // TODO CHANGE TO INTEGER
+    table.integer("servings").notNullable();
     table.text("prepSteps").notNullable();
     table.boolean("isPublic").notNullable();
     table
