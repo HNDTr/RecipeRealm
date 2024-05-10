@@ -1,11 +1,14 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Grid, TextField, InputLabel } from "@mui/material";
+import recipeShape from "./recipeShape";
 import styles from "../styles/Editor.module.css";
 import FilterOptions from "./FilterOptions";
 import IngredientsBar from "./ingredientsBar";
 
-export default function RecipeCreator({ completeFunction, currentRecipe }) {
+/* eslint-disable no-unused-vars */
+export default function RecipeCreator({ completeFunction, selectedRecipe }) {
   const [formData, setFormData] = useState({
     title: "",
     servings: 1,
@@ -17,6 +20,30 @@ export default function RecipeCreator({ completeFunction, currentRecipe }) {
   const [ingredients, setIngredients] = useState([
     { name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 },
   ]);
+
+  useEffect(() => {
+    if (selectedRecipe) {
+      setFormData({
+        title: selectedRecipe.title || "",
+        servings: selectedRecipe.servings || 1,
+        prepSteps: selectedRecipe.prepSteps || "",
+        isPublic: selectedRecipe.isPublic || false,
+        author: selectedRecipe.author || 1,
+      });
+      setIngredients(selectedRecipe.ingredients || []);
+    } else {
+      setFormData({
+        title: "",
+        servings: 1,
+        prepSteps: "",
+        isPublic: false,
+        author: 1,
+      });
+      setIngredients([
+        { name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 },
+      ]);
+    }
+  }, [selectedRecipe]);
 
   /* eslint-disable no-unused-vars */
   const [foodAllergiesSelected, setFoodAllergiesSelected] = useState([]);
@@ -44,7 +71,7 @@ export default function RecipeCreator({ completeFunction, currentRecipe }) {
       prepSteps,
       isPublic,
       author,
-      ingredients: formData.ingredients,
+      ingredients,
       edited: currentDate,
     };
     await completeFunction(newRecipe);
@@ -55,10 +82,10 @@ export default function RecipeCreator({ completeFunction, currentRecipe }) {
       prepSteps: "",
       isPublic: false,
       author: 1,
-      ingredients: [
-        { name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 },
-      ],
     });
+    setIngredients([
+      { name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 },
+    ]);
   };
 
   return (
@@ -140,5 +167,5 @@ export default function RecipeCreator({ completeFunction, currentRecipe }) {
 
 RecipeCreator.propTypes = {
   completeFunction: PropTypes.func.isRequired,
-  currentRecipe: recipeShape,
+  selectedRecipe: recipeShape,
 };

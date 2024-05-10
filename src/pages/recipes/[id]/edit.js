@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import recipeShape from "@/components/recipeShape";
 // import PropTypes from "prop-types";
-import RecipeCreator from "../components/RecipeCreator";
+import RecipeCreator from "../../../components/RecipeCreator";
 
-export default function Editor(currentRecipe) {
+export default function Editor(selectedRecipe) {
   const router = useRouter();
 
   const completeFunction = async (recipe) => {
@@ -18,6 +18,7 @@ export default function Editor(currentRecipe) {
       });
 
       if (response.ok) {
+        // eslint-disable-next-line no-console
         console.log(recipe);
         // const returnRecipe = await response.json();
         // pushCurrentRecipe(returnRecipe);
@@ -29,7 +30,7 @@ export default function Editor(currentRecipe) {
 
   return (
     <RecipeCreator 
-    currentRecipe={currentRecipe}
+    selectedRecipe={selectedRecipe}
     completeFunction={(recipe) => completeFunction(recipe)}
     // key={currentRecipe?.id}
     />
@@ -38,5 +39,5 @@ export default function Editor(currentRecipe) {
 
  Editor.propTypes = {
     // eslint-disable-next-line
-     currentRecipe: recipeShape,
+     selectedRecipe: recipeShape,
      };
