@@ -1,6 +1,4 @@
 import { createRouter } from "next-connect";
-// import { onError } from "../../../lib/middleware";
-// import { knex } from "../../../../knex/knex";
 import Recipe from "../../../../models/Recipe";
 import { onError } from "../../../lib/middleware";
 import Ingredient from "../../../../models/Ingredient";

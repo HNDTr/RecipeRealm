@@ -1,0 +1,14 @@
+[
+    {
+      "recipe_id": 1,
+      "ingredient_id": 1,
+      "quantity": 2,
+      "units": "cups"
+    },
+    {
+      "recipe_id": 1,
+      "ingredient_id": 2,
+      "quantity": 1,
+      "units": "cup"
+    }
+  ]

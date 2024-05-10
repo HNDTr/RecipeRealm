@@ -1,25 +1,30 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import recipeShape from "./recipeShape";
+import { Grid, TextField, InputLabel } from "@mui/material";
 import styles from "../styles/Editor.module.css";
+import FilterOptions from "./FilterOptions";
 import IngredientsBar from "./ingredientsBar";
 
 export default function RecipeCreator({ completeFunction, currentRecipe }) {
   const [formData, setFormData] = useState({
     title: "",
-    servings: 0.0,
+    servings: undefined,
     prepSteps: "",
     isPublic: false,
     author: 2,
-    ingredients: [{ name: "", quantity: 0.0, unit: "", indexInRecipe: 0 }],
   });
 
-  // Update form data with currentRecipe on component mount
-  useEffect(() => {
-    if (currentRecipe) {
-      setFormData(currentRecipe);
-    }
-  }, [currentRecipe]);
+  const [ingredients, setIngredients] = useState([
+    { name: "", quantity: 0.0, unit: "", indexInRecipe: 0 },
+  ]);
+
+  /* eslint-disable no-unused-vars */
+  const [foodAllergiesSelected, setFoodAllergiesSelected] = useState([]);
+  const [dietaryRestrictionsSelected, setDietaryRestrictionsSelected] =
+    useState([]);
+  const [timeSelected, setTimeSelected] = useState([]);
+  const [difficultySelected, setDifficultySelected] = useState([]);
+  /* eslint-disable no-unused-vars */
 
   const { title, servings, prepSteps, author, isPublic } = formData;
 
@@ -56,50 +61,77 @@ export default function RecipeCreator({ completeFunction, currentRecipe }) {
 
   return (
     <form onSubmit={onSubmit}>
-      <div className={styles.editor}>
-        <input
-          type="text"
-          placeholder="Title must be set"
-          name="title"
-          value={title}
-          onChange={onChange}
-        />
-        <input
-          type="text"
-          placeholder="Servings"
-          name="servings"
-          value={servings}
-          onChange={onChange}
-        />
-        <IngredientsBar
-          ingredients={formData.ingredients}
-          setIngredients={(ingredients) =>
-            setFormData((prevState) => ({ ...prevState, ingredients }))
-          }
-        />
-        <textarea
-          type="text"
-          placeholder="Preparation Steps"
-          name="prepSteps"
-          value={prepSteps}
-          onChange={onChange}
-        />
-        <label>
-          Public:
-          <input
-            type="checkbox"
-            checked={isPublic}
-            name="isPublic"
-            onChange={() =>
-              setFormData((prevState) => ({
-                ...prevState,
-                isPublic: !isPublic,
-              }))
-            }
+      <Grid container spacing={2} className={styles.editor}>
+        <Grid item xs={12}>
+          <TextField
+            type="text"
+            name="title"
+            placeholder="Recipe Title"
+            value={title}
+            onChange={onChange}
+            fullWidth
           />
-        </label>
-        <button type="submit">Save</button>
-      </div>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            type="number"
+            step="0.1"
+            name="servings"
+            placeholder="Servings"
+            value={servings}
+            onChange={onChange}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <IngredientsBar
+            ingredients={ingredients}
+            name="ingredients"
+            setIngredients={setIngredients}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            multiline
+            rows={5}
+            type="text"
+            name="prepSteps"
+            placeholder="Preparation Steps"
+            variant="outlined"
+            value={prepSteps}
+            onChange={onChange}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <InputLabel>
+            Public:
+            <input
+              type="checkbox"
+              checked={isPublic}
+              name="isPublic"
+              data-testid="publicCheckbox"
+              onChange={() =>
+                setFormData((prevState) => ({
+                  ...prevState,
+                  isPublic: !isPublic,
+                }))
+              }
+            />
+          </InputLabel>
+        </Grid>
+        <Grid item xs={12}>
+          <FilterOptions
+            setFoodAllergiesSelected={setFoodAllergiesSelected}
+            setDietaryRestrictionsSelected={setDietaryRestrictionsSelected}
+            setTimeSelected={setTimeSelected}
+            setDifficultySelected={setDifficultySelected}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <button type="submit">Save</button>
+        </Grid>
+      </Grid>
     </form>
   );
 }

@@ -1,25 +1,15 @@
-import { useState } from "react";
+import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
 import FilterDropdown from "@/components/FilterDropdown";
 import allergiesOptions from "../../data/allergies.json";
 import dietaryRestrictionsOptions from "../../data/dietaryRestrictions.json";
 import timeOptions from "../../data/time.json";
 import difficultyOptions from "../../data/difficulty.json";
-// import { Button } from "@mui/material";
+
 /*
-    Own Notes:
-        - We want the results of what shows up on the page to change based on the searchText
-        and filters so we must keep these in sync using states.
+ */
 
-        - Here we will show all of the filters as well. 
-            Filters - Difficulty, Time commitment, Ingredients, Allergens, 
-        
-        - We'll be making multiple filters, so FilterDropDown is responsible for making reusable dropDown filters.
-
-        - All of this will rendered in globalRecipeBook.js
-*/
-
-const Container = styled("divs")(({ theme: styledTheme }) => ({
+const Container = styled("div")(({ theme: styledTheme }) => ({
   marginTop: styledTheme.spacing(0),
   paddingTop: styledTheme.spacing(0),
 }));
@@ -42,23 +32,12 @@ const Right = styled("div")(({ theme: styledTheme }) => ({
   flexDirection: "column",
 }));
 
-const Left = styled("div")(({ theme: styledTheme }) => ({
-  display: "flex",
-  flex: "1", // Make the Left div take equal space
-  alignItems: "center",
-  marginTop: styledTheme.spacing(1),
-}));
-
-export default function RecipeSearch() {
-  /* eslint-disable no-unused-vars */
-  const [searchText, setSearchText] = useState("");
-  const [foodAllergiesSelected, setFoodAllergiesSelected] = useState([]);
-  const [dietaryRestrictionsSelected, setdietaryRestrictionsSelected] =
-    useState([]);
-  const [timeSelected, setTimeSelected] = useState([]);
-  const [difficultySelected, setDifficultySelected] = useState([]);
-  /* eslint-disable no-unused-vars */
-
+export default function FilterOptions({
+  setFoodAllergiesSelected,
+  setDietaryRestrictionsSelected,
+  setTimeSelected,
+  setDifficultySelected,
+}) {
   return (
     <Container>
       <Wrapper>
@@ -71,7 +50,7 @@ export default function RecipeSearch() {
           <FilterDropdown
             title="Dietary Restrictions"
             options={dietaryRestrictionsOptions}
-            onSelect={setdietaryRestrictionsSelected}
+            onSelect={setDietaryRestrictionsSelected}
           />
           <FilterDropdown
             title="Time"
@@ -84,8 +63,14 @@ export default function RecipeSearch() {
             onSelect={setDifficultySelected}
           />
         </Right>
-        <Left>Testing</Left>
       </Wrapper>
     </Container>
   );
 }
+
+FilterOptions.propTypes = {
+  setFoodAllergiesSelected: PropTypes.func.isRequired,
+  setDietaryRestrictionsSelected: PropTypes.func.isRequired,
+  setTimeSelected: PropTypes.func.isRequired,
+  setDifficultySelected: PropTypes.func.isRequired,
+};
