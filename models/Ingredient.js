@@ -2,7 +2,6 @@
 import { Model } from "objection";
 import BaseModel from "./BaseModel";
 import Recipe from "./Recipe"; // eslint-disable-line import/no-cycle
-import Tags from "./Tags"; // eslint-disable-line import/no-cycle
 
 export default class Ingredient extends BaseModel {
   static get tableName() {
@@ -33,19 +32,6 @@ export default class Ingredient extends BaseModel {
           extra: ["quantity", "units"],
         },
         to: "recipes.id",
-      },
-    },
-    tags: {
-      // schema for join table between tags and ingredients
-      relation: Model.ManyToManyRelation,
-      modelClass: Tags,
-      join: {
-        from: "ingredients.id",
-        through: {
-          from: "ingredient_tags.ingredient_id",
-          to: "ingredient_tags.tag_id",
-        },
-        to: "tags.id",
       },
     },
   });
