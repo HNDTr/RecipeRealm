@@ -38,8 +38,8 @@ export default class Recipe extends BaseModel {
       join: {
         from: "recipes.id",
         through: {
-          from: "recipe_ingredient.recipe_id",
-          to: "recipe_ingredient.ingredient_id",
+          from: "recipes_ingredients.recipe_id",
+          to: "recipes_ingredients.ingredient_id",
           extra: ["quantity", "units"],
         },
         to: "ingredients.id",
@@ -52,21 +52,22 @@ export default class Recipe extends BaseModel {
       join: {
         from: "recipes.id",
         through: {
-          from: "recipe_tags.recipe_id",
-          to: "recipe_tags.tag_id",
+          from: "recipes_tags.recipe_id",
+          to: "recipes_tags.tag_id",
         },
         to: "tags.id",
       },
     },
     saved: {
+      // TODO must be changed (05/11 J.B.)
       // schema for join table between users and recipes
       relation: Model.ManyToManyRelation,
       modelClass: User,
       join: {
         from: "recipes.id",
         through: {
-          from: "recipe_user.recipe_id",
-          to: "recipe_user.user_id",
+          from: "user_recipes.recipe_id",
+          to: "user_recipes.user_id",
         },
         to: "users.id",
       },

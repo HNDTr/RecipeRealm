@@ -1,32 +1,62 @@
 [
   {
-    "name": "gluten free"
+    "name": "Eggs"
   },
   {
-    "name": "vegetarian"
+    "name": "Milk"
   },
   {
-    "name": "vegan"
+    "name": "Peanuts"
   },
   {
-    "name": "dairy free"
+    "name": "Soy"
   },
   {
-    "name": "nut free"
+    "name": "Wheat"
   },
   {
-    "name": "egg free"
+    "name": "Shellfish"
   },
   {
-    "name": "soy free"
+    "name": "Fish"
   },
   {
-    "name": "paleo"
+    "name": "Tree Nuts"
   },
   {
-    "name": "keto"
+    "name": "Gluten-free"
   },
   {
-    "name": "whole 30"
+    "name": "Dairy-free"
+  },
+  {
+    "name": "Vegatarian"
+  },
+  {
+    "name": "Vegan"
+  },
+  {
+    "name": "Pescatarian"
+  },
+  {
+    "name": "Keto"
+  },
+  {
+    "name": "Paleo"
+  },
+  {
+    "name": "Low-carb"
+  },
+  {
+    "name": "Low-sodium"
+  },
+  {
+    "name": "Low-fat"
+  },
+  {
+    "name": "Nut-free"
+  },
+  {
+    "name": "Soy-free"
   }
 ]

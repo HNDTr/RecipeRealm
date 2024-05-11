@@ -7,7 +7,7 @@
 // join table for recipes and tags
 
 exports.up = function (knex) {
-  return knex.schema.createTable("recipe_tags", (table) => {
+  return knex.schema.createTable("recipes_tags", (table) => {
     table
       .integer("recipe_id")
       .references("id")
@@ -27,5 +27,5 @@ exports.up = function (knex) {
  * @returns { Promise<void> }
  */
 exports.down = function (knex) {
-  return knex.schema.dropTableIfExists("recipe_tags");
+  return knex.schema.dropTableIfExists("recipes_tags");
 };

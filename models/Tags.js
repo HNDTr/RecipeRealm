@@ -27,8 +27,8 @@ export default class Tags extends BaseModel {
       join: {
         from: "tags.id",
         through: {
-          from: "recipe_tags.tag_id",
-          to: "recipe_tags.recipe_id",
+          from: "recipes_tags.tag_id",
+          to: "recipes_tags.recipe_id",
         },
         to: "recipes.id",
       },
