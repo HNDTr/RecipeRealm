@@ -34,7 +34,7 @@ function GlobalRecipe({ selectedRecipe, setSelectedRecipe }) {
     if (searchText === "") {
       setRecipes(originalRecipes);
     } else {
-      const filteredRecipes = recipes.filter((recipe) =>
+      const filteredRecipes = originalRecipes.filter((recipe) =>
         recipe.title.toLowerCase().includes(searchText.toLowerCase()),
       );
       setRecipes(filteredRecipes);

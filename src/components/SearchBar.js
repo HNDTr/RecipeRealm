@@ -16,6 +16,14 @@ export default function SearchBar({ searchKeywords }) {
     setSearchText(event.target.value); // Update the search text state as the user types
   };
 
+  const handleKeyDown = (event) => {
+    if (event.keyCode === 13) {
+      // Check if Enter key is pressed
+      // Perform the action you want to do when Enter is pressed
+      handleSearch();
+    }
+  };
+
   return (
     <Container maxWidth="md" sx={{ paddingTop: 5 }}>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -24,6 +32,7 @@ export default function SearchBar({ searchKeywords }) {
           value={searchText}
           onChange={handleInputChange}
           fullWidth
+          onKeyDown={handleKeyDown}
         />
         <IconButton onClick={handleSearch}>
           <SearchIcon />
