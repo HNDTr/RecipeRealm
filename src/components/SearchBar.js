@@ -18,6 +18,7 @@ export default function SearchBar({ searchKeywords }) {
 
   const handleKeyDown = (event) => {
     if (event.keyCode === 13) {
+      // made with help from GPT Co-Pilot
       // Check if Enter key is pressed
       // Perform the action you want to do when Enter is pressed
       handleSearch();
