@@ -4,10 +4,10 @@
  */
 /* eslint-disable func-names */
 
-// This defines the migration for the recipe_ingredient join table
+// This defines the migration for the recipes_ingredients join table
 
 exports.up = function (knex) {
-  return knex.schema.createTable("recipe_ingredient", (table) => {
+  return knex.schema.createTable("recipes_ingredients", (table) => {
     table
       .integer("recipe_id")
       .references("id")
@@ -29,5 +29,5 @@ exports.up = function (knex) {
  * @returns { Promise<void> }
  */
 exports.down = function (knex) {
-  return knex.schema.dropTableIfExists("recipe_ingredient");
+  return knex.schema.dropTableIfExists("recipes_ingredients");
 };
