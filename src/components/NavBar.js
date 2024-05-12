@@ -51,7 +51,7 @@ function Navbar() {
   };
 
   const onCreateRecipe = () => {
-    router.push(`/create`); // Assuming the route to create recipes is `/RecipeCreate`
+    router.push(`/create`);
   };
 
   return (
@@ -91,6 +91,7 @@ function Navbar() {
               backgroundColor: "rgba(0,0,0,0)",
               color: "#18453B",
               textTransform: "none",
+              marginRight: "1em",
               fontSize: "1em",
             }}
           >
