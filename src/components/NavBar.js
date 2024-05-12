@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import LoginWidget from "./LoginWidget";
 
-const Container = styled("divs")(({ theme: styledTheme }) => ({
+const Container = styled("div")(({ theme: styledTheme }) => ({
   marginTop: styledTheme.spacing(0),
   paddingTop: styledTheme.spacing(0),
 }));
@@ -37,16 +37,23 @@ const Left = styled("div")(({ theme: styledTheme }) => ({
 
 function Navbar() {
   const router = useRouter();
+
   const onClick = () => {
     router.push(`/Home`);
-  };
-  const onLogin = () => {
-    router.push(`/login`);
   };
 
   const onRecipe = () => {
     router.push(`/GlobalRecipe`);
   };
+
+  const onLogin = () => {
+    router.push(`/login`);
+  };
+
+  const onCreateRecipe = () => {
+    router.push(`/create`); // Assuming the route to create recipes is `/RecipeCreate`
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -77,6 +84,17 @@ function Navbar() {
             }}
           >
             Recipes
+          </Button>
+          <Button
+            onClick={onCreateRecipe}
+            style={{
+              backgroundColor: "rgba(0,0,0,0)",
+              color: "#18453B",
+              textTransform: "none",
+              fontSize: "1em",
+            }}
+          >
+            Create Recipe
           </Button>
           <LoginWidget
             onClick={onLogin}
