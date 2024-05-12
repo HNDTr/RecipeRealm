@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useSession, signIn } from "next-auth/react"; // Import useSession hook
 import sushiImage from "../material/images/sushi-png.webp";
 
-const Container = styled("divs")(({ theme: styledTheme }) => ({
+const Container = styled("div")(({ theme: styledTheme }) => ({
   marginTop: styledTheme.spacing(0),
   paddingTop: styledTheme.spacing(10), // This adds space at the top
   paddingBottom: styledTheme.spacing(10), // Add padding at the bottom to increase height

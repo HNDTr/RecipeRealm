@@ -4,7 +4,7 @@
  */
 /* eslint-disable func-names */
 
-// Parent table for recipes
+// Parent table for users
 
 exports.up = function (knex) {
   return knex.schema.createTable("users", (table) => {
