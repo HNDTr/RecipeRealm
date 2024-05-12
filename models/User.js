@@ -16,10 +16,10 @@ export default class User extends BaseModel {
       required: ["username"],
       properties: {
         id: { type: "integer" },
+        googleId: { type: "string" },
         username: { type: "string" },
-        password: { type: "string" },
         email: { type: "string" },
-        created: { type: "date-time" },
+        created: { type: "string", format: "date-time" },
       },
     };
   }

@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
+import LoginWidget from "./LoginWidget";
 
 const Container = styled("divs")(({ theme: styledTheme }) => ({
   marginTop: styledTheme.spacing(0),
@@ -77,7 +78,7 @@ function Navbar() {
           >
             Recipes
           </Button>
-          <Button
+          <LoginWidget
             onClick={onLogin}
             style={{
               backgroundColor: "#18453B",
@@ -87,7 +88,7 @@ function Navbar() {
             }}
           >
             Login
-          </Button>
+          </LoginWidget>
         </Left>
       </Wrapper>
     </Container>
