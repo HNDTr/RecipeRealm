@@ -2,13 +2,13 @@
   {
     "username": "John Doe",
     "email": "jdoe@fake.com",
-    "password": "password1",
+    "googleId": "somerandomID1",
     "created": "2020-01-01T00:00:00Z"
   },
   {
     "username": "Jane Doe",
     "email": "janedoe@fake.com",
-    "password": "password2",
+    "googleId": "someRandomID2",
     "created": "2020-01-01T00:00:00Z"
   }
 ]

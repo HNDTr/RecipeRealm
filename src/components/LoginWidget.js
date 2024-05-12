@@ -1,5 +1,6 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { Button } from "@mui/material";
 
 export default function LoginWidget() {
   const router = useRouter();
@@ -18,11 +19,27 @@ export default function LoginWidget() {
     <div>
       {session ? (
         <div>
-          <p>Signed in as {session.user.email} <button type="button" onClick={handleSignOut}>Sign out</button></p>
+          <p>
+            Signed in as {session.user.email}{" "}
+            <button type="button" onClick={handleSignOut}>
+              Sign out
+            </button>
+          </p>
         </div>
       ) : (
         <div>
-          <button type="button" onClick={handleSignInAndRedirect}>Sign in with Google</button>
+          <Button
+            type="Button"
+            onClick={handleSignInAndRedirect}
+            style={{
+              backgroundColor: "#18453B",
+              color: "white",
+              textTransform: "none",
+              fontSize: "1em",
+            }}
+          >
+            Sign in
+          </Button>
         </div>
       )}
     </div>
