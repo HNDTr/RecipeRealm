@@ -15,6 +15,21 @@ const FormGrid = styled(Grid)(() => ({
   flexDirection: "row",
 }));
 
+const buttonStyle = {
+  backgroundColor: "#18453B",
+  color: "white",
+  textTransform: "none",
+  fontSize: "1em",
+};
+
+const ingredientButtonStyle = {
+  backgroundColor: "#18453B",
+  color: "white",
+  textTransform: "none",
+  fontSize: "1em",
+  marginTop: "0.5em",
+};
+
 // import grid, textfield, select,
 
 function IngredientsBar({ ingredients, setIngredients }) {
@@ -144,10 +159,9 @@ function IngredientsBar({ ingredients, setIngredients }) {
             </FormControl>
           </Grid>
 
-          <Grid item xs={1}>
+          <Grid item xs={2}>
             <Button
-              type="button"
-              variant="outlined"
+              style={ingredientButtonStyle}
               onClick={() => deleteIngredient(element.indexInRecipe)}
             >
               Delete Ingredient
@@ -156,11 +170,7 @@ function IngredientsBar({ ingredients, setIngredients }) {
         </Grid>
       ))}
       <Grid item xs={12}>
-        <Button
-          variant="outlined"
-          // eslint-disable-next-line react/jsx-no-bind
-          onClick={addIngredient}
-        >
+        <Button style={buttonStyle} onClick={() => addIngredient()}>
           Add Ingredient
         </Button>
       </Grid>

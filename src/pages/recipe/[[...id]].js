@@ -1,6 +1,14 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { useRouter } from "next/router";
+import { Button } from "@mui/material";
+
+const buttonStyle = {
+  backgroundColor: "#18453B",
+  color: "white",
+  textTransform: "none",
+  fontSize: "1em",
+};
 
 export default function RecipePage({ selectedRecipe }) {
   const router = useRouter();
@@ -16,7 +24,9 @@ export default function RecipePage({ selectedRecipe }) {
 
   return (
     <Container>
-      <BackButton onClick={() => router.back()}>View Other Recipes</BackButton>
+      <Button onClick={() => router.back()} style={buttonStyle}>
+        View Other Recipes
+      </Button>
       {selectedRecipe && (
         <RecipeDetailsContainer>
           <h3>{selectedRecipe.title}</h3>
@@ -51,19 +61,4 @@ const RecipeDetailsContainer = styled.div`
   margin-top: 20px;
   padding: 10px;
   border: 1px solid #ccc;
-`;
-
-const BackButton = styled.button`
-  margin-bottom: 20px;
-  background-color: #18453b;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 5px;
-
-  &:hover {
-    background-color: #0e2d27;
-  }
 `;

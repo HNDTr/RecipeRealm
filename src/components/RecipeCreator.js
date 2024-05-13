@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Grid, TextField, InputLabel } from "@mui/material";
+import { Grid, TextField, InputLabel, Button } from "@mui/material";
 import styles from "../styles/Editor.module.css";
 import FilterOptions from "./FilterOptions";
 import IngredientsBar from "./ingredientsBar";
@@ -133,7 +133,17 @@ export default function RecipeCreator({ completeFunction }) {
           />
         </Grid>
         <Grid item xs={12}>
-          <button type="submit">Save</button>
+          <Button
+            type="submit"
+            style={{
+              backgroundColor: "#18453B",
+              color: "white",
+              textTransform: "none",
+              fontSize: "1em",
+            }}
+          >
+            Save
+          </Button>
         </Grid>
       </Grid>
     </form>

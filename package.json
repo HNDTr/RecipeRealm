@@ -13,6 +13,8 @@
   "scripts": {
     "predev": "docker compose -f docker-compose.dev.yml up -d",
     "postdev": "docker compose -f docker-compose.dev.yml down",
+    "seed": "npx knex seed:run",
+    "migrate": "npx knex migrate:latest",
     "dev": "node ./dev-runner.js next dev",
     "build": "next build",
     "start": "next start",

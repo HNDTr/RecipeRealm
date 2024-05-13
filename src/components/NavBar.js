@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import LoginWidget from "./LoginWidget";
 
-const Container = styled("divs")(({ theme: styledTheme }) => ({
+const Container = styled("div")(({ theme: styledTheme }) => ({
   marginTop: styledTheme.spacing(0),
   paddingTop: styledTheme.spacing(0),
 }));
