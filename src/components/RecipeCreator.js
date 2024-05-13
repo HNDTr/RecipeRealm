@@ -1,37 +1,32 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { useSession } from "next-auth/react";
 import { Grid, TextField, InputLabel, Button } from "@mui/material";
 import styles from "../styles/Editor.module.css";
 import FilterOptions from "./FilterOptions";
 import IngredientsBar from "./ingredientsBar";
 
 export default function RecipeCreator({ completeFunction }) {
+  const { data: session } = useSession();
+
   const [formData, setFormData] = useState({
     title: "",
     servings: 1,
     prepSteps: "",
     isPublic: false,
-    author: 2,
+    author: session.user.id,
   });
 
   const [ingredients, setIngredients] = useState([
     { name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 },
   ]);
 
-  /* eslint-disable no-unused-vars */
-  const [foodAllergiesSelected, setFoodAllergiesSelected] = useState([]);
-  const [dietaryRestrictionsSelected, setDietaryRestrictionsSelected] =
-    useState([]);
-  const [timeSelected, setTimeSelected] = useState([]);
-  const [difficultySelected, setDifficultySelected] = useState([]);
-  /* eslint-disable no-unused-vars */
-
-  const { title, servings, prepSteps, author, isPublic } = formData;
-
   const onChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    const newValue = type === "checkbox" ? checked : value;
     setFormData((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value,
+      [name]: newValue,
     }));
   };
 
@@ -39,18 +34,12 @@ export default function RecipeCreator({ completeFunction }) {
     e.preventDefault();
     const currentDate = new Date().toISOString();
     const newRecipe = {
-      title,
-      servings: +servings,
-      prepSteps,
-      isPublic,
-      author,
+      ...formData,
+      servings: +formData.servings,
       ingredients,
       edited: currentDate,
-      // combine the foodAllergiesSelected and dietaryRestrictionsSelected into tags
-      tags: [...foodAllergiesSelected, ...dietaryRestrictionsSelected],
     };
     await completeFunction(newRecipe);
-    // Reset the form data after submission
     setFormData({
       title: "",
       servings: 1,
@@ -71,7 +60,7 @@ export default function RecipeCreator({ completeFunction }) {
             type="text"
             name="title"
             placeholder="Recipe Title"
-            value={title}
+            value={formData.title}
             onChange={onChange}
             fullWidth
           />
@@ -82,7 +71,7 @@ export default function RecipeCreator({ completeFunction }) {
             step="1"
             name="servings"
             placeholder="Servings"
-            value={servings}
+            value={formData.servings}
             onChange={onChange}
             fullWidth
           />
@@ -102,7 +91,7 @@ export default function RecipeCreator({ completeFunction }) {
             name="prepSteps"
             placeholder="Preparation Steps"
             variant="outlined"
-            value={prepSteps}
+            value={formData.prepSteps}
             onChange={onChange}
             fullWidth
           />
@@ -112,25 +101,15 @@ export default function RecipeCreator({ completeFunction }) {
             Public:
             <input
               type="checkbox"
-              checked={isPublic}
+              checked={formData.isPublic}
               name="isPublic"
               data-testid="publicCheckbox"
-              onChange={() =>
-                setFormData((prevState) => ({
-                  ...prevState,
-                  isPublic: !isPublic,
-                }))
-              }
+              onChange={onChange}
             />
           </InputLabel>
         </Grid>
         <Grid item xs={12}>
-          <FilterOptions
-            setFoodAllergiesSelected={setFoodAllergiesSelected}
-            setDietaryRestrictionsSelected={setDietaryRestrictionsSelected}
-            setTimeSelected={setTimeSelected}
-            setDifficultySelected={setDifficultySelected}
-          />
+          <FilterOptions />
         </Grid>
         <Grid item xs={12}>
           <Button
