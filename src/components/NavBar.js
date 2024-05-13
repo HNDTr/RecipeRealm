@@ -78,6 +78,18 @@ function Navbar() {
           >
             Recipes
           </Button>
+          <Button
+            onClick={() => router.push("/create")}
+            style={{
+              backgroundColor: "rgba(0,0,0,0)",
+              color: "#18453B",
+              textTransform: "none",
+              marginRight: "2em",
+              fontSize: "1em",
+            }}
+          >
+            Create
+          </Button>
           <LoginWidget
             onClick={onLogin}
             style={{

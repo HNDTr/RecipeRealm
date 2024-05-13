@@ -1,7 +1,10 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { useRouter } from "next/router";
 
 export default function RecipePage({ selectedRecipe }) {
+  const router = useRouter();
+
   // eslint-disable-next-line no-param-reassign
   selectedRecipe = {
     ...selectedRecipe,
@@ -13,6 +16,7 @@ export default function RecipePage({ selectedRecipe }) {
 
   return (
     <Container>
+      <BackButton onClick={() => router.back()}>View Other Recipes</BackButton>
       {selectedRecipe && (
         <RecipeDetailsContainer>
           <h3>{selectedRecipe.title}</h3>
@@ -47,4 +51,19 @@ const RecipeDetailsContainer = styled.div`
   margin-top: 20px;
   padding: 10px;
   border: 1px solid #ccc;
+`;
+
+const BackButton = styled.button`
+  margin-bottom: 20px;
+  background-color: #18453b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: #0e2d27;
+  }
 `;
