@@ -10,7 +10,7 @@ function ProfilePage() {
 
   const handleSignOut = async () => {
     await signOut();
-    router.back(); // Redirect to home page after sign-out
+    router.push("/Home"); // Redirect to home page after sign-out
   };
 
   const Container = styled("div")(({ theme: styledTheme }) => ({
@@ -24,13 +24,15 @@ function ProfilePage() {
 
   return (
     <Container>
-      <div style={{ fontSize: "4em" }}>
-        Welcome <b style={{ color: "purple" }}> {session.user.name} </b>!{" "}
-        <LogoutIcon
-          onClick={handleSignOut}
-          style={{ cursor: "pointer", fontSize: "0.7em" }}
-        />
-      </div>
+      {session && (
+        <div style={{ fontSize: "4em" }}>
+          Welcome <b style={{ color: "purple" }}> {session.user.name} </b>!{" "}
+          <LogoutIcon
+            onClick={handleSignOut}
+            style={{ cursor: "pointer", fontSize: "0.7em" }}
+          />
+        </div>
+      )}
       {/* <div onClick={handleSignOut}>
             <LogoutIcon />
           </div> */}
