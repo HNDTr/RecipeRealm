@@ -1,6 +1,7 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { Button } from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const buttonStyle = {
   backgroundColor: "#18453B",
@@ -17,9 +18,8 @@ export default function LoginWidget() {
     await signIn("google", { callbackUrl: "/GlobalRecipe" });
   };
 
-  const handleSignOut = async () => {
-    await signOut();
-    router.push("/"); // Redirect to home page after sign-out
+  const handleProfile = async () => {
+    router.push("/userProfile");
   };
 
   return (
@@ -27,9 +27,13 @@ export default function LoginWidget() {
       {session ? (
         <div>
           <p>
-            <Button type="button" style={buttonStyle} onClick={handleSignOut}>
+            <div onClick={handleProfile}>
+              <AccountCircleIcon style={{ fontSize: "2.5em" }} />
+            </div>
+            {/* Signed in as {session.user.email}{" "}
+            <button type="button" onClick={handleSignOut}>
               Sign out
-            </Button>
+            </button> */}
           </p>
         </div>
       ) : (
