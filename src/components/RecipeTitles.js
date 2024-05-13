@@ -11,8 +11,6 @@ function RecipeTitles({ recipes, setSelectedRecipe}) {
             <SeeMoreText
               onClick={() => {
                 setSelectedRecipe(recipe);
-                // eslint-disable-next-line no-console
-                console.log("Selected Recipe:", recipe);
               }}
             >
               See Complete Recipe

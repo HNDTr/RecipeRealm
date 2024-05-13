@@ -4,6 +4,8 @@ import RecipeCreator from "../../../components/RecipeCreator";
 
 export default function Editor({ selectedRecipe }) {
   const router = useRouter();
+  const ingredients = JSON.parse(router.query.ingredients || "[]");
+  const tags = JSON.parse(router.query.tags || "[]");
 
   const completeFunction = async (recipe) => {
     if (recipe) {
@@ -26,7 +28,7 @@ export default function Editor({ selectedRecipe }) {
 
   return (
     <RecipeCreator 
-      selectedRecipe={selectedRecipe}
+      selectedRecipe={{ ...selectedRecipe, ingredients, tags}}
       completeFunction={(recipe) => completeFunction(recipe)}
     />
   );

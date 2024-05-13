@@ -10,6 +10,7 @@ export default function RecipePage({ selectedRecipe }) {
 
   const [fetchedIngredients, setFetchedIngredients] = useState([]);
   const [fetchedTags, setFetchedTags] = useState([]);
+  
 
   useEffect(() => {
     const selectedRecipeIngredients = async () => {
@@ -18,7 +19,6 @@ export default function RecipePage({ selectedRecipe }) {
         if (response.ok) {
           console.log("Success");
           const data = await response.json();
-          console.log(data);
           setFetchedIngredients(data);
         } else {
           console.log("Failed to fetch ingredients");
@@ -39,7 +39,6 @@ export default function RecipePage({ selectedRecipe }) {
         if (response.ok) {
           console.log("Success");
           const data = await response.json();
-          console.log(data);
           setFetchedTags(data);
         } else {
           console.log("Failed to fetch tags");
@@ -53,20 +52,22 @@ export default function RecipePage({ selectedRecipe }) {
     selectedRecipeTags();
   }, []);
 
-  const handleEdit = () => {
-    console.log("Ur Mom");
-    console.log(selectedRecipe);
-    // const recIngredients = recipes.query().findById(selectedRecipe.id).withGraphFetched('ingredients');
-    // console.log(recIngredients);
-    router.push(`/recipe/${selectedRecipe.id}/edit`);
-  };
 
+  const handleEdit = () => {
+    router.push({
+      pathname: `/recipe/${selectedRecipe.id}/edit`,
+      query: {
+        ingredients: JSON.stringify(fetchedIngredients),
+        tags: JSON.stringify(fetchedTags),
+      },
+    });
+  };
 
 
   // eslint-disable-next-line no-param-reassign
   selectedRecipe = {
     ...selectedRecipe,
-    dietaryRestrictions: fetchedTags,
+    tags: fetchedTags,
     time: 60,
     difficulty: "Easy",
     ingredients: fetchedIngredients,
@@ -81,24 +82,23 @@ export default function RecipePage({ selectedRecipe }) {
         <RecipeDetailsContainer>
           <h3>{selectedRecipe.title}</h3>
           <p>Servings: {selectedRecipe.servings}</p>
-          {selectedRecipe.ingredients.map((ingredient) => (
-            <div key={ingredient.id}>
-              <p>{ingredient.quantity} {ingredient.units} of {ingredient.name} </p>
-            </div>
-          ))}
-
-          {/* <p>
-            Ingredients:{" "}
-            {selectedRecipe.ingredients.join(", ") || "No ingredients"}
-          </p> */}
+          <div>
+            <p><strong>Ingredients</strong></p>
+            {selectedRecipe.ingredients.map((ingredient) => (
+              <div key={ingredient.id}>
+                <p>{ingredient.quantity} {ingredient.units} of {ingredient.name}</p>
+              </div>
+            ))}
+          </div>
           <p>Preparation Steps: {selectedRecipe.prepSteps}</p>
           <p>
-            Dietary Restrictions:{" "}
-            {selectedRecipe.tags.map((tag) => (
-            <div key={tag.id}>
-              <p>{tag.name} </p>
-            </div>
-          ))}
+            <strong>Dietary Restrictions: </strong>
+            {selectedRecipe.tags.map((tag, index) => (
+              <span key={tag.id}>
+                {tag.name}
+                {index !== selectedRecipe.tags.length - 1 && ", "}
+              </span>
+            ))}
           </p>
           <p>Time: {selectedRecipe.time} minutes</p>
           <p>Difficulty: {selectedRecipe.difficulty}</p>
@@ -148,35 +148,3 @@ const EditButton = styled.button`
   border: none;
   cursor: pointer;
 `;
-
-
-  // // eslint-disable-next-line no-unused-vars
-  // const selectedRecipeIngredients = async () => {
-  //   try {
-  //     const response = await fetch(`/api/recipes_ingredients/${selectedRecipe.id}`);
-  //     if (response.ok) {
-  //       console.log(response);
-  //       console.log("Success");
-  //       const data = await response.json();
-  //       console.log(data);
-  //       // return data;
-  //        // Set fetched ingredients in state variable
-  //       setFetchedIngredients(data);
-  //        // Update selectedRecipe with fetched ingredients
-  //        // Note: This will not update the UI instantly
-  //        // You may need to use useEffect to update the UI after state changes
-
-  //        // eslint-disable-next-line no-param-reassign
-  //       //  selectedRecipe = {
-  //       //    ...selectedRecipe,
-  //       //    ingredients: data.map(ingredient => ingredient.name),
-  //       //  };  
-  //     } else {
-  //       console.log("Failed to fetch ingredients");
-  //       console.log(response);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching ingredients:", error);
-  //   }
-  // };
-  // selectedRecipeIngredients();

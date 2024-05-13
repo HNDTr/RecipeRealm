@@ -7,9 +7,11 @@ import Typography from "@mui/material/Typography";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
-export default function FilterDropdown({ title, options, onSelect }) {
+export default function FilterDropdown({ title, options, onSelect, optionsSelected }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState(
+    optionsSelected ? optionsSelected.flat().map((option) => option.name) : []
+  );
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -60,4 +62,5 @@ FilterDropdown.propTypes = {
   title: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
   onSelect: PropTypes.func.isRequired,
+  optionsSelected: PropTypes,
 };

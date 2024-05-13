@@ -18,47 +18,8 @@ export default function RecipeCreator({ completeFunction, selectedRecipe }) {
   });
 
   const [ingredients, setIngredients] = useState([
-    { name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 },
+    selectedRecipe.ingredients || { name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 }
   ]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     if (selectedRecipe) {
-  //       // Fetch the recipe details
-  //       setFormData({
-  //         title: selectedRecipe.title || "",
-  //         servings: selectedRecipe.servings || 1,
-  //         prepSteps: selectedRecipe.prepSteps || "",
-  //         isPublic: selectedRecipe.isPublic || false,
-  //         author: selectedRecipe.author || 1,
-  //       });
-  
-  //       // Fetch the ingredients based on the recipe ID
-  //       const ingredientsResponse = await fetch(`/api/recipes/${selectedRecipe.id}/ingredients`);
-  //       const ingredientsData = await ingredientsResponse.json();
-  //       setIngredients(ingredientsData.ingredients || []);
-  
-  //       // Fetch the tags based on the recipe ID
-  //       const tagsResponse = await fetch(`/api/recipes/${selectedRecipe.id}/tags`);
-  //       const tagsData = await tagsResponse.json();
-  //       // Set the tags in your state if you have state to manage them
-  //     } else {
-  //       // Reset form data if no recipe is selected
-  //       setFormData({
-  //         title: "",
-  //         servings: 1,
-  //         prepSteps: "",
-  //         isPublic: false,
-  //         author: 1,
-  //       });
-  //       setIngredients([
-  //         { name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 },
-  //       ]);
-  //     }
-  //   };
-  
-  //   fetchData();
-  // }, [selectedRecipe]);
 
   useEffect(() => {
     if (selectedRecipe) {
@@ -69,7 +30,12 @@ export default function RecipeCreator({ completeFunction, selectedRecipe }) {
         isPublic: selectedRecipe.isPublic || false,
         author: selectedRecipe.author || 1,
       });
-      setIngredients(selectedRecipe.ingredients || []);
+      setIngredients(selectedRecipe.ingredients.map((ingredient, index) => ({
+        name: ingredient.name,
+        quantity: ingredient.quantity,
+        units: ingredient.units,
+        indexInRecipe: index,
+      })));
     } else {
       setFormData({
         title: "",
@@ -87,11 +53,16 @@ export default function RecipeCreator({ completeFunction, selectedRecipe }) {
   
 
   /* eslint-disable no-unused-vars */
-  const [foodAllergiesSelected, setFoodAllergiesSelected] = useState([]);
+  const [foodAllergiesSelected, setFoodAllergiesSelected] = useState([
+    // selectedRecipe.tags.filter((tag) => tag.type === "foodAllergy"),
+    selectedRecipe.tags.filter((tag) => tag.id <= 8) || [] 
+  ]);
   const [dietaryRestrictionsSelected, setDietaryRestrictionsSelected] =
-    useState([]);
+    useState([selectedRecipe.tags.filter((tag) => tag.id > 8) || [] 
+  ]);
   const [timeSelected, setTimeSelected] = useState([]);
   const [difficultySelected, setDifficultySelected] = useState([]);
+
   /* eslint-disable no-unused-vars */
 
   const { title, servings, prepSteps, author, isPublic } = formData;
@@ -198,6 +169,8 @@ export default function RecipeCreator({ completeFunction, selectedRecipe }) {
             setDietaryRestrictionsSelected={setDietaryRestrictionsSelected}
             setTimeSelected={setTimeSelected}
             setDifficultySelected={setDifficultySelected}
+            foodAllergiesSelected={foodAllergiesSelected}
+            dietaryRestrictionsSelected={dietaryRestrictionsSelected}
           />
         </Grid>
         <Grid item xs={12}>

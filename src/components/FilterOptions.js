@@ -37,6 +37,8 @@ export default function FilterOptions({
   setDietaryRestrictionsSelected,
   setTimeSelected,
   setDifficultySelected,
+  foodAllergiesSelected,
+  dietaryRestrictionsSelected,
 }) {
   return (
     <Container>
@@ -46,11 +48,13 @@ export default function FilterOptions({
             title="Food Allergies"
             options={allergiesOptions}
             onSelect={setFoodAllergiesSelected}
+            optionsSelected={foodAllergiesSelected}
           />
           <FilterDropdown
             title="Dietary Restrictions"
             options={dietaryRestrictionsOptions}
             onSelect={setDietaryRestrictionsSelected}
+            optionsSelected={dietaryRestrictionsSelected}
           />
           <FilterDropdown
             title="Time"
@@ -73,4 +77,6 @@ FilterOptions.propTypes = {
   setDietaryRestrictionsSelected: PropTypes.func.isRequired,
   setTimeSelected: PropTypes.func.isRequired,
   setDifficultySelected: PropTypes.func.isRequired,
+  foodAllergiesSelected: PropTypes.arrayOf(PropTypes.array),
+  dietaryRestrictionsSelected: PropTypes.arrayOf(PropTypes.array),
 };

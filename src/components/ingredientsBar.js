@@ -93,6 +93,7 @@ function IngredientsBar({ ingredients, setIngredients }) {
               <OutlinedInput
                 type="text"
                 placeholder="Ingredient"
+                value={element.name}
                 onChange={(event) =>
                   updateIngredientName(
                     event.target.value,
@@ -109,6 +110,7 @@ function IngredientsBar({ ingredients, setIngredients }) {
                 type="number"
                 step="any"
                 placeholder="Quantity"
+                value={element.quantity}
                 onChange={(event) =>
                   updateIngredientQuantity(
                     event.target.valueAsNumber,
@@ -128,6 +130,7 @@ function IngredientsBar({ ingredients, setIngredients }) {
                 data-testid="unitType"
                 native
                 placeholder=""
+                value={element.unit}
                 onChange={(event) =>
                   updateIngredientUnit(
                     event.target.value,
