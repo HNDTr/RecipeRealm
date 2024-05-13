@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { useSession } from "next-auth/react";
 import { Grid, TextField, InputLabel, Button } from "@mui/material";
+import { useSession } from "next-auth/react";
 import styles from "../styles/Editor.module.css";
 import FilterOptions from "./FilterOptions";
 import IngredientsBar from "./ingredientsBar";
@@ -21,12 +21,20 @@ export default function RecipeCreator({ completeFunction }) {
     { name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 },
   ]);
 
+  /* eslint-disable no-unused-vars */
+  const [foodAllergiesSelected, setFoodAllergiesSelected] = useState([]);
+  const [dietaryRestrictionsSelected, setDietaryRestrictionsSelected] =
+    useState([]);
+  const [timeSelected, setTimeSelected] = useState([]);
+  const [difficultySelected, setDifficultySelected] = useState([]);
+  /* eslint-disable no-unused-vars */
+
+  const { title, servings, prepSteps, author, isPublic } = formData;
+
   const onChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    const newValue = type === "checkbox" ? checked : value;
     setFormData((prevState) => ({
       ...prevState,
-      [name]: newValue,
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -34,18 +42,24 @@ export default function RecipeCreator({ completeFunction }) {
     e.preventDefault();
     const currentDate = new Date().toISOString();
     const newRecipe = {
-      ...formData,
-      servings: +formData.servings,
+      title,
+      servings: +servings,
+      prepSteps,
+      isPublic,
+      author,
       ingredients,
       edited: currentDate,
+      // combine the foodAllergiesSelected and dietaryRestrictionsSelected into tags
+      tags: [...foodAllergiesSelected, ...dietaryRestrictionsSelected],
     };
     await completeFunction(newRecipe);
+    // Reset the form data after submission
     setFormData({
       title: "",
       servings: 1,
       prepSteps: "",
       isPublic: false,
-      author: 1,
+      author: session.user.id,
       ingredients: [
         { name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 },
       ],
@@ -60,7 +74,7 @@ export default function RecipeCreator({ completeFunction }) {
             type="text"
             name="title"
             placeholder="Recipe Title"
-            value={formData.title}
+            value={title}
             onChange={onChange}
             fullWidth
           />
@@ -71,7 +85,7 @@ export default function RecipeCreator({ completeFunction }) {
             step="1"
             name="servings"
             placeholder="Servings"
-            value={formData.servings}
+            value={servings}
             onChange={onChange}
             fullWidth
           />
@@ -91,7 +105,7 @@ export default function RecipeCreator({ completeFunction }) {
             name="prepSteps"
             placeholder="Preparation Steps"
             variant="outlined"
-            value={formData.prepSteps}
+            value={prepSteps}
             onChange={onChange}
             fullWidth
           />
@@ -101,15 +115,25 @@ export default function RecipeCreator({ completeFunction }) {
             Public:
             <input
               type="checkbox"
-              checked={formData.isPublic}
+              checked={isPublic}
               name="isPublic"
               data-testid="publicCheckbox"
-              onChange={onChange}
+              onChange={() =>
+                setFormData((prevState) => ({
+                  ...prevState,
+                  isPublic: !isPublic,
+                }))
+              }
             />
           </InputLabel>
         </Grid>
         <Grid item xs={12}>
-          <FilterOptions />
+          <FilterOptions
+            setFoodAllergiesSelected={setFoodAllergiesSelected}
+            setDietaryRestrictionsSelected={setDietaryRestrictionsSelected}
+            setTimeSelected={setTimeSelected}
+            setDifficultySelected={setDifficultySelected}
+          />
         </Grid>
         <Grid item xs={12}>
           <Button
