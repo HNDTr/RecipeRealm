@@ -73,18 +73,33 @@ function HomePage() {
             Welcome to RecipeRealm, your one-stop destination for wholesome and
             delectable culinary inspirations.
           </Para>
-          <Button
-            onClick={onClick}
-            style={{
-              backgroundColor: "#18453B",
-              color: "white",
-              textTransform: "none",
-              fontSize: "1em",
-              width: "200px",
-            }}
-          >
-            Get started
-          </Button>
+          {session ? (
+            <Button
+              onClick={onClick}
+              style={{
+                backgroundColor: "#18453B",
+                color: "white",
+                textTransform: "none",
+                fontSize: "1em",
+                width: "200px",
+              }}
+            >
+              Create Recipe
+            </Button>
+          ) : (
+            <Button
+              onClick={onClick}
+              style={{
+                backgroundColor: "#18453B",
+                color: "white",
+                textTransform: "none",
+                fontSize: "1em",
+                width: "200px",
+              }}
+            >
+              Get Started
+            </Button>
+          )}
         </Right>
         <Left>
           <Image
