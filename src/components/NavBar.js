@@ -1,6 +1,8 @@
 import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { useSession } from "next-auth/react"; // Import useSession hook
 import { useRouter } from "next/router";
+import LoginWidget from "./LoginWidget";
 
 const Container = styled("divs")(({ theme: styledTheme }) => ({
   marginTop: styledTheme.spacing(0),
@@ -46,6 +48,9 @@ function Navbar() {
   const onRecipe = () => {
     router.push(`/GlobalRecipe`);
   };
+
+  const { data: session } = useSession(); // Retrieve the session data
+
   return (
     <Container>
       <Wrapper>
@@ -77,7 +82,21 @@ function Navbar() {
           >
             Recipes
           </Button>
-          <Button
+          {session && (
+            <Button
+              onClick={() => router.push("/create")}
+              style={{
+                backgroundColor: "rgba(0,0,0,0)",
+                color: "#18453B",
+                textTransform: "none",
+                marginRight: "2em",
+                fontSize: "1em",
+              }}
+            >
+              Create
+            </Button>
+          )}
+          <LoginWidget
             onClick={onLogin}
             style={{
               backgroundColor: "#18453B",
@@ -87,7 +106,7 @@ function Navbar() {
             }}
           >
             Login
-          </Button>
+          </LoginWidget>
         </Left>
       </Wrapper>
     </Container>

@@ -108,12 +108,14 @@ export default function RecipeCreator({ completeFunction, selectedRecipe }) {
     const currentDate = new Date().toISOString();
     const newRecipe = {
       title,
-      servings,
+      servings: +servings,
       prepSteps,
       isPublic,
       author,
       ingredients,
       edited: currentDate,
+      // combine the foodAllergiesSelected and dietaryRestrictionsSelected into tags
+      tags: [...foodAllergiesSelected, ...dietaryRestrictionsSelected],
     };
     await completeFunction(newRecipe);
     // Reset the form data after submission

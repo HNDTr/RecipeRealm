@@ -2,6 +2,7 @@ import { createRouter } from "next-connect";
 import { onError } from "../../../lib/middleware";
 import Recipe from "../../../../models/Recipe";
 import Ingredient from "../../../../models/Ingredient";
+import Tags from "../../../../models/Tags";
 
 const router = createRouter();
 
@@ -20,7 +21,7 @@ router
   })
   .post(async (req, res) => {
     try {
-      const { ingredients, ...recipeData } = req.body; // Extract recipe data from request body
+      const { tags, ingredients, ...recipeData } = req.body; // Extract recipe data from request body
 
       const newIngredients = [];
 
@@ -38,12 +39,16 @@ router
 
       // Insert new ingredients into the database
       if (newIngredients.length > 0) {
-        await Ingredient.query().insert(newIngredients);
+        await Promise.all(
+          newIngredients.map(async (newIngredient) => {
+            await Ingredient.query().insert(newIngredient);
+          }),
+        );
       }
 
       // Insert the recipe into the database
       const recipe = await Recipe.query().insert(recipeData);
-
+      // Insert data into recipes_ingredients join table
       await Promise.all(
         ingredients.map(async (ingredient) => {
           const { id } = await Ingredient.query().findOne({
@@ -53,6 +58,18 @@ router
             id,
             quantity: ingredient.quantity,
             units: ingredient.unit,
+          });
+        }),
+      );
+
+      // Insert data into recipes_tags join table
+      await Promise.all(
+        tags.map(async (tag) => {
+          const { id } = await Tags.query().findOne({
+            name: tag,
+          });
+          await Recipe.relatedQuery("tags").for(recipe.id).relate({
+            id,
           });
         }),
       );

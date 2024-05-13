@@ -2,10 +2,10 @@ import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react"; // Import useSession hook
+import { useSession, signIn } from "next-auth/react"; // Import useSession hook
 import sushiImage from "../material/images/sushi-png.webp";
 
-const Container = styled("divs")(({ theme: styledTheme }) => ({
+const Container = styled("div")(({ theme: styledTheme }) => ({
   marginTop: styledTheme.spacing(0),
   paddingTop: styledTheme.spacing(10), // This adds space at the top
   paddingBottom: styledTheme.spacing(10), // Add padding at the bottom to increase height
@@ -52,11 +52,11 @@ const Left = styled("div")(({ theme: styledTheme }) => ({
 function HomePage() {
   const router = useRouter();
   const { data: session } = useSession(); // Retrieve the session data
-  const onClick = () => {
+  const onClick = async () => {
     if (session) {
       router.push(`/create`); // If user is authenticated, navigate to create page
     } else {
-      router.push(`/login`); // If user is not authenticated, navigate to login page
+      await signIn("google", { callbackUrl: "/GlobalRecipe" });
     }
   };
 
@@ -73,18 +73,33 @@ function HomePage() {
             Welcome to RecipeRealm, your one-stop destination for wholesome and
             delectable culinary inspirations.
           </Para>
-          <Button
-            onClick={onClick}
-            style={{
-              backgroundColor: "#18453B",
-              color: "white",
-              textTransform: "none",
-              fontSize: "1em",
-              width: "200px",
-            }}
-          >
-            Get started
-          </Button>
+          {session ? (
+            <Button
+              onClick={onClick}
+              style={{
+                backgroundColor: "#18453B",
+                color: "white",
+                textTransform: "none",
+                fontSize: "1em",
+                width: "200px",
+              }}
+            >
+              Create Recipe
+            </Button>
+          ) : (
+            <Button
+              onClick={onClick}
+              style={{
+                backgroundColor: "#18453B",
+                color: "white",
+                textTransform: "none",
+                fontSize: "1em",
+                width: "200px",
+              }}
+            >
+              Get Started
+            </Button>
+          )}
         </Right>
         <Left>
           <Image

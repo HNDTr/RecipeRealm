@@ -27,8 +27,8 @@ export default class Ingredient extends BaseModel {
       join: {
         from: "ingredients.id",
         through: {
-          from: "recipe_ingredient.ingredient_id",
-          to: "recipe_ingredient.recipe_id",
+          from: "recipes_ingredients.ingredient_id",
+          to: "recipes_ingredients.recipe_id",
           extra: ["quantity", "units"],
         },
         to: "recipes.id",

@@ -16,10 +16,10 @@ export default class User extends BaseModel {
       required: ["username"],
       properties: {
         id: { type: "integer" },
+        googleId: { type: "string" },
         username: { type: "string" },
-        password: { type: "string" },
         email: { type: "string" },
-        created: { type: "date-time" },
+        created: { type: "string", format: "date-time" },
       },
     };
   }
@@ -31,7 +31,8 @@ export default class User extends BaseModel {
       modelClass: Recipe,
       join: {
         from: "users.id",
-        to: "recipes.user_id",
+        to: "recipes.author",
+        // to: "recipes.user_id",
       },
     },
     savedRecipes: {
@@ -39,10 +40,11 @@ export default class User extends BaseModel {
       relation: Model.ManyToManyRelation,
       modelClass: Recipe,
       join: {
+        // TODO change to be consistent with other join tables
         from: "users.id",
         through: {
-          from: "recipe_user.user_id",
-          to: "recipe_user.recipe_id",
+          from: "user_recipes.user_id",
+          to: "user_recipes.recipe_id",
         },
         to: "recipes.id",
       },
