@@ -14,13 +14,9 @@ export default function RecipePage({ selectedRecipe }) {
     ingredients: ["1 cup of flour", "1 cup of sugar", "1 cup of water"],
   };
 
-  const handleGoBack = () => {
-    router.push("/GlobalRecipe");
-  };
-
   return (
     <Container>
-      <BackButton onClick={handleGoBack}>View Other Recipes</BackButton>
+      <BackButton onClick={() => router.back()}>View Other Recipes</BackButton>
       {selectedRecipe && (
         <RecipeDetailsContainer>
           <h3>{selectedRecipe.title}</h3>
