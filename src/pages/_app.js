@@ -44,7 +44,7 @@ export default function App({
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
           <main
-            style={{ width: "100vw", height: "100vh", background: "#e5efff" }}
+            style={{ width: "100%", height: "100%", background: "#e5efff" }}
           >
             <Container style={{ background: "#e5efff", paddingTop: "2em" }}>
               {/* <Typography variant="h2" align="center">RecipeRealm</Typography> */}

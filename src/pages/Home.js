@@ -2,7 +2,7 @@ import HomePage from "../components/HomePage";
 
 export default function Home() {
   return (
-    <div style={{ background: "#e5efff" }}>
+    <div style={{ background: "#e5efff", height: "100vh" }}>
       <HomePage />
     </div>
   );
