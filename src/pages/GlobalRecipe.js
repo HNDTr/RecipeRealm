@@ -5,6 +5,13 @@ import FilterOptions from "../components/FilterOptions";
 import RecipeTitles from "@/components/RecipeTitles";
 import SearchBar from "@/components/SearchBar";
 
+const buttonStyle = {
+  backgroundColor: "#18453B",
+  color: "white",
+  textTransform: "none",
+  fontSize: "1em",
+};
+
 function GlobalRecipe({ selectedRecipe, setSelectedRecipe }) {
   const [foodAllergiesSelected, setFoodAllergiesSelected] = useState([]);
   const [dietaryRestrictionsSelected, setDietaryRestrictionsSelected] =
@@ -63,11 +70,7 @@ function GlobalRecipe({ selectedRecipe, setSelectedRecipe }) {
         setTimeSelected={setTimeSelected}
         setDifficultySelected={setDifficultySelected}
       />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => applyFilters()}
-      >
+      <Button style={buttonStyle} onClick={() => applyFilters()}>
         Apply
       </Button>
       <RecipeTitles

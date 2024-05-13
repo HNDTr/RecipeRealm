@@ -3,6 +3,13 @@ import { useRouter } from "next/router";
 import { Button } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
+const buttonStyle = {
+  backgroundColor: "#18453B",
+  color: "white",
+  textTransform: "none",
+  fontSize: "1em",
+};
+
 export default function LoginWidget() {
   const router = useRouter();
   const { data: session } = useSession();
@@ -34,12 +41,7 @@ export default function LoginWidget() {
           <Button
             type="Button"
             onClick={handleSignInAndRedirect}
-            style={{
-              backgroundColor: "#18453B",
-              color: "white",
-              textTransform: "none",
-              fontSize: "1em",
-            }}
+            style={buttonStyle}
           >
             Sign in
           </Button>
