@@ -9,7 +9,8 @@ import PropTypes from "prop-types";
 import ingredientShape from "./ingredientShape";
 
 const recipeShape = PropTypes.shape({
-  id: PropTypes.number.isRequired,
+  id: PropTypes.number,
+  // id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   servings: PropTypes.number.isRequired,
   ingredients: PropTypes.arrayOf(ingredientShape).isRequired,

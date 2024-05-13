@@ -21,6 +21,45 @@ export default function RecipeCreator({ completeFunction, selectedRecipe }) {
     { name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 },
   ]);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (selectedRecipe) {
+  //       // Fetch the recipe details
+  //       setFormData({
+  //         title: selectedRecipe.title || "",
+  //         servings: selectedRecipe.servings || 1,
+  //         prepSteps: selectedRecipe.prepSteps || "",
+  //         isPublic: selectedRecipe.isPublic || false,
+  //         author: selectedRecipe.author || 1,
+  //       });
+  
+  //       // Fetch the ingredients based on the recipe ID
+  //       const ingredientsResponse = await fetch(`/api/recipes/${selectedRecipe.id}/ingredients`);
+  //       const ingredientsData = await ingredientsResponse.json();
+  //       setIngredients(ingredientsData.ingredients || []);
+  
+  //       // Fetch the tags based on the recipe ID
+  //       const tagsResponse = await fetch(`/api/recipes/${selectedRecipe.id}/tags`);
+  //       const tagsData = await tagsResponse.json();
+  //       // Set the tags in your state if you have state to manage them
+  //     } else {
+  //       // Reset form data if no recipe is selected
+  //       setFormData({
+  //         title: "",
+  //         servings: 1,
+  //         prepSteps: "",
+  //         isPublic: false,
+  //         author: 1,
+  //       });
+  //       setIngredients([
+  //         { name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 },
+  //       ]);
+  //     }
+  //   };
+  
+  //   fetchData();
+  // }, [selectedRecipe]);
+
   useEffect(() => {
     if (selectedRecipe) {
       setFormData({
@@ -44,6 +83,8 @@ export default function RecipeCreator({ completeFunction, selectedRecipe }) {
       ]);
     }
   }, [selectedRecipe]);
+
+  
 
   /* eslint-disable no-unused-vars */
   const [foodAllergiesSelected, setFoodAllergiesSelected] = useState([]);

@@ -11,8 +11,11 @@ function GlobalRecipe({ selectedRecipe, setSelectedRecipe }) {
     useState([]);
   const [timeSelected, setTimeSelected] = useState([]);
   const [difficultySelected, setDifficultySelected] = useState([]);
-  const [originalRecipes, setOriginalRecipes] = useState([{}]);
-  const [recipes, setRecipes] = useState([{}]);
+  // const [originalRecipes, setOriginalRecipes] = useState([{}]);
+  // const [recipes, setRecipes] = useState([{}]);
+  const [originalRecipes, setOriginalRecipes] = useState([]);
+  const [recipes, setRecipes] = useState([]);
+
 
   useEffect(() => {
     fetch(`/api/recipes`)
