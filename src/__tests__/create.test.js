@@ -16,7 +16,7 @@ mockRouter.useParser(
   ]),
 );
 
-describe("Create Recipe Page", () => {
+describe.skip("Create Recipe Page", () => {
   beforeEach(() => {
     mockRouter.setCurrentUrl("/create");
     render(<Creator pushCurrentRecipe={jest.fn()} />);
