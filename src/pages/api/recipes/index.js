@@ -22,6 +22,7 @@ router
   .post(async (req, res) => {
     try {
       const { tags, ingredients, ...recipeData } = req.body; // Extract recipe data from request body
+      console.log("PostData", tags, ingredients, recipeData);
 
       const newIngredients = [];
 

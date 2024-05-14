@@ -17,9 +17,9 @@ export default function RecipeCreator({ completeFunction, selectedRecipe }) {
     author: 2,
   });
 
-  const [ingredients, setIngredients] = useState([
-    selectedRecipe.ingredients || { name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 }
-  ]);
+  const [ingredients, setIngredients] = useState(
+    selectedRecipe ? selectedRecipe.ingredients : [{ name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 }]
+  );
 
   useEffect(() => {
     if (selectedRecipe) {
@@ -39,7 +39,7 @@ export default function RecipeCreator({ completeFunction, selectedRecipe }) {
     } else {
       setFormData({
         title: "",
-        servings: 1,
+        servings: 0,
         prepSteps: "",
         isPublic: false,
         author: 1,
@@ -51,19 +51,16 @@ export default function RecipeCreator({ completeFunction, selectedRecipe }) {
   }, [selectedRecipe]);
 
   
+  const [foodAllergiesSelected, setFoodAllergiesSelected] = useState(
+    selectedRecipe ? selectedRecipe.tags.filter((tag) => tag.id <= 8) : []
+  );
+  
+  const [dietaryRestrictionsSelected, setDietaryRestrictionsSelected] = useState(
+    selectedRecipe ? selectedRecipe.tags.filter((tag) => tag.id > 8) : []
+  );
 
-  /* eslint-disable no-unused-vars */
-  const [foodAllergiesSelected, setFoodAllergiesSelected] = useState([
-    // selectedRecipe.tags.filter((tag) => tag.type === "foodAllergy"),
-    selectedRecipe.tags.filter((tag) => tag.id <= 8) || [] 
-  ]);
-  const [dietaryRestrictionsSelected, setDietaryRestrictionsSelected] =
-    useState([selectedRecipe.tags.filter((tag) => tag.id > 8) || [] 
-  ]);
   const [timeSelected, setTimeSelected] = useState([]);
   const [difficultySelected, setDifficultySelected] = useState([]);
-
-  /* eslint-disable no-unused-vars */
 
   const { title, servings, prepSteps, author, isPublic } = formData;
 
@@ -78,6 +75,7 @@ export default function RecipeCreator({ completeFunction, selectedRecipe }) {
     e.preventDefault();
     const currentDate = new Date().toISOString();
     const newRecipe = {
+      id: selectedRecipe ? selectedRecipe.id : null,
       title,
       servings: +servings,
       prepSteps,
@@ -88,6 +86,7 @@ export default function RecipeCreator({ completeFunction, selectedRecipe }) {
       // combine the foodAllergiesSelected and dietaryRestrictionsSelected into tags
       tags: [...foodAllergiesSelected, ...dietaryRestrictionsSelected],
     };
+    console.log("onsbubmit recipeobject", newRecipe);
     await completeFunction(newRecipe);
     // Reset the form data after submission
     setFormData({

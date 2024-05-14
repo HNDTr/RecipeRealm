@@ -77,6 +77,6 @@ FilterOptions.propTypes = {
   setDietaryRestrictionsSelected: PropTypes.func.isRequired,
   setTimeSelected: PropTypes.func.isRequired,
   setDifficultySelected: PropTypes.func.isRequired,
-  foodAllergiesSelected: PropTypes.arrayOf(PropTypes.array),
-  dietaryRestrictionsSelected: PropTypes.arrayOf(PropTypes.array),
+  foodAllergiesSelected: PropTypes.arrayOf(PropTypes.object),
+  dietaryRestrictionsSelected: PropTypes.arrayOf(PropTypes.object),
 };

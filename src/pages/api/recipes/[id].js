@@ -2,6 +2,7 @@ import { createRouter } from "next-connect";
 import Recipe from "../../../../models/Recipe";
 import { onError } from "../../../lib/middleware";
 import Ingredient from "../../../../models/Ingredient";
+import Tags from "../../../../models/Tags";
 
 const router = createRouter();
 
@@ -14,7 +15,7 @@ router
     res.status(200).json(recipe);
   })
   .put(async (req, res) => {
-    const { id: bodyId, ingredients, ...recipeData } = req.body; // Extract data from request body
+    const { id: bodyId, ingredients, tags, ...recipeData } = req.body; // Extract data from request body
     const { id: queryId } = req.query; // Extract id from query parameters (URL)
 
   if (bodyId !== parseInt(queryId, 10)) {
@@ -60,6 +61,19 @@ router
           });
         }),
       );
+
+      // Insert data into recipes_tags join table
+      await Promise.all(
+        tags.map(async (tag) => {
+          const { id } = await Tags.query().findOne({
+            name: tag,
+          });
+          await Recipe.relatedQuery("tags").for(updatedRecipe.id).relate({
+            id,
+          });
+        }),
+      );
+
 
       res.status(200).json(updatedRecipe);
     } catch (error) {

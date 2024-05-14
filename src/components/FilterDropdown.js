@@ -8,6 +8,10 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 export default function FilterDropdown({ title, options, onSelect, optionsSelected }) {
+
+  if (optionsSelected) {
+    console.log("OptionsSelected:",optionsSelected); // TODO: Remove this line
+  };
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState(
     optionsSelected ? optionsSelected.flat().map((option) => option.name) : []

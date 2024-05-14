@@ -90,7 +90,8 @@ export default function RecipePage({ selectedRecipe }) {
               </div>
             ))}
           </div>
-          <p>Preparation Steps: {selectedRecipe.prepSteps}</p>
+          <p><strong>Preparation Steps:</strong></p>
+          <p>{selectedRecipe.prepSteps}</p>
           <p>
             <strong>Dietary Restrictions: </strong>
             {selectedRecipe.tags.map((tag, index) => (
