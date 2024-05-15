@@ -50,7 +50,7 @@ export default function App({
               style={{
                 background: "#e5efff",
                 paddingTop: "2em",
-                height: "100vh",
+                height: "100%",
               }}
             >
               {/* <Typography variant="h2" align="center">RecipeRealm</Typography> */}

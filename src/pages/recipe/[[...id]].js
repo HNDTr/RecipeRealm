@@ -11,6 +11,9 @@ const buttonStyle = {
   color: "white",
   textTransform: "none",
   fontSize: "1em",
+  padding: "10px 20px",
+  margin: "10px 0",
+  borderRadius: "5px",
 };
 
 export default function RecipePage() {
@@ -87,6 +90,17 @@ export default function RecipePage() {
 
   // Write a callback to the save button that will save the recipe to the user's account (using the user_recipes table in the database)
 
+  const capitalizeFirstLetter = (string) => {
+    // Check if string is defined and not null
+    if (typeof string !== "string" || string.length === 0) {
+      return ""; // or any other fallback behavior you prefer
+    }
+    return string
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+  // Write a callback to the save button that will save the recipe to the user's account (using the user_recipes table in the database)
   const saveRecipe = async () => {
     if (session) {
       // Save the recipe to the user's account
@@ -163,42 +177,42 @@ export default function RecipePage() {
         View Other Recipes
       </Button>
       {selectedRecipe && (
-        <RecipeDetailsContainer>
-          <h3>{selectedRecipe.title}</h3>
-          <p>
-            <strong>Servings:</strong> {selectedRecipe.servings}
-          </p>
-          <div>
-            <p>
-              <strong>Ingredients</strong>
-            </p>
-            {selectedRecipe.ingredients.map((ingredient) => (
-              <div key={ingredient.id}>
-                <p>
+        <RecipeDetailsCard>
+          <RecipeTitle>
+            {capitalizeFirstLetter(selectedRecipe.title)}
+          </RecipeTitle>
+          <RecipeInfo>
+            <InfoLabel>Servings:</InfoLabel> {selectedRecipe.servings}
+          </RecipeInfo>
+          <RecipeInfo>
+            <InfoLabel>Ingredients:</InfoLabel>{" "}
+            <IngredientsList>
+              {selectedRecipe.ingredients.map((ingredient, index) => (
+                <IngredientItem key={ingredient.id}>
                   {ingredient.quantity} {ingredient.units} of {ingredient.name}
-                </p>
-              </div>
-            ))}
-          </div>
-          <p>
-            <strong>Preparation Steps:</strong> {selectedRecipe.prepSteps}
-          </p>
-          <p>
-            <strong>Dietary Restrictions: </strong>
+                  {index !== selectedRecipe.ingredients.length - 1 && ","}
+                </IngredientItem>
+              ))}
+            </IngredientsList>
+          </RecipeInfo>
+          <RecipeInfo>
+            <InfoLabel>Preparation Steps:</InfoLabel> {selectedRecipe.prepSteps}
+          </RecipeInfo>
+          <RecipeInfo>
+            <InfoLabel>Dietary Restrictions: </InfoLabel>
             {selectedRecipe.tags.map((tag, index) => (
               <span key={tag.id}>
                 {tag.name}
                 {index !== selectedRecipe.tags.length - 1 && ", "}
               </span>
             ))}
-          </p>
-          <p>
-            {" "}
-            <strong>Time: </strong> {selectedRecipe.time} minutes
-          </p>
-          <p>
-            <strong>Difficulty: </strong> {selectedRecipe.difficulty}
-          </p>
+          </RecipeInfo>
+          <RecipeInfo>
+            <InfoLabel>Time:</InfoLabel> {selectedRecipe.time} minutes
+          </RecipeInfo>
+          <RecipeInfo>
+            <InfoLabel>Difficulty:</InfoLabel> {selectedRecipe.difficulty}
+          </RecipeInfo>
           {isSaved ? (
             <Button onClick={unSaveRecipe} style={buttonStyle}>
               Unsave Recipe
@@ -208,7 +222,7 @@ export default function RecipePage() {
               Save Recipe
             </Button>
           )}
-        </RecipeDetailsContainer>
+        </RecipeDetailsCard>
       )}
     </Container>
   );
@@ -216,10 +230,48 @@ export default function RecipePage() {
 
 const Container = styled.div`
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
-const RecipeDetailsContainer = styled.div`
+const RecipeDetailsCard = styled.div`
   margin-top: 20px;
-  padding: 10px;
+  margin-bottom: 110px;
+  padding: 20px;
   border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  max-width: 600px;
+  width: 100%;
+`;
+
+const RecipeTitle = styled.h3`
+  text-align: center;
+  font-size: 2.5em;
+  color: #18453b;
+  margin-bottom: 20px;
+`;
+
+const RecipeInfo = styled.p`
+  margin: 10px 0;
+  font-size: 1em;
+  line-height: 1.5;
+`;
+
+const InfoLabel = styled.span`
+  font-weight: bold;
+  color: #18453b;
+  min-width: 100px; /* Adjust as needed */
+`;
+
+const IngredientsList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1; /* Allow the list to take remaining space */
+`;
+
+const IngredientItem = styled.div`
+  margin-right: 10px;
 `;
