@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { createRouter } from "next-connect";
 import Recipe from "../../../models/Recipe";
 import User from "../../../models/User";
@@ -10,14 +11,23 @@ const router = createRouter();
 router
   .post(async (req, res) => {
     try {
-      // eslint-disable-next-line camelcase
       const { recipe_id, user_id } = req.body;
       const user = await User.query().findById(user_id);
       const recipe = await Recipe.query().findById(recipe_id);
+
+      const savedRecipes = await user.$relatedQuery("savedRecipes");
+      const isAlreadySaved = savedRecipes.some(
+        (savedRecipe) => savedRecipe.id === recipe_id,
+      );
+
+      if (isAlreadySaved) {
+        return res.status(400).json({ message: "Recipe is already saved" });
+      }
+
       await user.$relatedQuery("savedRecipes").relate(recipe);
-      res.status(200).json({ message: "Recipe saved successfully" });
+      return res.status(200).json({ message: "Recipe saved successfully" });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      return res.status(500).json({ error: error.message });
     }
   })
   .get(async (req, res) => {
@@ -34,6 +44,24 @@ router
       return res.status(200).json(savedRecipes); // Added return here
     } catch (error) {
       return res.status(500).json({ error: error.message }); // Added return here
+    }
+  })
+  .delete(async (req, res) => {
+    try {
+      const { recipe_id, user_id } = req.body;
+      const user = await User.query().findById(user_id);
+      const recipe = await Recipe.query().findById(recipe_id);
+      if (!user || !recipe) {
+        return res.status(404).json({ error: "User or Recipe not found" });
+      }
+
+      await user
+        .$relatedQuery("savedRecipes")
+        .unrelate()
+        .where("id", recipe_id);
+      return res.status(200).json({ message: "Recipe removed successfully" });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
     }
   });
 

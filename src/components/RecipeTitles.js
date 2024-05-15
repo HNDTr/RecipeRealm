@@ -28,7 +28,6 @@ function RecipeTitles({ recipes, setSelectedRecipe }) {
               style={{ cursor: "pointer", color: "blue" }}
               onClick={() => {
                 setSelectedRecipe(recipe);
-                console.log("Selected Recipe:", recipe);
               }}
             >
               See Complete Recipe

@@ -17,8 +17,7 @@ export default function Creator() {
       });
 
       if (response.ok) {
-        // eslint-disable-next-line no-console
-        console.log(recipe);
+        router.push("/GlobalRecipe");
       }
     } else {
       router.back();
