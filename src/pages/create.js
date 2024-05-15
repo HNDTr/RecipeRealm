@@ -7,7 +7,7 @@ export default function Creator() {
 
   const completeFunction = async (recipe) => {
     if (recipe) {
-      const response = await fetch(`/api/recipes`, {
+      await fetch(`/api/recipes`, {
         method: "POST",
         body: JSON.stringify(recipe),
         headers: new Headers({
@@ -15,11 +15,6 @@ export default function Creator() {
           "Content-Type": "application/json",
         }),
       });
-
-      if (response.ok) {
-        // eslint-disable-next-line no-console
-        console.log(recipe);
-      }
     } else {
       router.back();
     }

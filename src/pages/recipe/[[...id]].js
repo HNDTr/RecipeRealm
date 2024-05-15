@@ -9,6 +9,9 @@ const buttonStyle = {
   color: "white",
   textTransform: "none",
   fontSize: "1em",
+  padding: "10px 20px",
+  margin: "10px 0",
+  borderRadius: "5px",
 };
 
 export default function RecipePage({ selectedRecipe }) {
@@ -18,19 +21,23 @@ export default function RecipePage({ selectedRecipe }) {
   // eslint-disable-next-line no-param-reassign
   selectedRecipe = {
     ...selectedRecipe,
-    dietaryRestrictions: ["Gluten Free, Vegetarian"],
+    dietaryRestrictions: ["Gluten Free", "Vegetarian"],
     time: 60,
     difficulty: "Easy",
     ingredients: ["1 cup of flour", "1 cup of sugar", "1 cup of water"],
+    prepSteps: "Mix all ingredients and bake at 350°F for 30 minutes.",
   };
 
-  // Write a callback to the save button that will save the recipe to the user's account (using the user_recipes table in the database)
+  const capitalizeFirstLetter = (string) =>
+    string
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
 
+  // Write a callback to the save button that will save the recipe to the user's account (using the user_recipes table in the database)
   const saveRecipe = async () => {
     /* eslint-disable no-console */
-    console.log("session: ", session);
     if (session) {
-      console.log("User ID:", session.user.id);
       // Save the recipe to the user's account
       const response = await fetch("/api/user_recipes", {
         method: "POST",
@@ -49,7 +56,6 @@ export default function RecipePage({ selectedRecipe }) {
         console.log(response);
       }
     } else {
-      console.log("User not signed in");
       // Save the recipe to a fake user id
       const response = await fetch("/api/user_recipes", {
         method: "POST",
@@ -64,8 +70,6 @@ export default function RecipePage({ selectedRecipe }) {
       if (response.ok) {
         console.log("Recipe saved successfully");
       } else {
-        console.log(response);
-        console.log(response.body);
         console.log("Failed to save recipe");
       }
     }
@@ -78,24 +82,34 @@ export default function RecipePage({ selectedRecipe }) {
         View Other Recipes
       </Button>
       {selectedRecipe && (
-        <RecipeDetailsContainer>
-          <h3>{selectedRecipe.title}</h3>
-          <p>Servings: {selectedRecipe.servings}</p>
-          <p>
-            Ingredients:{" "}
-            {selectedRecipe.ingredients.join(", ") || "No ingredients"}
-          </p>
-          <p>Preparation Steps: {selectedRecipe.prepSteps}</p>
-          <p>
-            Dietary Restrictions:{" "}
+        <RecipeDetailsCard>
+          <RecipeTitle>
+            {capitalizeFirstLetter(selectedRecipe.title)}
+          </RecipeTitle>
+          <RecipeInfo>
+            <InfoLabel>Servings:</InfoLabel> {selectedRecipe.servings}
+          </RecipeInfo>
+          <RecipeInfo>
+            <InfoLabel>Ingredients:</InfoLabel>{" "}
+            {selectedRecipe.ingredients.join(", ")}
+          </RecipeInfo>
+          <RecipeInfo>
+            <InfoLabel>Preparation Steps:</InfoLabel> {selectedRecipe.prepSteps}
+          </RecipeInfo>
+          <RecipeInfo>
+            <InfoLabel>Dietary Restrictions:</InfoLabel>{" "}
             {selectedRecipe.dietaryRestrictions.join(", ") || "None"}
-          </p>
-          <p>Time: {selectedRecipe.time} minutes</p>
-          <p>Difficulty: {selectedRecipe.difficulty}</p>
+          </RecipeInfo>
+          <RecipeInfo>
+            <InfoLabel>Time:</InfoLabel> {selectedRecipe.time} minutes
+          </RecipeInfo>
+          <RecipeInfo>
+            <InfoLabel>Difficulty:</InfoLabel> {selectedRecipe.difficulty}
+          </RecipeInfo>
           <Button onClick={saveRecipe} style={buttonStyle}>
             Save Recipe
           </Button>
-        </RecipeDetailsContainer>
+        </RecipeDetailsCard>
       )}
     </Container>
   );
@@ -108,10 +122,37 @@ RecipePage.propTypes = {
 
 const Container = styled.div`
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
-const RecipeDetailsContainer = styled.div`
+const RecipeDetailsCard = styled.div`
   margin-top: 20px;
-  padding: 10px;
+  margin-bottom: 110px;
+  padding: 20px;
   border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  max-width: 600px;
+  width: 100%;
+`;
+
+const RecipeTitle = styled.h3`
+  text-align: center;
+  font-size: 2.5em;
+  color: #18453b;
+  margin-bottom: 20px;
+`;
+
+const RecipeInfo = styled.p`
+  margin: 10px 0;
+  font-size: 1em;
+  line-height: 1.5;
+`;
+
+const InfoLabel = styled.span`
+  font-weight: bold;
+  color: #18453b;
 `;
