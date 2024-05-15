@@ -110,6 +110,7 @@ export default function RecipeCreator({ completeFunction }) {
             control={
               <Checkbox
                 checked={isPublic}
+                data-testid="publicCheckbox"
                 onChange={(e) =>
                   setFormData((prevState) => ({
                     ...prevState,
