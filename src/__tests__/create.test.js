@@ -1,4 +1,5 @@
 import React from "react";
+import { SessionProvider } from "next-auth/react";
 import { render, screen } from "@testing-library/react";
 import mockRouter from "next-router-mock";
 import { createDynamicRouteParser } from "next-router-mock/dynamic-routes";
@@ -9,17 +10,17 @@ import Creator from "@/pages/create";
 jest.mock("next/router", () => require("next-router-mock"));
 
 // Tell the mock router about the pages we will use (so we can use dynamic routes)
-mockRouter.useParser(
-  createDynamicRouteParser([
-    // These paths should match those found in the `/pages` folder:
-    "/create",
-  ]),
-);
+mockRouter.useParser(createDynamicRouteParser(["/create"]));
 
-describe.skip("Create Recipe Page", () => {
+describe("Create Recipe Page", () => {
   beforeEach(() => {
     mockRouter.setCurrentUrl("/create");
-    render(<Creator pushCurrentRecipe={jest.fn()} />);
+    render(
+      // Must mock session provider to avoid test errors due to invalid session.
+      <SessionProvider session={{ user: { id: "mockUserID" } }}>
+        <Creator pushCurrentRecipe={jest.fn()} />
+      </SessionProvider>,
+    );
   });
 
   describe("Form Inputs", () => {

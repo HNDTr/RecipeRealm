@@ -14,7 +14,7 @@ export default function RecipeCreator({ completeFunction }) {
     servings: 1,
     prepSteps: "",
     isPublic: false,
-    author: session.user.id,
+    author: session?.user?.id, // Optional Chaining operator used to handle undefined.
   });
 
   const [ingredients, setIngredients] = useState([
