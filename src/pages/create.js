@@ -7,7 +7,7 @@ export default function Creator() {
 
   const completeFunction = async (recipe) => {
     if (recipe) {
-      await fetch(`/api/recipes`, {
+      const response = await fetch(`/api/recipes`, {
         method: "POST",
         body: JSON.stringify(recipe),
         headers: new Headers({
@@ -15,6 +15,10 @@ export default function Creator() {
           "Content-Type": "application/json",
         }),
       });
+
+      if (response.ok) {
+        router.push("/GlobalRecipe");
+      }
     } else {
       router.back();
     }

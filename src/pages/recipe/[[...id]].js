@@ -1,8 +1,10 @@
 import styled from "styled-components";
-import PropTypes from "prop-types";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Button } from "@mui/material";
-import { useSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
+
+/* eslint-disable no-console  */
 
 const buttonStyle = {
   backgroundColor: "#18453B",
@@ -14,26 +16,85 @@ const buttonStyle = {
   borderRadius: "5px",
 };
 
-export default function RecipePage({ selectedRecipe }) {
+export default function RecipePage() {
   const router = useRouter();
   const { data: session } = useSession();
+  const [isSaved, setIsSaved] = useState();
 
-  // eslint-disable-next-line no-param-reassign
-  selectedRecipe = {
-    ...selectedRecipe,
-    dietaryRestrictions: ["Gluten Free", "Vegetarian"],
-    time: 60,
-    difficulty: "Easy",
-    ingredients: ["1 cup of flour", "1 cup of sugar", "1 cup of water"],
-    prepSteps: "Mix all ingredients and bake at 350°F for 30 minutes.",
+  // extract recipeid from the URL
+  const { id: recipeid } = router.query;
+
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [fetchedIngredients, setFetchedIngredients] = useState([]);
+  const [fetchedTags, setFetchedTags] = useState([]);
+
+  useEffect(() => {
+    // Fetch the recipes ingredients from the database
+    const selectedRecipeIngredients = async () => {
+      try {
+        const response = await fetch(`/api/recipes_ingredients/${+recipeid}`);
+        if (response.ok) {
+          const data = await response.json();
+          setFetchedIngredients(data);
+        } else {
+          console.error("Failed to fetch ingredients");
+        }
+      } catch (error) {
+        console.error("Error fetching ingredients:", error);
+      }
+    };
+    selectedRecipeIngredients();
+  }, [recipeid]);
+
+  useEffect(() => {
+    // Fetch the recipes tags from the database
+    const selectedRecipeTags = async () => {
+      try {
+        const response = await fetch(`/api/recipes_tags/${+recipeid}`);
+        if (response.ok) {
+          const data = await response.json();
+          setFetchedTags(data);
+        } else {
+          console.error("Failed to fetch tags");
+        }
+      } catch (error) {
+        console.error("Error fetching tags:", error);
+      }
+    };
+    selectedRecipeTags();
+  }, [recipeid]);
+
+  const getRecipe = async () => {
+    // Fetch the recipe from the database and fill in it's fields
+    const response = await fetch(`/api/recipes/${+recipeid}`);
+    const recipe = await response.json();
+
+    setSelectedRecipe({
+      title: recipe.title,
+      servings: recipe.servings,
+      prepSteps: recipe.prepSteps,
+      author: recipe.author,
+      isPublic: recipe.isPublic,
+      id: +recipeid,
+      edited: recipe.edited,
+      tags: fetchedTags,
+      time: 60,
+      difficulty: "Easy",
+      ingredients: fetchedIngredients,
+    });
   };
+
+  useEffect(() => {
+    getRecipe();
+  });
+
+  // Write a callback to the save button that will save the recipe to the user's account (using the user_recipes table in the database)
 
   const capitalizeFirstLetter = (string) => {
     // Check if string is defined and not null
     if (typeof string !== "string" || string.length === 0) {
       return ""; // or any other fallback behavior you prefer
     }
-
     return string
       .split(" ")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -41,7 +102,6 @@ export default function RecipePage({ selectedRecipe }) {
   };
   // Write a callback to the save button that will save the recipe to the user's account (using the user_recipes table in the database)
   const saveRecipe = async () => {
-    /* eslint-disable no-console */
     if (session) {
       // Save the recipe to the user's account
       const response = await fetch("/api/user_recipes", {
@@ -50,36 +110,66 @@ export default function RecipePage({ selectedRecipe }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          recipe_id: selectedRecipe.id,
+          recipe_id: +recipeid,
           user_id: session.user.id,
         }),
       });
       if (response.ok) {
-        console.log("Recipe saved successfully");
+        setIsSaved(true);
+      } else if (response.status === 400) {
+        // eslint-disable-next-line no-alert
+        alert("Recipe is already saved");
       } else {
-        console.log("Failed to save recipe");
-        console.log(response);
+        setIsSaved(false);
       }
     } else {
-      // Save the recipe to a fake user id
+      // If the user is not signed in, prompt them to sign in
+      // eslint-disable-next-line no-alert
+      alert("Please sign in to save the recipe.");
+      // Redirect the user to the sign in page
+      await signIn("google", { callbackUrl: "/GlobalRecipe" });
+    }
+  };
+
+  const unSaveRecipe = async () => {
+    if (session) {
+      // Save the recipe to the user's account
       const response = await fetch("/api/user_recipes", {
-        method: "POST",
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          recipe_id: selectedRecipe.id,
-          user_id: 1,
+          recipe_id: +recipeid,
+          user_id: session.user.id,
         }),
       });
       if (response.ok) {
-        console.log("Recipe saved successfully");
+        setIsSaved(false);
       } else {
-        console.log("Failed to save recipe");
+        setIsSaved(false);
       }
+    } else {
+      // If the user is not signed in, prompt them to sign in
+      // eslint-disable-next-line no-alert
+      alert("Please sign in to remove the recipe.");
+      // Redirect the user to the sign in page
+      await signIn("google", { callbackUrl: "/GlobalRecipe" });
     }
-    /* eslint-enable no-console */
   };
+
+  useEffect(() => {
+    const checkIfSaved = async () => {
+      if (!session) return;
+      const response = await fetch(
+        `/api/user_recipes?user_id=${session.user.id}`,
+      );
+      const data = await response.json();
+      const recipeIsSaved = data.some((recipe) => recipe.id === +recipeid);
+      setIsSaved(recipeIsSaved);
+    };
+    checkIfSaved();
+  }, [session, selectedRecipe, recipeid]);
 
   return (
     <Container>
@@ -96,14 +186,26 @@ export default function RecipePage({ selectedRecipe }) {
           </RecipeInfo>
           <RecipeInfo>
             <InfoLabel>Ingredients:</InfoLabel>{" "}
-            {selectedRecipe.ingredients.join(", ")}
+            <IngredientsList>
+              {selectedRecipe.ingredients.map((ingredient, index) => (
+                <IngredientItem key={ingredient.id}>
+                  {ingredient.quantity} {ingredient.units} of {ingredient.name}
+                  {index !== selectedRecipe.ingredients.length - 1 && ","}
+                </IngredientItem>
+              ))}
+            </IngredientsList>
           </RecipeInfo>
           <RecipeInfo>
             <InfoLabel>Preparation Steps:</InfoLabel> {selectedRecipe.prepSteps}
           </RecipeInfo>
           <RecipeInfo>
-            <InfoLabel>Dietary Restrictions:</InfoLabel>{" "}
-            {selectedRecipe.dietaryRestrictions.join(", ") || "None"}
+            <InfoLabel>Dietary Restrictions: </InfoLabel>
+            {selectedRecipe.tags.map((tag, index) => (
+              <span key={tag.id}>
+                {tag.name}
+                {index !== selectedRecipe.tags.length - 1 && ", "}
+              </span>
+            ))}
           </RecipeInfo>
           <RecipeInfo>
             <InfoLabel>Time:</InfoLabel> {selectedRecipe.time} minutes
@@ -111,19 +213,20 @@ export default function RecipePage({ selectedRecipe }) {
           <RecipeInfo>
             <InfoLabel>Difficulty:</InfoLabel> {selectedRecipe.difficulty}
           </RecipeInfo>
-          <Button onClick={saveRecipe} style={buttonStyle}>
-            Save Recipe
-          </Button>
+          {isSaved ? (
+            <Button onClick={unSaveRecipe} style={buttonStyle}>
+              Unsave Recipe
+            </Button>
+          ) : (
+            <Button onClick={saveRecipe} style={buttonStyle}>
+              Save Recipe
+            </Button>
+          )}
         </RecipeDetailsCard>
       )}
     </Container>
   );
 }
-
-RecipePage.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  selectedRecipe: PropTypes.object,
-};
 
 const Container = styled.div`
   padding: 20px;
@@ -160,4 +263,15 @@ const RecipeInfo = styled.p`
 const InfoLabel = styled.span`
   font-weight: bold;
   color: #18453b;
+  min-width: 100px; /* Adjust as needed */
+`;
+
+const IngredientsList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1; /* Allow the list to take remaining space */
+`;
+
+const IngredientItem = styled.div`
+  margin-right: 10px;
 `;

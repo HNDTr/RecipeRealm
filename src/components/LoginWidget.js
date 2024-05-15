@@ -26,15 +26,13 @@ export default function LoginWidget() {
     <div>
       {session ? (
         <div>
-          <p>
-            <div onClick={handleProfile}>
-              <AccountCircleIcon style={{ fontSize: "2.5em" }} />
-            </div>
-            {/* Signed in as {session.user.email}{" "}
-            <button type="button" onClick={handleSignOut}>
-              Sign out
-            </button> */}
-          </p>
+          <div onClick={handleProfile}>
+            <AccountCircleIcon style={{ fontSize: "2.5em" }} />
+          </div>
+          {/* Signed in as {session.user.email}{" "}
+          <button type="button" onClick={handleSignOut}>
+            Sign out
+          </button> */}
         </div>
       ) : (
         <div>
