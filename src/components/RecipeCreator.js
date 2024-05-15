@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import { Grid, TextField, InputLabel, Button } from "@mui/material";
 import styles from "../styles/Editor.module.css";
@@ -6,6 +7,7 @@ import FilterOptions from "./FilterOptions";
 import IngredientsBar from "./ingredientsBar";
 
 export default function RecipeCreator({ completeFunction }) {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
     servings: 1,
@@ -50,6 +52,8 @@ export default function RecipeCreator({ completeFunction }) {
       tags: [...foodAllergiesSelected, ...dietaryRestrictionsSelected],
     };
     await completeFunction(newRecipe);
+    router.push("/GlobalRecipe");
+
     // Reset the form data after submission
     setFormData({
       title: "",
@@ -61,6 +65,7 @@ export default function RecipeCreator({ completeFunction }) {
         { name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 },
       ],
     });
+    setFoodAllergiesSelected([]);
   };
 
   return (

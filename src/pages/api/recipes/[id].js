@@ -15,7 +15,6 @@ router
   .put(async (req, res) => {
     const { id, ...updatedRecipe } = req.body;
     if (id !== parseInt(req.query.id, 10)) {
-      // console.log(id);
       res.status(400).end(`URL and object does not match`);
       return;
     }

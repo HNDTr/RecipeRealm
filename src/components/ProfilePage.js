@@ -21,13 +21,21 @@ function ProfilePage() {
           const data = await response.json();
           setSavedRecipes(data);
         } else {
+          // eslint-disable-next-line no-console
           console.error("Failed to fetch saved recipes");
         }
       }
     };
-
     fetchSavedRecipes();
-  }, [session]);
+  }, [session, router]);
+
+  const setSelectedRecipe = (recipe) => {
+    if (recipe) {
+      router.push(`/recipe/${recipe.id}`);
+    } else {
+      router.push("/GlobalRecipe");
+    }
+  };
 
   const handleSignOut = async () => {
     await signOut();
@@ -56,7 +64,10 @@ function ProfilePage() {
           />
         </div>
       )}
-      <RecipeTitles recipes={savedRecipes} setSelectedRecipe={() => {}} />
+      <RecipeTitles
+        recipes={savedRecipes}
+        setSelectedRecipe={(recipe) => setSelectedRecipe(recipe)}
+      />
     </Container>
   );
 }

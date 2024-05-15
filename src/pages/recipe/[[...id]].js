@@ -1,8 +1,10 @@
 import styled from "styled-components";
-import PropTypes from "prop-types";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Button } from "@mui/material";
-import { useSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
+
+/* eslint-disable no-console  */
 
 const buttonStyle = {
   backgroundColor: "#18453B",
@@ -11,26 +13,82 @@ const buttonStyle = {
   fontSize: "1em",
 };
 
-export default function RecipePage({ selectedRecipe }) {
+export default function RecipePage() {
   const router = useRouter();
   const { data: session } = useSession();
+  const [isSaved, setIsSaved] = useState();
 
-  // eslint-disable-next-line no-param-reassign
-  selectedRecipe = {
-    ...selectedRecipe,
-    dietaryRestrictions: ["Gluten Free, Vegetarian"],
-    time: 60,
-    difficulty: "Easy",
-    ingredients: ["1 cup of flour", "1 cup of sugar", "1 cup of water"],
+  // extract recipeid from the URL
+  const { id: recipeid } = router.query;
+
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [fetchedIngredients, setFetchedIngredients] = useState([]);
+  const [fetchedTags, setFetchedTags] = useState([]);
+
+  useEffect(() => {
+    // Fetch the recipes ingredients from the database
+    const selectedRecipeIngredients = async () => {
+      try {
+        const response = await fetch(`/api/recipes_ingredients/${+recipeid}`);
+        if (response.ok) {
+          const data = await response.json();
+          setFetchedIngredients(data);
+        } else {
+          console.error("Failed to fetch ingredients");
+        }
+      } catch (error) {
+        console.error("Error fetching ingredients:", error);
+      }
+    };
+    selectedRecipeIngredients();
+  }, [recipeid]);
+
+  useEffect(() => {
+    // Fetch the recipes tags from the database
+    const selectedRecipeTags = async () => {
+      try {
+        const response = await fetch(`/api/recipes_tags/${+recipeid}`);
+        if (response.ok) {
+          const data = await response.json();
+          setFetchedTags(data);
+        } else {
+          console.error("Failed to fetch tags");
+        }
+      } catch (error) {
+        console.error("Error fetching tags:", error);
+      }
+    };
+    selectedRecipeTags();
+  }, [recipeid]);
+
+  const getRecipe = async () => {
+    // Fetch the recipe from the database and fill in it's fields
+    const response = await fetch(`/api/recipes/${+recipeid}`);
+    const recipe = await response.json();
+
+    setSelectedRecipe({
+      title: recipe.title,
+      servings: recipe.servings,
+      prepSteps: recipe.prepSteps,
+      author: recipe.author,
+      isPublic: recipe.isPublic,
+      id: +recipeid,
+      edited: recipe.edited,
+      tags: fetchedTags,
+      time: 60,
+      difficulty: "Easy",
+      ingredients: fetchedIngredients,
+    });
   };
+
+  useEffect(() => {
+    getRecipe();
+  });
 
   // Write a callback to the save button that will save the recipe to the user's account (using the user_recipes table in the database)
 
   const saveRecipe = async () => {
-    /* eslint-disable no-console */
-    console.log("session: ", session);
     if (session) {
-      console.log("User ID:", session.user.id);
       // Save the recipe to the user's account
       const response = await fetch("/api/user_recipes", {
         method: "POST",
@@ -38,39 +96,66 @@ export default function RecipePage({ selectedRecipe }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          recipe_id: selectedRecipe.id,
+          recipe_id: +recipeid,
           user_id: session.user.id,
         }),
       });
       if (response.ok) {
-        console.log("Recipe saved successfully");
+        setIsSaved(true);
+      } else if (response.status === 400) {
+        // eslint-disable-next-line no-alert
+        alert("Recipe is already saved");
       } else {
-        console.log("Failed to save recipe");
-        console.log(response);
+        setIsSaved(false);
       }
     } else {
-      console.log("User not signed in");
-      // Save the recipe to a fake user id
+      // If the user is not signed in, prompt them to sign in
+      // eslint-disable-next-line no-alert
+      alert("Please sign in to save the recipe.");
+      // Redirect the user to the sign in page
+      await signIn("google", { callbackUrl: "/GlobalRecipe" });
+    }
+  };
+
+  const unSaveRecipe = async () => {
+    if (session) {
+      // Save the recipe to the user's account
       const response = await fetch("/api/user_recipes", {
-        method: "POST",
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          recipe_id: selectedRecipe.id,
-          user_id: 1,
+          recipe_id: +recipeid,
+          user_id: session.user.id,
         }),
       });
       if (response.ok) {
-        console.log("Recipe saved successfully");
+        setIsSaved(false);
       } else {
-        console.log(response);
-        console.log(response.body);
-        console.log("Failed to save recipe");
+        setIsSaved(false);
       }
+    } else {
+      // If the user is not signed in, prompt them to sign in
+      // eslint-disable-next-line no-alert
+      alert("Please sign in to remove the recipe.");
+      // Redirect the user to the sign in page
+      await signIn("google", { callbackUrl: "/GlobalRecipe" });
     }
-    /* eslint-enable no-console */
   };
+
+  useEffect(() => {
+    const checkIfSaved = async () => {
+      if (!session) return;
+      const response = await fetch(
+        `/api/user_recipes?user_id=${session.user.id}`,
+      );
+      const data = await response.json();
+      const recipeIsSaved = data.some((recipe) => recipe.id === +recipeid);
+      setIsSaved(recipeIsSaved);
+    };
+    checkIfSaved();
+  }, [session, selectedRecipe, recipeid]);
 
   return (
     <Container>
@@ -80,31 +165,54 @@ export default function RecipePage({ selectedRecipe }) {
       {selectedRecipe && (
         <RecipeDetailsContainer>
           <h3>{selectedRecipe.title}</h3>
-          <p>Servings: {selectedRecipe.servings}</p>
           <p>
-            Ingredients:{" "}
-            {selectedRecipe.ingredients.join(", ") || "No ingredients"}
+            <strong>Servings:</strong> {selectedRecipe.servings}
           </p>
-          <p>Preparation Steps: {selectedRecipe.prepSteps}</p>
+          <div>
+            <p>
+              <strong>Ingredients</strong>
+            </p>
+            {selectedRecipe.ingredients.map((ingredient) => (
+              <div key={ingredient.id}>
+                <p>
+                  {ingredient.quantity} {ingredient.units} of {ingredient.name}
+                </p>
+              </div>
+            ))}
+          </div>
           <p>
-            Dietary Restrictions:{" "}
-            {selectedRecipe.dietaryRestrictions.join(", ") || "None"}
+            <strong>Preparation Steps:</strong> {selectedRecipe.prepSteps}
           </p>
-          <p>Time: {selectedRecipe.time} minutes</p>
-          <p>Difficulty: {selectedRecipe.difficulty}</p>
-          <Button onClick={saveRecipe} style={buttonStyle}>
-            Save Recipe
-          </Button>
+          <p>
+            <strong>Dietary Restrictions: </strong>
+            {selectedRecipe.tags.map((tag, index) => (
+              <span key={tag.id}>
+                {tag.name}
+                {index !== selectedRecipe.tags.length - 1 && ", "}
+              </span>
+            ))}
+          </p>
+          <p>
+            {" "}
+            <strong>Time: </strong> {selectedRecipe.time} minutes
+          </p>
+          <p>
+            <strong>Difficulty: </strong> {selectedRecipe.difficulty}
+          </p>
+          {isSaved ? (
+            <Button onClick={unSaveRecipe} style={buttonStyle}>
+              Unsave Recipe
+            </Button>
+          ) : (
+            <Button onClick={saveRecipe} style={buttonStyle}>
+              Save Recipe
+            </Button>
+          )}
         </RecipeDetailsContainer>
       )}
     </Container>
   );
 }
-
-RecipePage.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  selectedRecipe: PropTypes.object,
-};
 
 const Container = styled.div`
   padding: 20px;
