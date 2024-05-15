@@ -8,7 +8,7 @@ import sushiImage from "../material/images/sushi-png.webp";
 const Container = styled("div")(({ theme: styledTheme }) => ({
   marginTop: styledTheme.spacing(0),
   paddingTop: styledTheme.spacing(10), // This adds space at the top
-  paddingBottom: styledTheme.spacing(10), // Add padding at the bottom to increase height
+  paddingBottom: styledTheme.spacing(25), // Add padding at the bottom to increase height
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
