@@ -266,12 +266,12 @@ const InfoLabel = styled.span`
   min-width: 100px; /* Adjust as needed */
 `;
 
-const IngredientsList = styled.div`
+const IngredientsList = styled.ul`
   display: flex;
   flex-wrap: wrap;
   flex: 1; /* Allow the list to take remaining space */
 `;
 
-const IngredientItem = styled.div`
+const IngredientItem = styled.p`
   margin-right: 10px;
 `;
