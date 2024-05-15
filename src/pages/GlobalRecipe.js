@@ -1,23 +1,9 @@
 import { PropTypes } from "prop-types";
 import { useState, useEffect } from "react";
-import Button from "@mui/material/Button";
-import FilterOptions from "../components/FilterOptions";
 import RecipeTitles from "@/components/RecipeTitles";
 import SearchBar from "@/components/SearchBar";
 
-const buttonStyle = {
-  backgroundColor: "#18453B",
-  color: "white",
-  textTransform: "none",
-  fontSize: "1em",
-};
-
 function GlobalRecipe({ selectedRecipe, setSelectedRecipe }) {
-  const [foodAllergiesSelected, setFoodAllergiesSelected] = useState([]);
-  const [dietaryRestrictionsSelected, setDietaryRestrictionsSelected] =
-    useState([]);
-  const [timeSelected, setTimeSelected] = useState([]);
-  const [difficultySelected, setDifficultySelected] = useState([]);
   const [originalRecipes, setOriginalRecipes] = useState([]); // changed from useState([{}])
   const [recipes, setRecipes] = useState([]);
 
@@ -48,31 +34,9 @@ function GlobalRecipe({ selectedRecipe, setSelectedRecipe }) {
     }
   };
 
-  const applyFilters = () => {
-    // eslint-disable-next-line no-console
-    console.log("Filters applied");
-    // eslint-disable-next-line no-console
-    console.log("Food Allergies Selected: ", foodAllergiesSelected);
-    // eslint-disable-next-line no-console
-    console.log("Dietary Restrictions Selected: ", dietaryRestrictionsSelected);
-    // eslint-disable-next-line no-console
-    console.log("Time Selected: ", timeSelected);
-    // eslint-disable-next-line no-console
-    console.log("Difficulty Selected: ", difficultySelected);
-  };
-
   return (
     <div>
       <SearchBar searchKeywords={searchKeywords} />
-      <FilterOptions
-        setFoodAllergiesSelected={setFoodAllergiesSelected}
-        setDietaryRestrictionsSelected={setDietaryRestrictionsSelected}
-        setTimeSelected={setTimeSelected}
-        setDifficultySelected={setDifficultySelected}
-      />
-      <Button style={buttonStyle} onClick={() => applyFilters()}>
-        Apply
-      </Button>
       <RecipeTitles
         recipes={recipes}
         selectedRecipe={selectedRecipe}
