@@ -17,6 +17,8 @@ const recipeShape = PropTypes.shape({
   isPublic: PropTypes.bool.isRequired,
   edited: PropTypes.string.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  time: PropTypes.string,
+  difficulty: PropTypes.string,
 });
 
 export default recipeShape;

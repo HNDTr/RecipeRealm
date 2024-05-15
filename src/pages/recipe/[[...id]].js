@@ -74,10 +74,10 @@ export default function RecipePage() {
       isPublic: recipe.isPublic,
       id: +recipeid,
       edited: recipe.edited,
-      tags: fetchedTags,
-      time: 60,
-      difficulty: "Easy",
+      difficulty: recipe.difficulty,
+      time: recipe.time,
       ingredients: fetchedIngredients,
+      tags: fetchedTags,
     });
   };
 
@@ -166,11 +166,11 @@ export default function RecipePage() {
         <RecipeDetailsContainer>
           <h3>{selectedRecipe.title}</h3>
           <p>
-            <strong>Servings:</strong> {selectedRecipe.servings}
+            <strong>Servings: </strong> {selectedRecipe.servings}
           </p>
           <div>
             <p>
-              <strong>Ingredients</strong>
+              <strong>Ingredients: </strong>
             </p>
             {selectedRecipe.ingredients.map((ingredient) => (
               <div key={ingredient.id}>
@@ -181,7 +181,7 @@ export default function RecipePage() {
             ))}
           </div>
           <p>
-            <strong>Preparation Steps:</strong> {selectedRecipe.prepSteps}
+            <strong>Preparation Steps: </strong> {selectedRecipe.prepSteps}
           </p>
           <p>
             <strong>Dietary Restrictions: </strong>
@@ -194,7 +194,7 @@ export default function RecipePage() {
           </p>
           <p>
             {" "}
-            <strong>Time: </strong> {selectedRecipe.time} minutes
+            <strong>Time: </strong> {selectedRecipe.time}
           </p>
           <p>
             <strong>Difficulty: </strong> {selectedRecipe.difficulty}
