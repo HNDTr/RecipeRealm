@@ -1,12 +1,33 @@
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { styled } from "@mui/material/styles";
-import React from "react";
+import RecipeTitles from "./RecipeTitles";
 
 function ProfilePage() {
   const router = useRouter();
   const { data: session } = useSession();
+
+  const [savedRecipes, setSavedRecipes] = useState([]);
+
+  useEffect(() => {
+    const fetchSavedRecipes = async () => {
+      if (session) {
+        const response = await fetch(
+          `/api/user_recipes?user_id=${session.user.id}`,
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setSavedRecipes(data);
+        } else {
+          console.error("Failed to fetch saved recipes");
+        }
+      }
+    };
+
+    fetchSavedRecipes();
+  }, [session]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -15,6 +36,7 @@ function ProfilePage() {
 
   const Container = styled("div")(({ theme: styledTheme }) => ({
     display: "flex",
+    // height set to screen height
     flexDirection: "column",
     alignItems: "center", // Center items horizontally
     justifyContent: "center", // Center items vertically
@@ -33,9 +55,7 @@ function ProfilePage() {
           />
         </div>
       )}
-      {/* <div onClick={handleSignOut}>
-            <LogoutIcon />
-          </div> */}
+      <RecipeTitles recipes={savedRecipes} setSelectedRecipe={() => {}} />
     </Container>
   );
 }

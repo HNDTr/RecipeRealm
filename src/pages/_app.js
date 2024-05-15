@@ -46,7 +46,13 @@ export default function App({
           <main
             style={{ width: "100%", height: "100%", background: "#e5efff" }}
           >
-            <Container style={{ background: "#e5efff", paddingTop: "2em" }}>
+            <Container
+              style={{
+                background: "#e5efff",
+                paddingTop: "2em",
+                height: "100vh",
+              }}
+            >
               {/* <Typography variant="h2" align="center">RecipeRealm</Typography> */}
               <NavBar />
               <Component {...props} />
