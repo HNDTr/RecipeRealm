@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 // import { useState } from "react"
 // import { Link } from "react-router-dom";
 
-const Container = styled("divs")(({ theme: styledTheme }) => ({
+const Container = styled("div")(({ theme: styledTheme }) => ({
   background: "#b2d1ff",
   marginTop: styledTheme.spacing(0),
   paddingTop: styledTheme.spacing(0),

@@ -1,17 +1,20 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { Grid, TextField, InputLabel, Button } from "@mui/material";
+import { useSession } from "next-auth/react";
 import styles from "../styles/Editor.module.css";
 import FilterOptions from "./FilterOptions";
 import IngredientsBar from "./ingredientsBar";
 
 export default function RecipeCreator({ completeFunction }) {
+  const { data: session } = useSession();
+
   const [formData, setFormData] = useState({
     title: "",
     servings: 1,
     prepSteps: "",
     isPublic: false,
-    author: 2,
+    author: session?.user?.id, // Optional Chaining operator used to handle undefined.
   });
 
   const [ingredients, setIngredients] = useState([
@@ -56,7 +59,7 @@ export default function RecipeCreator({ completeFunction }) {
       servings: 1,
       prepSteps: "",
       isPublic: false,
-      author: 1,
+      author: session.user.id,
       ingredients: [
         { name: "", quantity: 0.0, unit: "cups", indexInRecipe: 0 },
       ],
