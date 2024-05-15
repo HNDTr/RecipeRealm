@@ -45,7 +45,6 @@ function ProfilePage() {
   const Container = styled("div")(({ theme: styledTheme }) => ({
     display: "flex",
     // height set to screen height
-    height: "100vh",
     flexDirection: "column",
     alignItems: "center", // Center items horizontally
     justifyContent: "center", // Center items vertically
