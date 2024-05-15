@@ -28,12 +28,17 @@ export default function RecipePage({ selectedRecipe }) {
     prepSteps: "Mix all ingredients and bake at 350°F for 30 minutes.",
   };
 
-  const capitalizeFirstLetter = (string) =>
-    string
+  const capitalizeFirstLetter = (string) => {
+    // Check if string is defined and not null
+    if (typeof string !== "string" || string.length === 0) {
+      return ""; // or any other fallback behavior you prefer
+    }
+
+    return string
       .split(" ")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
-
+  };
   // Write a callback to the save button that will save the recipe to the user's account (using the user_recipes table in the database)
   const saveRecipe = async () => {
     /* eslint-disable no-console */

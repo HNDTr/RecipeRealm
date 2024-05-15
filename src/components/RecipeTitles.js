@@ -12,12 +12,17 @@ const Container = styled("div")(({ theme: styledTheme }) => ({
   alignItems: "center",
 }));
 
-const capitalizeFirstLetter = (string) =>
-  string
+const capitalizeFirstLetter = (string) => {
+  // Check if string is defined and not null
+  if (typeof string !== "string" || string.length === 0) {
+    return ""; // or any other fallback behavior you prefer
+  }
+
+  return string
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
-
+};
 function RecipeTitles({ recipes, setSelectedRecipe }) {
   return (
     <Container>
