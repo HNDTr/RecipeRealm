@@ -77,10 +77,10 @@ export default function RecipePage() {
       isPublic: recipe.isPublic,
       id: +recipeid,
       edited: recipe.edited,
-      tags: fetchedTags,
-      time: 60,
-      difficulty: "Easy",
+      difficulty: recipe.difficulty,
+      time: recipe.time,
       ingredients: fetchedIngredients,
+      tags: fetchedTags,
     });
   };
 
