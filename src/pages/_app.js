@@ -44,7 +44,12 @@ export default function App({
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
           <main
-            style={{ width: "100%", height: "100%", background: "#e5efff" }}
+            style={{
+              width: "100%",
+              minHeight: "100vh",
+              maxHeight: "100%",
+              background: "#e5efff",
+            }}
           >
             <Container
               style={{
