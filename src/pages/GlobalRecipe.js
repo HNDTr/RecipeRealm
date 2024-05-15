@@ -1,6 +1,5 @@
 import { PropTypes } from "prop-types";
 import { useState, useEffect } from "react";
-
 import RecipeTitles from "@/components/RecipeTitles";
 import SearchBar from "@/components/SearchBar";
 
