@@ -1,41 +1,35 @@
 ![workflow status](https://github.com/csci312-s24/project-killington/actions/workflows/node.js.yml/badge.svg)
 
 Purpose:
-A platform designed to offer a streamlined experience for accessing and crafting recipes, both personal and from others, with automated measurement adjustments and scalable recipe solutions to eliminate guesswork.
+A platform designed to offer a streamlined experience for accessing and crafting recipes, both personal and from others.
 
 Deployed application:
 https://killington.csci312.dev/
 
-# Project Skeleton
+How to run locally:
 
-TODO: Implement CI badges, provide a link to the deployed version of your application, and provide a brief description of the application functionality.
+1: Have docker installed
+2: Install all required development dependencies with "npm install" in your terminal
+3: Create a file .env.development.local with your local postgres database
+Ex: DATABASE_URL= postgres://postgres:postgres@localhost:5432/postgres
 
-## Creation
+4: In order to authenticate with google its required that you provide the following in your .env.local:
+GOOGLE_CLIENT_SECRET=SOMEKEY
+GOOGLE_CLIENT_ID=SOMEKEY
 
-This project skeleton has been setup similar to our assignments and practicals. It is a Next.JS application, created with create-next-app `💻 npx create-next-app@latest`, which uses Jest and Testing Library for testing, ESLint for static analysis, Prettier for styling, and is configured to use GitHub actions for testing pull requests.
+    You can get Google client secret and ID here:
+    https://console.developers.google.com/apis/credentials
 
-Development dependencies installed with:
+5: Run the local development server using "npm run dev" on mac
 
-```
-💻 npm install -D jest jest-environment-jsdom husky lint-staged prettier eslint-config-prettier @testing-library/react @testing-library/jest-dom cross-env
-💻 npx install-peerdeps --dev eslint-config-airbnb
-💻 npm install -D eslint-import-resolver-alias
-```
+5.5: If you're on windows you'll likely need to run the following:
+npm run predev (with docker opened)
+npm next dev
 
-Other dependencies installed with:
+6: With the local development running in a seperate terminal run to migrate and seed the database
+npx knex migrate:latest
+npx knex seed:run (should you want our example data)
 
-```
-💻 npm install -S prop-types
-```
-
-### Additional tools you might need
-
-#### Mocking fetch
-
-Tools for mocking fetch can be installed with
-
-```
-💻 npm install -D fetch-mock-jest node-fetch@2.6.7
-```
-
-Note we need to pin the `node-fetch` version due to breaking changes when used with Jest in newer versions.
+7: Feel free to stop the development server. You can now run local development with:
+npx next dev (on windows)
+npm run dev (on mac)
